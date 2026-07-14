@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "pipelineVersion": "1.0.0",
+  "blenderVersion": "5.0.1",
+  "provenance": {
+    "upstreamRepository": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+    "upstreamLicense": "https://github.com/Z-Anatomy/Models-of-human-anatomy/blob/master/License.txt",
+    "licenseId": "CC-BY-SA-4.0",
+    "authoritativeBlendMasterPresent": false,
+    "reproducibilityBoundary": "hash-pinned curated production GLBs",
+    "attributionFile": "assets/ATTRIBUTION.md"
+  },
+  "inputs": {
+    "skeleton": {
+      "path": "assets/skeleton.glb",
+      "sha256": "ee48ce23d8a068478e42c7d7b722e0b3f8155920a60c5976dfc86e753eb33181"
+    },
+    "muscles": {
+      "path": "assets/muscles.glb",
+      "sha256": "99f2c7ac0e5fc01658b8432df589d677e1ac2a0b186166b62f72c5760a202396"
+    }
+  },
+  "outputs": {
+    "skeletonMobileLod1": {
+      "path": "assets/derived/skeleton.mobile-lod1.v1.glb",
+      "sha256": "7ddef93240a6632fc732ea5bf69da2c99dfd1c8e5fe17d68a1d5e3f0939067c5",
+      "instantiatedTriangles": 346879
+    },
+    "musclesMobileLod1": {
+      "path": "assets/derived/muscles.mobile-lod1.v1.glb",
+      "sha256": "abbab649febdd51d3c7354d23b204c119940e9538793c3b7f035dd9f84697abd",
+      "instantiatedTriangles": 758897
+    }
+  },
+  "exportSettings": {
+    "format": "GLB",
+    "compression": "Draco",
+    "compressionLevel": 10,
+    "positionQuantizationBits": 14,
+    "normalQuantizationBits": 10,
+    "texcoordQuantizationBits": 12
+  },
+  "rejectedAsMasters": {
+    "assets/skeleton.uncompressed.backup.glb": "bbce7ff78a75f13cb6bdd17f0e69b569e4062abed28454b4b7513d88631d5c54",
+    "assets/skeleton.fullscene.backup.glb": "9e446aa4f918696914528dfdf63a96b732c2d5395643e6cf72f8c777ba75b5ae",
+    "assets/muscles.uncompressed.backup.glb": "44b41fa3683e5a52868554095ab798e1d34ddf9f4cd50aba40fb0fdaef19bd50",
+    "assets/muscles.previous.backup.glb": "ef2689d6e25c35ee2ecf1d137183ea12572b41953ab9cfd7e7a8f8308c7a437d"
+  }
+}

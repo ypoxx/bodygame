@@ -1,0 +1,8 @@
+.DS_Store
+.git/
+.playwright-cli/
+__pycache__/
+node_modules/
+assets/*.backup.glb
+assets/derived/previews/
+assets/derived/reports/

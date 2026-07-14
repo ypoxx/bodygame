@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#171116" />
+    <meta
+      name="description"
+      content="AnatomyQuest: Mobile 3D-Anatomie zum Erkunden, Erkennen und spielerischen Lernen."
+    />
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/icon-192.svg" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="stylesheet" href="./styles.css?v=20260714-2" />
+    <title>AnatomyQuest</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/0.185.0/build/three.module.min.js",
+          "three/addons/": "./vendor/three/0.185.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="app-shell" data-round-status="idle" data-sheet-state="expanded">
+      <main class="layout">
+        <section id="scenePanel" class="scene-panel">
+          <canvas id="sceneCanvas" aria-label="Interaktives 3D-Anatomiemodell"></canvas>
+          <div class="stage-vignette" aria-hidden="true"></div>
+          <div id="flashOverlay" class="flash-overlay" aria-hidden="true"></div>
+
+          <header class="topbar">
+            <h1>AnatomyQuest</h1>
+            <div class="topbar-actions">
+              <span class="level-mark" aria-label="Aktuelles Level">
+                <svg viewBox="0 0 42 46" aria-hidden="true">
+                  <path d="M21 2 39 12v22L21 44 3 34V12Z" />
+                </svg>
+                <strong id="levelValue">1</strong>
+              </span>
+              <button
+                class="icon-btn sheet-nav-btn play-nav-btn active"
+                data-panel-tab-btn="play"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-label="Spielsteuerung"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="icon-btn sheet-nav-btn"
+                data-panel-tab-btn="info"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-label="Strukturinformationen"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 10v6M12 7h.01" />
+                </svg>
+              </button>
+              <button
+                class="icon-btn sheet-nav-btn"
+                data-panel-tab-btn="settings"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-label="Einstellungen"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z" />
+                </svg>
+              </button>
+            </div>
+          </header>
+
+          <span id="modeBadge" class="mode-status">Speedrun bereit</span>
+
+          <div id="targetBanner" class="target-banner tone-neutral" aria-live="polite">
+            <div id="timerChip" class="timer-chip" aria-label="Verbleibende Zeit">
+              <svg viewBox="0 0 44 44" aria-hidden="true">
+                <circle class="timer-track" cx="22" cy="22" r="18" />
+                <circle class="timer-progress" cx="22" cy="22" r="18" />
+              </svg>
+              <strong id="timerValue">--:--</strong>
+            </div>
+            <div class="target-copy">
+              <p id="targetPrompt">Bereit für die nächste Runde?</p>
+              <p id="targetMeta" class="target-meta">Wähle Modus und Ebene</p>
+            </div>
+          </div>
+
+          <div class="stage-hud" aria-label="Rundenstatus">
+            <div id="comboChip" class="stage-stat combo-stat">
+              <span>Combo</span>
+              <strong id="comboValue">0×</strong>
+              <span id="multiplierChip" class="bonus-stat">Bonus <strong id="multiplierValue">1,00×</strong></span>
+            </div>
+            <div class="stage-stat score-stat">
+              <span>Punkte</span>
+              <strong id="scoreValue">0</strong>
+            </div>
+            <div id="livesChip" class="stage-stat lives-stat">
+              <span>Leben</span>
+              <strong id="livesValue">–</strong>
+            </div>
+          </div>
+
+          <div class="stage-notes">
+            <p id="questionText" class="sr-only">Wähle einen Spielmodus und starte die Runde.</p>
+            <p id="mutatorText">Keine Mutatoren</p>
+            <p id="layerLockHint" class="hidden">Die Ebene ist in dieser Runde festgelegt.</p>
+          </div>
+
+          <div id="gestureHint" class="gesture-hint" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <path d="M5 11c3-4 7-6 11-6 4 0 8 2 11 6M5 11l1-6M5 11l6-1M27 21c-3 4-7 6-11 6-4 0-8-2-11-6M27 21l-1 6M27 21l-6 1" />
+            </svg>
+            <span>Ziehen zum Drehen</span>
+          </div>
+
+          <div id="countdownOverlay" class="countdown-overlay hidden" aria-hidden="true">
+            <span id="countdownValue">3</span>
+          </div>
+        </section>
+
+        <aside class="info-panel" aria-label="Spielsteuerung">
+          <button id="sheetHandleBtn" class="sheet-handle" type="button" aria-expanded="true">
+            <span class="sheet-handle-bar" aria-hidden="true"></span>
+            <span class="sr-only">Spielsteuerung ein- oder ausklappen</span>
+          </button>
+
+          <div class="sheet-scroll">
+            <section class="sheet-pane play-pane" data-panel-tab="play" role="tabpanel">
+              <div class="setup-controls">
+                <div class="section-heading-row">
+                  <h2>Spielmodus</h2>
+                  <p>Bestwert <strong id="highScoreValue">0</strong></p>
+                </div>
+
+                <div class="mode-picker" role="group" aria-label="Spielmodus">
+                  <button class="mode-btn active" type="button" data-game-mode="speedrun">
+                    <svg viewBox="0 0 28 28" aria-hidden="true">
+                      <circle cx="14" cy="16" r="8" />
+                      <path d="M14 8V4M10 4h8M20 10l2-2M14 12v5l3 2" />
+                    </svg>
+                    <span>Speedrun</span>
+                  </button>
+                  <button class="mode-btn" type="button" data-game-mode="sudden_death">
+                    <svg viewBox="0 0 28 28" aria-hidden="true">
+                      <path d="M6 12a8 8 0 1 1 16 0c0 4-2 6-4 7v4H10v-4c-2-1-4-3-4-7Z" />
+                      <circle cx="11" cy="13" r="1.5" />
+                      <circle cx="17" cy="13" r="1.5" />
+                      <path d="m12 18 2-2 2 2M12 21v2M16 21v2" />
+                    </svg>
+                    <span>Sudden Death</span>
+                  </button>
+                  <button class="mode-btn" type="button" data-game-mode="precision">
+                    <svg viewBox="0 0 28 28" aria-hidden="true">
+                      <circle cx="14" cy="14" r="9" />
+                      <circle cx="14" cy="14" r="3" />
+                      <path d="M14 2v5M14 21v5M2 14h5M21 14h5" />
+                    </svg>
+                    <span>Präzision</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="layer-control">
+                <h2>Ebene</h2>
+                <div class="layer-row" role="group" aria-label="Anatomische Ebene">
+                  <button id="layerBonesBtn" class="layer-btn active" type="button">
+                    <svg viewBox="0 0 28 28" aria-hidden="true">
+                      <path d="M8.2 10.2a3.2 3.2 0 1 1 3.7-3.8l4.2 4.2a3.2 3.2 0 1 1 3.7 3.8l-4.2 4.2a3.2 3.2 0 1 1-3.8 3.7l-4.1-4.1a3.2 3.2 0 1 1-3.8-3.8Z" />
+                    </svg>
+                    <span>Knochen</span>
+                  </button>
+                  <button id="layerMusclesBtn" class="layer-btn" type="button">
+                    <svg viewBox="0 0 28 28" aria-hidden="true">
+                      <path d="M5 22c4-1 7-4 8-9 1-4 3-7 7-8 2 4 3 8 2 11-2 6-9 9-17 6Z" />
+                      <path d="M9 20c4-2 7-6 9-11" />
+                    </svg>
+                    <span>Muskeln</span>
+                  </button>
+                  <button id="layerFasciaeBtn" class="layer-btn" type="button">
+                    <svg viewBox="0 0 28 28" aria-hidden="true">
+                      <path d="M5 5h18v18H5Z" />
+                      <path d="m5 11 18-6M5 17l18-6M5 23l18-6M11 5 5 18M18 5l5 18" />
+                    </svg>
+                    <span>Faszien</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="primary-actions">
+                <button id="startRoundBtn" class="btn btn-primary start-btn" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 9 6-9 6Z" /></svg>
+                  <span>Runde starten</span>
+                </button>
+                <button id="skipQuestionBtn" class="btn btn-secondary skip-btn" type="button" disabled>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 6 8 6-8 6ZM14 6v12" /></svg>
+                  <span>Überspringen</span>
+                </button>
+                <button id="stopRoundBtn" class="btn btn-danger stop-btn" type="button" disabled aria-label="Runde beenden">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1" /></svg>
+                </button>
+              </div>
+
+              <p id="roundRuleText" class="round-rule">Regel wird geladen …</p>
+              <details class="challenge-details">
+                <summary>Challenges & Fortschritt</summary>
+                <div class="challenge-list">
+                  <p id="challengeBadge">Daily wird geladen …</p>
+                  <p id="weeklyBadge">Weekly wird geladen …</p>
+                </div>
+              </details>
+            </section>
+
+            <section class="sheet-pane tab-hidden" data-panel-tab="info" role="tabpanel">
+              <div class="pane-heading">
+                <p>Ausgewählte Struktur</p>
+                <h2 id="nameDeValue">Noch nichts ausgewählt</h2>
+                <p id="nameLatinValue" class="latin-name">–</p>
+              </div>
+              <p id="factValue" class="fact">Tippe eine Struktur im Modell an, um mehr zu erfahren.</p>
+
+              <div class="score-summary" aria-label="Aktuelle Statistik">
+                <div><span>Treffer</span><strong id="correctValue">0</strong></div>
+                <div><span>Fehler</span><strong id="wrongValue">0</strong></div>
+                <div><span>Serie</span><strong id="streakValue">0</strong></div>
+                <div><span>Gesammelt</span><strong id="unlockedCountValue">0 / 0</strong></div>
+              </div>
+
+              <details class="collection-section">
+                <summary>Sammelkarten</summary>
+                <ul id="collectionList" class="collection-list"></ul>
+              </details>
+              <details class="collection-section">
+                <summary>Bestenliste</summary>
+                <ul id="leaderboardList" class="collection-list"></ul>
+              </details>
+            </section>
+
+            <section class="sheet-pane tab-hidden" data-panel-tab="settings" role="tabpanel">
+              <div class="pane-heading settings-heading">
+                <p>Persönliche Einstellungen</p>
+                <h2>Darstellung & Feedback</h2>
+              </div>
+
+              <div class="settings-action-row">
+                <button id="themeToggleBtn" class="settings-action" type="button">Darstellung: Atelier</button>
+                <button id="soundToggleBtn" class="settings-action" type="button" aria-pressed="true">Ton: An</button>
+              </div>
+
+              <div class="settings-group">
+                <h3>Körperprofil</h3>
+                <div class="profile-row">
+                  <button id="profileMaleBtn" class="profile-btn active" type="button">Männlich</button>
+                  <button id="profileFemaleBtn" class="profile-btn" type="button">Weiblich</button>
+                </div>
+                <p class="settings-hint">Beide Profile nutzen aktuell dasselbe kuratierte anatomische Referenzmodell.</p>
+              </div>
+
+              <div class="settings-group">
+                <h3>Lautstärke</h3>
+                <label class="slider-row" for="masterVolumeInput">
+                  <span>Gesamt</span>
+                  <input id="masterVolumeInput" type="range" min="0" max="100" step="1" />
+                </label>
+                <label class="slider-row" for="sfxVolumeInput">
+                  <span>Effekte</span>
+                  <input id="sfxVolumeInput" type="range" min="0" max="100" step="1" />
+                </label>
+                <label class="slider-row" for="uiVolumeInput">
+                  <span>Oberfläche</span>
+                  <input id="uiVolumeInput" type="range" min="0" max="100" step="1" />
+                </label>
+                <label class="switch-row" for="hapticsToggleInput">
+                  <input id="hapticsToggleInput" type="checkbox" />
+                  <span>Haptisches Feedback</span>
+                </label>
+              </div>
+
+              <div class="settings-group settings-meta">
+                <h3>Über AnatomyQuest</h3>
+                <p class="settings-hint">Mobile LODs werden automatisch gewählt; große Displays erhalten die volle Modellauflösung.</p>
+                <a href="./assets/ATTRIBUTION.md" target="_blank" rel="noopener">3D-Quellen &amp; Lizenzen</a>
+              </div>
+            </section>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <div
+      id="resultsModal"
+      class="results-modal hidden"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="resultsTitle"
+    >
+      <div class="results-card">
+        <span class="sheet-handle-bar" aria-hidden="true"></span>
+        <p class="results-overline">Runde beendet</p>
+        <h2 id="resultsTitle">Speedrun</h2>
+        <p id="finalModeValue" class="sr-only">Speedrun</p>
+
+        <div class="results-hero">
+          <div class="rank-result">
+            <span>Rang</span>
+            <strong id="finalRankValue">C</strong>
+          </div>
+          <div class="score-result">
+            <span>Punkte</span>
+            <strong id="finalScoreValue">0</strong>
+          </div>
+        </div>
+
+        <div class="results-grid">
+          <div><span>Treffer</span><strong id="finalHitsValue">0</strong></div>
+          <div><span>Genauigkeit</span><strong id="finalAccuracyValue">0%</strong></div>
+          <div><span>Beste Combo</span><strong id="finalComboValue">0×</strong></div>
+          <div><span>Zeit</span><strong id="finalTimeValue">00:00</strong></div>
+        </div>
+
+        <details class="results-details">
+          <summary>Rundendetails</summary>
+          <div class="results-detail-grid">
+            <div><span>Boss</span><strong id="finalBossValue">0</strong></div>
+            <div><span>Mutatoren</span><strong id="finalMutatorsValue">Keine</strong></div>
+            <div><span>Challenge</span><strong id="finalChallengeValue">Offen</strong></div>
+          </div>
+        </details>
+
+        <div class="results-actions">
+          <button id="playAgainBtn" class="btn btn-primary" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" /></svg>
+            <span>Nochmal spielen</span>
+          </button>
+          <button id="closeResultsBtn" class="btn btn-quiet" type="button">Fertig</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="./app.js?v=20260714-2"></script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+*.glb binary
+*.wasm binary
+*.ico binary
+*.png binary
