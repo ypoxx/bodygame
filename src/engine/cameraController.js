@@ -85,10 +85,12 @@ export function createCameraController({ camera, canvas }) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
+  controls.enableZoom = true;
   controls.rotateSpeed = 0.72;
-  controls.zoomSpeed = 1;
-  controls.minDistance = 0.12;
-  controls.maxDistance = 18;
+  controls.zoomSpeed = 1.18;
+  controls.zoomToCursor = true;
+  controls.minDistance = 0.08;
+  controls.maxDistance = 8;
   controls.target.set(0, 1.1, 0);
   controls.touches.ONE = THREE.TOUCH.ROTATE;
   controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
@@ -125,10 +127,6 @@ export function createCameraController({ camera, canvas }) {
     }
 
     controls.update();
-  }
-
-  function setZoomLocked(locked) {
-    controls.enableZoom = !locked;
   }
 
   function setMirrored(mirrored) {
@@ -175,6 +173,11 @@ export function createCameraController({ camera, canvas }) {
     const widthDistance = size.x / (2 * Math.tan(horizontalFov / 2) * targetWidthRatio);
     const depthDistance = size.z * 1.15;
     let distance = Math.max(heightDistance, widthDistance, depthDistance) * margin;
+
+    if (config.constrainZoom) {
+      controls.maxDistance = Math.max(distance * 1.3, controls.minDistance + 0.8);
+    }
+
     distance = THREE.MathUtils.clamp(distance, controls.minDistance + 0.05, controls.maxDistance - 0.2);
 
     center.y += size.y * yOffsetRatio;
@@ -207,8 +210,8 @@ export function createCameraController({ camera, canvas }) {
   function focusOnObject(object) {
     fitToObject(object, {
       margin: 0.92,
-      targetHeightRatio: 0.46,
-      targetWidthRatio: 0.42,
+      targetHeightRatio: 0.62,
+      targetWidthRatio: 0.56,
       yOffsetRatio: 0,
       durationMs: 380,
       smooth: true,
@@ -221,6 +224,7 @@ export function createCameraController({ camera, canvas }) {
       targetHeightRatio: 0.8,
       targetWidthRatio: 0.76,
       yOffsetRatio: -0.06,
+      constrainZoom: true,
       direction: [0.62, 0.1, 1],
       durationMs: DEFAULT_TWEEN_DURATION_MS,
       smooth,
@@ -239,7 +243,6 @@ export function createCameraController({ camera, canvas }) {
     fitToObject,
     focusOnObject,
     frameCharacter,
-    setZoomLocked,
     setMirrored,
     dispose,
   };

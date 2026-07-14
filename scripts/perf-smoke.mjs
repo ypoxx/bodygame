@@ -40,4 +40,26 @@ if (!html.includes("type=\"importmap\"")) {
   process.exit(1);
 }
 
-console.log("Perf smoke passed.");
+const cameraController = fs.readFileSync(path.join(root, "src/engine/cameraController.js"), "utf8");
+const mutators = fs.readFileSync(path.join(root, "src/game/mutators.js"), "utf8");
+const styles = fs.readFileSync(path.join(root, "styles.css"), "utf8");
+const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
+
+const mobileInteractionChecks = [
+  [cameraController.includes("controls.enableZoom = true"), "Camera zoom must stay enabled."],
+  [cameraController.includes("controls.zoomToCursor = true"), "Pinch zoom must follow the gesture midpoint."],
+  [cameraController.includes("controls.touches.TWO = THREE.TOUCH.DOLLY_PAN"), "Two-finger zoom is not configured."],
+  [!mutators.includes("no_zoom"), "A game mutator must not disable mobile zoom."],
+  [styles.includes("touch-action: none"), "Canvas must own touch gestures."],
+  [html.includes("2 Finger zoomen"), "Mobile zoom guidance is missing."],
+  [app.includes("findNearestMeshByScreenDistance(meshes, pointer, 22)"), "Mobile tap fallback must keep a 22 px radius."],
+];
+
+for (const [passed, message] of mobileInteractionChecks) {
+  if (!passed) {
+    console.error(message);
+    process.exit(1);
+  }
+}
+
+console.log("Perf and mobile interaction smoke passed.");

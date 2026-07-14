@@ -7,7 +7,7 @@ Mobile-first Web-App zum Erkunden und spielerischen Lernen menschlicher Anatomie
 - Mobile 3D-Exploration mit Einfinger-Rotation und Zweifinger-Zoom (Three.js r185)
 - Klick-/Touch-Auswahl via Raycasting
 - Drei Spielmodi: `Speedrun`, `Sudden Death`, `Precision`
-- Mutator-Engine pro Runde (`Zoom gesperrt`, `Gespiegelt`, `Combo ×2`, `Zeitsog`)
+- Mutator-Engine pro Runde (`Gespiegelt`, `Combo ×2`, `Zeitsog`); Kamera-Zoom bleibt immer verfügbar
 - Bonusrunden-Mechanik in regelmäßigen Intervallen
 - Kompaktes Runden-HUD mit Countdown, Combo, Multiplikator und Leben
 - Layer-System: Knochen, Muskeln, Faszien

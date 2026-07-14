@@ -21,7 +21,7 @@
   --danger-soft: #f4d7dd;
   --bone: #ead8ca;
   --sheet-peek: calc(6.7rem + env(safe-area-inset-bottom));
-  --sheet-expanded: min(48svh, 27rem);
+  --sheet-expanded: min(45svh, 24rem);
   --stage-radius: 0px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.2, 1.35, 0.32, 1);
@@ -294,10 +294,17 @@ summary:focus-visible {
   -webkit-backdrop-filter: blur(18px) saturate(1.15);
   transform-origin: 50% 0;
   transition:
+    opacity 220ms ease,
     background-color 240ms ease,
     border-color 240ms ease,
     transform 260ms var(--ease-out);
   pointer-events: none;
+}
+
+.app-shell[data-round-status="idle"] .target-banner,
+.app-shell[data-round-status="ended"] .target-banner {
+  opacity: 0;
+  transform: translateY(-0.5rem) scale(0.98);
 }
 
 .timer-chip {
@@ -524,6 +531,7 @@ summary:focus-visible {
   border-radius: 999px;
   background: rgba(21, 13, 18, 0.48);
   font-size: 0.62rem;
+  white-space: nowrap;
   transform: translateX(-50%);
   transition:
     opacity 260ms ease,

@@ -1,15 +1,4 @@
 const MUTATOR_POOL = {
-  no_zoom: {
-    key: "no_zoom",
-    label: "Zoom gesperrt",
-    description: "Zoom ist während der Runde deaktiviert.",
-    apply(context) {
-      context.cameraController?.setZoomLocked(true);
-    },
-    unapply(context) {
-      context.cameraController?.setZoomLocked(false);
-    },
-  },
   mirror_controls: {
     key: "mirror_controls",
     label: "Gespiegelt",

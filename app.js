@@ -7,11 +7,11 @@ import { createStore } from "./src/state/store.js";
 import { createThemeEngine } from "./src/theme/themeEngine.js?v=20260714-1";
 import { GAME_MODES, getMode } from "./src/game/modes.js";
 import { createRoundStateMachine } from "./src/game/roundStateMachine.js";
-import { createMutatorEngine } from "./src/game/mutators.js?v=20260714-1";
+import { createMutatorEngine } from "./src/game/mutators.js?v=20260714-3";
 import { createBossRoundManager } from "./src/game/bossRounds.js";
 import { computeAnswerScore, computeAccuracy, computeRank } from "./src/game/scoring.js";
 import { createRendererEngine } from "./src/engine/renderer.js?v=20260714-1";
-import { createCameraController } from "./src/engine/cameraController.js?v=20260714-1";
+import { createCameraController } from "./src/engine/cameraController.js?v=20260714-3";
 import { createAudioEngine } from "./src/audio/audioEngine.js";
 import { createOnboarding } from "./src/ui/onboarding.js?v=20260714-1";
 import { createProgressionEngine } from "./src/progression/progression.js";
@@ -40,7 +40,7 @@ const DEFAULT_SELECTION = {
 };
 
 const LAYER_CYCLE = ["bones", "muscles", "fasciae"];
-const BUILD_ID = "2026-07-14.mobile-atlas.2";
+const BUILD_ID = "2026-07-14.mobile-atlas.3";
 const USE_MOBILE_LOD = shouldUseMobileLod();
 const MODEL_ASSETS = {
   skeleton: USE_MOBILE_LOD
@@ -399,7 +399,6 @@ function bootstrap() {
       frameModelInView(false);
       startRenderLoop();
       scheduleMuscleLayerLoad(PROFILE_PRESETS[state.profileKey], true);
-      window.setTimeout(() => ui.gestureHint?.classList.add("dismissed"), state.reducedMotion ? 1200 : 3600);
       registerServiceWorker();
       onboarding.showIfNeeded();
       telemetry.track("app_bootstrap_complete", {
@@ -945,13 +944,15 @@ function frameModelInView(smooth = true) {
   }
 
   const compactSheet = state.sheetState === "peek";
+  const shortStage = ui.canvas.clientHeight < 560;
   cameraController.fitToObject(
     target,
     {
       margin: 1,
-      targetHeightRatio: compactSheet ? 0.68 : 0.56,
-      targetWidthRatio: 0.75,
-      yOffsetRatio: compactSheet ? 0.1 : 0.31,
+      targetHeightRatio: compactSheet ? (shortStage ? 0.7 : 0.74) : 0.76,
+      targetWidthRatio: 0.84,
+      yOffsetRatio: compactSheet && shortStage ? 0.2 : 0.12,
+      constrainZoom: true,
       direction: [0.58, 0.08, 1],
       durationMs: 420,
       smooth,
@@ -2238,6 +2239,13 @@ function setLayer(layerName) {
     return;
   }
 
+  const layerChanged = state.activeLayer !== layerName;
+  if (layerChanged && state.selectedMesh) {
+    applyMeshStyle(state.selectedMesh, "base");
+    state.selectedMesh = null;
+    rendererEngine.setOutlineSelection([]);
+  }
+
   state.activeLayer = layerName;
   store.setState({ layer: layerName }, "layer_changed");
 
@@ -2258,7 +2266,7 @@ function setLayer(layerName) {
   updateLayerLockHint();
   window.requestAnimationFrame(() => {
     updateStageFloor();
-    if (state.round.status === "idle" || state.round.status === "ended") {
+    if (layerChanged && (state.round.status === "idle" || state.round.status === "ended")) {
       frameModelInView(true);
     }
   });
@@ -2323,7 +2331,7 @@ function pickMeshFromPointer(event) {
 
   raycaster.setFromCamera(pointer, camera);
   const hits = raycaster.intersectObjects(meshes, false);
-  const mesh = hits[0]?.object || findNearestMeshByScreenDistance(meshes, pointer, 0.065);
+  const mesh = hits[0]?.object || findNearestMeshByScreenDistance(meshes, pointer, 22);
   if (!mesh) {
     return;
   }
@@ -2354,9 +2362,11 @@ function pickMeshFromPointer(event) {
   }
 }
 
-function findNearestMeshByScreenDistance(meshes, pointerNdc, maxDistance = 0.065) {
+function findNearestMeshByScreenDistance(meshes, pointerNdc, maxDistancePx = 22) {
   const centerWorld = new THREE.Vector3();
   const centerNdc = new THREE.Vector3();
+  const halfWidth = Math.max(1, ui.canvas.clientWidth / 2);
+  const halfHeight = Math.max(1, ui.canvas.clientHeight / 2);
   let bestMesh = null;
   let bestDistance = Number.POSITIVE_INFINITY;
 
@@ -2377,10 +2387,20 @@ function findNearestMeshByScreenDistance(meshes, pointerNdc, maxDistance = 0.065
     centerWorld.copy(sphere.center).applyMatrix4(mesh.matrixWorld);
     centerNdc.copy(centerWorld).project(camera);
 
-    const dx = centerNdc.x - pointerNdc.x;
-    const dy = centerNdc.y - pointerNdc.y;
-    const distance = Math.hypot(dx, dy);
-    if (distance < bestDistance && distance <= maxDistance) {
+    if (
+      !Number.isFinite(centerNdc.x) ||
+      !Number.isFinite(centerNdc.y) ||
+      !Number.isFinite(centerNdc.z) ||
+      centerNdc.z < -1 ||
+      centerNdc.z > 1
+    ) {
+      continue;
+    }
+
+    const dxPx = (centerNdc.x - pointerNdc.x) * halfWidth;
+    const dyPx = (centerNdc.y - pointerNdc.y) * halfHeight;
+    const distance = Math.hypot(dxPx, dyPx);
+    if (distance < bestDistance && distance <= maxDistancePx) {
       bestDistance = distance;
       bestMesh = mesh;
     }
