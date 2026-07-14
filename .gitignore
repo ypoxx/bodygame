@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.netlify/
+.playwright-cli/
+.DS_Store
+__pycache__/
+*.pyc
+*.log
+.env
+.env.*
+assets/*.backup.glb
+assets/derived/reports/*backup*.json

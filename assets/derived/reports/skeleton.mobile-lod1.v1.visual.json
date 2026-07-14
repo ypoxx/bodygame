@@ -1,0 +1,12 @@
+{
+  "before": "assets/derived/previews/skeleton.production.front.png",
+  "after": "assets/derived/previews/skeleton.mobile-lod1.v1.front.png",
+  "resolution": [
+    720,
+    1080
+  ],
+  "mae_8bit": 0.126359,
+  "rms_8bit": 0.881011,
+  "psnr_db": 49.231178,
+  "changed_pixel_ratio": 0.07836548
+}

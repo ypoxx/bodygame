@@ -1,0 +1,12 @@
+{
+  "before": "assets/derived/previews/muscles.production.front.png",
+  "after": "assets/derived/previews/muscles.mobile-lod1.v1.front.png",
+  "resolution": [
+    720,
+    1080
+  ],
+  "mae_8bit": 0.342962,
+  "rms_8bit": 1.638308,
+  "psnr_db": 43.842895,
+  "changed_pixel_ratio": 0.17882202
+}

@@ -1,0 +1,17 @@
+{
+  "name": "anatomyquest",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-netlify.mjs",
+    "validate": "node scripts/validate-content.mjs",
+    "perf:smoke": "node scripts/perf-smoke.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "three": "0.185.0"
+  }
+}

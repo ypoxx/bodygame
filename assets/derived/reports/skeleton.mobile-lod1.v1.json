@@ -1,0 +1,7180 @@
+{
+  "pipeline_version": "1.0.0",
+  "blender_version": "5.0.1",
+  "input": {
+    "path": "/Users/alex/Documents/anatomie/assets/skeleton.glb",
+    "bytes": 1886124,
+    "sha256": "ee48ce23d8a068478e42c7d7b722e0b3f8155920a60c5976dfc86e753eb33181"
+  },
+  "output": {
+    "path": "/Users/alex/Documents/anatomie/assets/derived/skeleton.mobile-lod1.v1.glb",
+    "bytes": 1151240,
+    "sha256": "7ddef93240a6632fc732ea5bf69da2c99dfd1c8e5fe17d68a1d5e3f0939067c5"
+  },
+  "settings": {
+    "repair_triangle_soup": false,
+    "lod_weld_triangle_soup": false,
+    "lod_ratio": 0.58,
+    "min_triangles": 100,
+    "draco_level": 10,
+    "position_bits": 14,
+    "normal_bits": 10,
+    "texcoord_bits": 12
+  },
+  "before": {
+    "mesh_objects": 277,
+    "unique_meshes": 160,
+    "unique_triangles": 374894,
+    "instantiated_triangles": 598525,
+    "instantiated_vertices": 326829,
+    "estimated_draw_calls": 575,
+    "bounds_min": [
+      -0.334625,
+      -0.137308,
+      0.009203
+    ],
+    "bounds_max": [
+      0.334625,
+      0.112807,
+      1.705454
+    ],
+    "bounds_size": [
+      0.669249,
+      0.250115,
+      1.69625
+    ],
+    "object_names": [
+      "Anterior cells of ethmoid bone.l",
+      "Anterior cells of ethmoid bone.r",
+      "Arytenoid cartilage.l",
+      "Arytenoid cartilage.r",
+      "Atlas (C1)",
+      "Axis (C2)",
+      "Body of sternum",
+      "Calcaneus.l",
+      "Calcaneus.r",
+      "Capitate bone.l",
+      "Capitate bone.r",
+      "Clavicle.l",
+      "Clavicle.r",
+      "Coccyx",
+      "Corniculate cartilage.l",
+      "Corniculate cartilage.r",
+      "Costal cartilage of eighth rib.l",
+      "Costal cartilage of eighth rib.r",
+      "Costal cartilage of fifth rib.l",
+      "Costal cartilage of fifth rib.r",
+      "Costal cartilage of first rib.l",
+      "Costal cartilage of first rib.r",
+      "Costal cartilage of fourth rib.l",
+      "Costal cartilage of fourth rib.r",
+      "Costal cartilage of ninth rib.l",
+      "Costal cartilage of ninth rib.r",
+      "Costal cartilage of second rib.l",
+      "Costal cartilage of second rib.r",
+      "Costal cartilage of seventh rib.l",
+      "Costal cartilage of seventh rib.r",
+      "Costal cartilage of sixth rib.l",
+      "Costal cartilage of sixth rib.r",
+      "Costal cartilage of tenth rib.l",
+      "Costal cartilage of tenth rib.r",
+      "Costal cartilage of third rib.l",
+      "Costal cartilage of third rib.r",
+      "Cricoid cartilage",
+      "Cuboid bone.l",
+      "Cuboid bone.r",
+      "Distal phalanx of fifth finger of foot.l",
+      "Distal phalanx of fifth finger of foot.r",
+      "Distal phalanx of fifth finger of hand.l",
+      "Distal phalanx of fifth finger of hand.r",
+      "Distal phalanx of first finger of foot.l",
+      "Distal phalanx of first finger of foot.r",
+      "Distal phalanx of first finger of hand.l",
+      "Distal phalanx of first finger of hand.r",
+      "Distal phalanx of fourth finger of foot.l",
+      "Distal phalanx of fourth finger of foot.r",
+      "Distal phalanx of fourth finger of hand.l",
+      "Distal phalanx of fourth finger of hand.r",
+      "Distal phalanx of second finger of foot.l",
+      "Distal phalanx of second finger of foot.r",
+      "Distal phalanx of second finger of hand.l",
+      "Distal phalanx of second finger of hand.r",
+      "Distal phalanx of third finger of foot.l",
+      "Distal phalanx of third finger of foot.r",
+      "Distal phalanx of third finger of hand.l",
+      "Distal phalanx of third finger of hand.r",
+      "Eighth rib.l",
+      "Eighth rib.r",
+      "Eleventh rib.l",
+      "Eleventh rib.r",
+      "Ethmoid bone",
+      "Femur.l",
+      "Femur.r",
+      "Fibula.l",
+      "Fibula.r",
+      "Fifth metacarpal bone.l",
+      "Fifth metacarpal bone.r",
+      "Fifth metatarsal bone.l",
+      "Fifth metatarsal bone.r",
+      "Fifth rib.l",
+      "Fifth rib.r",
+      "First metacarpal bone.l",
+      "First metacarpal bone.r",
+      "First metatarsal bone.l",
+      "First metatarsal bone.r",
+      "First rib.l",
+      "First rib.r",
+      "Fourth metacarpal bone.l",
+      "Fourth metacarpal bone.r",
+      "Fourth metatarsal bone.l",
+      "Fourth metatarsal bone.r",
+      "Fourth rib.l",
+      "Fourth rib.r",
+      "Frontal bone",
+      "Hamate bone.l",
+      "Hamate bone.r",
+      "Hip bone.l",
+      "Hip bone.r",
+      "Humerus.l",
+      "Humerus.r",
+      "Hyoid bone",
+      "Incus.l",
+      "Incus.r",
+      "Inferior nasal concha bone.l",
+      "Inferior nasal concha bone.r",
+      "Intermediate cuneiform bone.l",
+      "Intermediate cuneiform bone.r",
+      "Lacrimal bone.l",
+      "Lacrimal bone.r",
+      "Lateral cuneiform bone.l",
+      "Lateral cuneiform bone.r",
+      "Lateral process of nasal septal cartilage.l",
+      "Lateral process of nasal septal cartilage.r",
+      "Lower canine.l",
+      "Lower canine.r",
+      "Lower first molar tooth.l",
+      "Lower first molar tooth.r",
+      "Lower first premolar.l",
+      "Lower first premolar.r",
+      "Lower lateral incisor.l",
+      "Lower lateral incisor.r",
+      "Lower medial incisor.l",
+      "Lower medial incisor.r",
+      "Lower second molar tooth.l",
+      "Lower second molar tooth.r",
+      "Lower second premolar.l",
+      "Lower second premolar.r",
+      "Lunate bone.l",
+      "Lunate bone.r",
+      "Major alar cartilage.l",
+      "Major alar cartilage.r",
+      "Malleus.l",
+      "Malleus.r",
+      "Mandible",
+      "Manubrium of sternum",
+      "Maxilla.l",
+      "Maxilla.r",
+      "Medial cuneiform bone.l",
+      "Medial cuneiform bone.r",
+      "Middle cells of ethmoid bone.l",
+      "Middle cells of ethmoid bone.r",
+      "Middle phalanx of fifth finger of foot.l",
+      "Middle phalanx of fifth finger of foot.r",
+      "Middle phalanx of fifth finger of hand.l",
+      "Middle phalanx of fifth finger of hand.r",
+      "Middle phalanx of fourth finger of foot.l",
+      "Middle phalanx of fourth finger of foot.r",
+      "Middle phalanx of fourth finger of hand.l",
+      "Middle phalanx of fourth finger of hand.r",
+      "Middle phalanx of second finger of foot.l",
+      "Middle phalanx of second finger of foot.r",
+      "Middle phalanx of second finger of hand.l",
+      "Middle phalanx of second finger of hand.r",
+      "Middle phalanx of third finger of foot.l",
+      "Middle phalanx of third finger of foot.r",
+      "Middle phalanx of third finger of hand.l",
+      "Middle phalanx of third finger of hand.r",
+      "Nasal bone.l",
+      "Nasal bone.r",
+      "Nasal septal cartilage",
+      "Navicular bone.l",
+      "Navicular bone.r",
+      "Ninth rib.l",
+      "Ninth rib.r",
+      "Occipital bone",
+      "Palatine bone.l",
+      "Palatine bone.r",
+      "Parietal bone.l",
+      "Parietal bone.r",
+      "Patella.l",
+      "Patella.r",
+      "Pisiform bone.l",
+      "Pisiform bone.r",
+      "Posterior cells of ethmoid bone.l",
+      "Posterior cells of ethmoid bone.r",
+      "Proximal phalanx of fifth finger of foot.l",
+      "Proximal phalanx of fifth finger of foot.r",
+      "Proximal phalanx of fifth finger of hand.l",
+      "Proximal phalanx of fifth finger of hand.r",
+      "Proximal phalanx of first finger of foot.l",
+      "Proximal phalanx of first finger of foot.r",
+      "Proximal phalanx of first finger of hand.l",
+      "Proximal phalanx of first finger of hand.r",
+      "Proximal phalanx of fourth finger of foot.l",
+      "Proximal phalanx of fourth finger of foot.r",
+      "Proximal phalanx of fourth finger of hand.l",
+      "Proximal phalanx of fourth finger of hand.r",
+      "Proximal phalanx of second finger of foot.l",
+      "Proximal phalanx of second finger of foot.r",
+      "Proximal phalanx of second finger of hand.l",
+      "Proximal phalanx of second finger of hand.r",
+      "Proximal phalanx of third finger of foot.l",
+      "Proximal phalanx of third finger of foot.r",
+      "Proximal phalanx of third finger of hand.l",
+      "Proximal phalanx of third finger of hand.r",
+      "Radius.l",
+      "Radius.r",
+      "Sacrum",
+      "Scaphoid bone.l",
+      "Scaphoid bone.r",
+      "Scapula.l",
+      "Scapula.r",
+      "Second metacarpal bone.l",
+      "Second metacarpal bone.r",
+      "Second metatarsal bone.l",
+      "Second metatarsal bone.r",
+      "Second rib.l",
+      "Second rib.r",
+      "Sesamoid bones of foot.l",
+      "Sesamoid bones of foot.r",
+      "Seventh rib.l",
+      "Seventh rib.r",
+      "Sinus of frontal bone",
+      "Sinus of sphenoid bone",
+      "Sixth rib.l",
+      "Sixth rib.r",
+      "Sphenoid bone",
+      "Stapes.l",
+      "Stapes.r",
+      "Talus.l",
+      "Talus.r",
+      "Temporal bone.l",
+      "Temporal bone.r",
+      "Tenth rib.l",
+      "Tenth rib.r",
+      "Third metacarpal bone.l",
+      "Third metacarpal bone.r",
+      "Third metatarsal bone.l",
+      "Third metatarsal bone.r",
+      "Third rib.l",
+      "Third rib.r",
+      "Thyroid cartilage",
+      "Tibia.l",
+      "Tibia.r",
+      "Trapezium bone.l",
+      "Trapezium bone.r",
+      "Trapezoid bone.l",
+      "Trapezoid bone.r",
+      "Triquetrum bone.l",
+      "Triquetrum bone.r",
+      "Twelfth rib.l",
+      "Twelfth rib.r",
+      "Ulna.l",
+      "Ulna.r",
+      "Upper canine.l",
+      "Upper canine.r",
+      "Upper first molar tooth.l",
+      "Upper first molar tooth.r",
+      "Upper first premolar.l",
+      "Upper first premolar.r",
+      "Upper lateral incisor.l",
+      "Upper lateral incisor.r",
+      "Upper medial incisor.l",
+      "Upper medial incisor.r",
+      "Upper second molar tooth.l",
+      "Upper second molar tooth.r",
+      "Upper second premolar.l",
+      "Upper second premolar.r",
+      "Vertebra C3",
+      "Vertebra C4",
+      "Vertebra C5",
+      "Vertebra C6",
+      "Vertebra C7",
+      "Vertebra L1",
+      "Vertebra L2",
+      "Vertebra L3",
+      "Vertebra L4",
+      "Vertebra L5",
+      "Vertebra T1",
+      "Vertebra T10",
+      "Vertebra T11",
+      "Vertebra T12",
+      "Vertebra T2",
+      "Vertebra T3",
+      "Vertebra T4",
+      "Vertebra T5",
+      "Vertebra T6",
+      "Vertebra T7",
+      "Vertebra T8",
+      "Vertebra T9",
+      "Vomer",
+      "Xiphoid process",
+      "Zygomatic bone.l",
+      "Zygomatic bone.r"
+    ],
+    "triangle_soup_targets": {},
+    "meshes": [
+      {
+        "name": "Anterior cells of ethmoid bone",
+        "vertices": 96,
+        "triangles": 136,
+        "materials": 0,
+        "object_users": [
+          "Anterior cells of ethmoid bone.l",
+          "Anterior cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Arytenoid cartilage",
+        "vertices": 330,
+        "triangles": 640,
+        "materials": 1,
+        "object_users": [
+          "Arytenoid cartilage.r",
+          "Arytenoid cartilage.l"
+        ]
+      },
+      {
+        "name": "Atlas (C1)",
+        "vertices": 1145,
+        "triangles": 2194,
+        "materials": 2,
+        "object_users": [
+          "Atlas (C1)"
+        ]
+      },
+      {
+        "name": "Axis (C2)",
+        "vertices": 1275,
+        "triangles": 2334,
+        "materials": 2,
+        "object_users": [
+          "Axis (C2)"
+        ]
+      },
+      {
+        "name": "Body of sternum",
+        "vertices": 2657,
+        "triangles": 4466,
+        "materials": 2,
+        "object_users": [
+          "Body of sternum"
+        ]
+      },
+      {
+        "name": "Calcaneus.r",
+        "vertices": 808,
+        "triangles": 1448,
+        "materials": 2,
+        "object_users": [
+          "Calcaneus.l",
+          "Calcaneus.r"
+        ]
+      },
+      {
+        "name": "Capitate bone",
+        "vertices": 275,
+        "triangles": 472,
+        "materials": 2,
+        "object_users": [
+          "Capitate bone.l",
+          "Capitate bone.r"
+        ]
+      },
+      {
+        "name": "Clavicle",
+        "vertices": 829,
+        "triangles": 1550,
+        "materials": 2,
+        "object_users": [
+          "Clavicle.l",
+          "Clavicle.r"
+        ]
+      },
+      {
+        "name": "Coccyx",
+        "vertices": 585,
+        "triangles": 1166,
+        "materials": 1,
+        "object_users": [
+          "Coccyx"
+        ]
+      },
+      {
+        "name": "Corniculate cartilage.r",
+        "vertices": 70,
+        "triangles": 136,
+        "materials": 1,
+        "object_users": [
+          "Corniculate cartilage.r",
+          "Corniculate cartilage.l"
+        ]
+      },
+      {
+        "name": "Costal cartilage of eighth rib",
+        "vertices": 358,
+        "triangles": 652,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of eighth rib.l",
+          "Costal cartilage of eighth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of fifth rib",
+        "vertices": 543,
+        "triangles": 1082,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of fifth rib.l",
+          "Costal cartilage of fifth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of first rib",
+        "vertices": 233,
+        "triangles": 462,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of first rib.l",
+          "Costal cartilage of first rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of fourth rib",
+        "vertices": 381,
+        "triangles": 746,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of fourth rib.l",
+          "Costal cartilage of fourth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of ninth rib",
+        "vertices": 256,
+        "triangles": 488,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of ninth rib.l",
+          "Costal cartilage of ninth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of second rib",
+        "vertices": 286,
+        "triangles": 568,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of second rib.l",
+          "Costal cartilage of second rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of seventh rib",
+        "vertices": 1149,
+        "triangles": 2294,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of seventh rib.l",
+          "Costal cartilage of seventh rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of sixth rib",
+        "vertices": 679,
+        "triangles": 1354,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of sixth rib.l",
+          "Costal cartilage of sixth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of tenth rib",
+        "vertices": 201,
+        "triangles": 378,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of tenth rib.l",
+          "Costal cartilage of tenth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of third rib",
+        "vertices": 302,
+        "triangles": 600,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of third rib.l",
+          "Costal cartilage of third rib.r"
+        ]
+      },
+      {
+        "name": "Cricoid cartilage",
+        "vertices": 945,
+        "triangles": 1882,
+        "materials": 1,
+        "object_users": [
+          "Cricoid cartilage"
+        ]
+      },
+      {
+        "name": "Cuboid bone",
+        "vertices": 569,
+        "triangles": 998,
+        "materials": 2,
+        "object_users": [
+          "Cuboid bone.l",
+          "Cuboid bone.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fifth finger of foot",
+        "vertices": 129,
+        "triangles": 236,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fifth finger of foot.l",
+          "Distal phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fifth finger of hand.r",
+        "vertices": 108,
+        "triangles": 192,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fifth finger of hand.l",
+          "Distal phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of first finger of foot",
+        "vertices": 258,
+        "triangles": 466,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of first finger of foot.l",
+          "Distal phalanx of first finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of first finger of hand",
+        "vertices": 127,
+        "triangles": 222,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of first finger of hand.l",
+          "Distal phalanx of first finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fourth finger of foot",
+        "vertices": 154,
+        "triangles": 278,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fourth finger of foot.l",
+          "Distal phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fourth finger of hand",
+        "vertices": 79,
+        "triangles": 134,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fourth finger of hand.l",
+          "Distal phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of second finger of foot",
+        "vertices": 135,
+        "triangles": 236,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of second finger of foot.l",
+          "Distal phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of second finger of hand",
+        "vertices": 143,
+        "triangles": 250,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of second finger of hand.l",
+          "Distal phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of third finger of foot",
+        "vertices": 180,
+        "triangles": 318,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of third finger of foot.l",
+          "Distal phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of third finger of hand",
+        "vertices": 111,
+        "triangles": 192,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of third finger of hand.l",
+          "Distal phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Eighth rib",
+        "vertices": 4292,
+        "triangles": 8270,
+        "materials": 2,
+        "object_users": [
+          "Eighth rib.l",
+          "Eighth rib.r"
+        ]
+      },
+      {
+        "name": "Eleventh rib",
+        "vertices": 2565,
+        "triangles": 5034,
+        "materials": 2,
+        "object_users": [
+          "Eleventh rib.l",
+          "Eleventh rib.r"
+        ]
+      },
+      {
+        "name": "Ethmoid bone",
+        "vertices": 2352,
+        "triangles": 4215,
+        "materials": 1,
+        "object_users": [
+          "Ethmoid bone"
+        ]
+      },
+      {
+        "name": "Femur",
+        "vertices": 2020,
+        "triangles": 3794,
+        "materials": 2,
+        "object_users": [
+          "Femur.l",
+          "Femur.r"
+        ]
+      },
+      {
+        "name": "Fibula",
+        "vertices": 666,
+        "triangles": 1264,
+        "materials": 2,
+        "object_users": [
+          "Fibula.l",
+          "Fibula.r"
+        ]
+      },
+      {
+        "name": "Fifth metacarpal bone",
+        "vertices": 301,
+        "triangles": 512,
+        "materials": 2,
+        "object_users": [
+          "Fifth metacarpal bone.l",
+          "Fifth metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Fifth metatarsal bone",
+        "vertices": 507,
+        "triangles": 894,
+        "materials": 2,
+        "object_users": [
+          "Fifth metatarsal bone.l",
+          "Fifth metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Fifth rib",
+        "vertices": 4866,
+        "triangles": 9376,
+        "materials": 2,
+        "object_users": [
+          "Fifth rib.l",
+          "Fifth rib.r"
+        ]
+      },
+      {
+        "name": "First metacarpal bone",
+        "vertices": 399,
+        "triangles": 682,
+        "materials": 2,
+        "object_users": [
+          "First metacarpal bone.l",
+          "First metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "First metatarsal bone",
+        "vertices": 616,
+        "triangles": 1088,
+        "materials": 2,
+        "object_users": [
+          "First metatarsal bone.l",
+          "First metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "First rib",
+        "vertices": 1705,
+        "triangles": 3210,
+        "materials": 2,
+        "object_users": [
+          "First rib.l",
+          "First rib.r"
+        ]
+      },
+      {
+        "name": "Fourth metacarpal bone",
+        "vertices": 365,
+        "triangles": 642,
+        "materials": 2,
+        "object_users": [
+          "Fourth metacarpal bone.l",
+          "Fourth metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Fourth metatarsal bone",
+        "vertices": 457,
+        "triangles": 834,
+        "materials": 2,
+        "object_users": [
+          "Fourth metatarsal bone.l",
+          "Fourth metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Fourth rib",
+        "vertices": 4484,
+        "triangles": 8646,
+        "materials": 2,
+        "object_users": [
+          "Fourth rib.l",
+          "Fourth rib.r"
+        ]
+      },
+      {
+        "name": "Frontal bone",
+        "vertices": 5160,
+        "triangles": 7776,
+        "materials": 7,
+        "object_users": [
+          "Frontal bone"
+        ]
+      },
+      {
+        "name": "Hamate bone",
+        "vertices": 320,
+        "triangles": 536,
+        "materials": 2,
+        "object_users": [
+          "Hamate bone.l",
+          "Hamate bone.r"
+        ]
+      },
+      {
+        "name": "Hip bone",
+        "vertices": 2043,
+        "triangles": 3788,
+        "materials": 4,
+        "object_users": [
+          "Hip bone.l",
+          "Hip bone.r"
+        ]
+      },
+      {
+        "name": "Humerus",
+        "vertices": 2295,
+        "triangles": 4280,
+        "materials": 2,
+        "object_users": [
+          "Humerus.l",
+          "Humerus.r"
+        ]
+      },
+      {
+        "name": "Hyoid bone",
+        "vertices": 664,
+        "triangles": 1324,
+        "materials": 1,
+        "object_users": [
+          "Hyoid bone"
+        ]
+      },
+      {
+        "name": "Incus",
+        "vertices": 1389,
+        "triangles": 2532,
+        "materials": 2,
+        "object_users": [
+          "Incus.l",
+          "Incus.r"
+        ]
+      },
+      {
+        "name": "Inferior nasal concha bone",
+        "vertices": 238,
+        "triangles": 476,
+        "materials": 1,
+        "object_users": [
+          "Inferior nasal concha bone.l",
+          "Inferior nasal concha bone.r"
+        ]
+      },
+      {
+        "name": "Intermediate cuneiform bone.r",
+        "vertices": 288,
+        "triangles": 444,
+        "materials": 2,
+        "object_users": [
+          "Intermediate cuneiform bone.l",
+          "Intermediate cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Lacrimal bone",
+        "vertices": 386,
+        "triangles": 588,
+        "materials": 5,
+        "object_users": [
+          "Lacrimal bone.l",
+          "Lacrimal bone.r"
+        ]
+      },
+      {
+        "name": "Lateral cuneiform bone.r",
+        "vertices": 397,
+        "triangles": 638,
+        "materials": 2,
+        "object_users": [
+          "Lateral cuneiform bone.l",
+          "Lateral cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Lateral process of nasal septal cartilage",
+        "vertices": 176,
+        "triangles": 347,
+        "materials": 1,
+        "object_users": [
+          "Lateral process of nasal septal cartilage.l",
+          "Lateral process of nasal septal cartilage.r"
+        ]
+      },
+      {
+        "name": "Lower canine",
+        "vertices": 692,
+        "triangles": 1276,
+        "materials": 2,
+        "object_users": [
+          "Lower canine.l",
+          "Lower canine.r"
+        ]
+      },
+      {
+        "name": "Lower first molar tooth",
+        "vertices": 2308,
+        "triangles": 4508,
+        "materials": 3,
+        "object_users": [
+          "Lower first molar tooth.l",
+          "Lower first molar tooth.r"
+        ]
+      },
+      {
+        "name": "Lower first premolar",
+        "vertices": 646,
+        "triangles": 1222,
+        "materials": 2,
+        "object_users": [
+          "Lower first premolar.l",
+          "Lower first premolar.r"
+        ]
+      },
+      {
+        "name": "Lower lateral incisor",
+        "vertices": 561,
+        "triangles": 1040,
+        "materials": 2,
+        "object_users": [
+          "Lower lateral incisor.l",
+          "Lower lateral incisor.r"
+        ]
+      },
+      {
+        "name": "Lower medial incisor",
+        "vertices": 534,
+        "triangles": 984,
+        "materials": 2,
+        "object_users": [
+          "Lower medial incisor.r",
+          "Lower medial incisor.l"
+        ]
+      },
+      {
+        "name": "Lower second molar tooth",
+        "vertices": 880,
+        "triangles": 1676,
+        "materials": 2,
+        "object_users": [
+          "Lower second molar tooth.l",
+          "Lower second molar tooth.r"
+        ]
+      },
+      {
+        "name": "Lower second premolar",
+        "vertices": 630,
+        "triangles": 1180,
+        "materials": 2,
+        "object_users": [
+          "Lower second premolar.l",
+          "Lower second premolar.r"
+        ]
+      },
+      {
+        "name": "Lunate bone",
+        "vertices": 231,
+        "triangles": 348,
+        "materials": 2,
+        "object_users": [
+          "Lunate bone.l",
+          "Lunate bone.r"
+        ]
+      },
+      {
+        "name": "Major alar cartilage",
+        "vertices": 174,
+        "triangles": 344,
+        "materials": 1,
+        "object_users": [
+          "Major alar cartilage.l",
+          "Major alar cartilage.r"
+        ]
+      },
+      {
+        "name": "Malleus",
+        "vertices": 2138,
+        "triangles": 3982,
+        "materials": 2,
+        "object_users": [
+          "Malleus.l",
+          "Malleus.r"
+        ]
+      },
+      {
+        "name": "Mandible",
+        "vertices": 10746,
+        "triangles": 18834,
+        "materials": 3,
+        "object_users": [
+          "Mandible"
+        ]
+      },
+      {
+        "name": "Manubrium of sternum",
+        "vertices": 1422,
+        "triangles": 2662,
+        "materials": 2,
+        "object_users": [
+          "Manubrium of sternum"
+        ]
+      },
+      {
+        "name": "Maxilla",
+        "vertices": 2789,
+        "triangles": 4798,
+        "materials": 8,
+        "object_users": [
+          "Maxilla.l",
+          "Maxilla.r"
+        ]
+      },
+      {
+        "name": "Medial cuneiform bone.r",
+        "vertices": 560,
+        "triangles": 992,
+        "materials": 2,
+        "object_users": [
+          "Medial cuneiform bone.l",
+          "Medial cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Middle cells of ethmoid bone",
+        "vertices": 126,
+        "triangles": 160,
+        "materials": 0,
+        "object_users": [
+          "Middle cells of ethmoid bone.l",
+          "Middle cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fifth finger of foot",
+        "vertices": 137,
+        "triangles": 216,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fifth finger of foot.l",
+          "Middle phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fifth finger of hand",
+        "vertices": 181,
+        "triangles": 292,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fifth finger of hand.l",
+          "Middle phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fourth finger of foot",
+        "vertices": 265,
+        "triangles": 448,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fourth finger of foot.l",
+          "Middle phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fourth finger of hand",
+        "vertices": 265,
+        "triangles": 446,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fourth finger of hand.l",
+          "Middle phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of second finger of foot",
+        "vertices": 227,
+        "triangles": 382,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of second finger of foot.l",
+          "Middle phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of second finger of hand",
+        "vertices": 186,
+        "triangles": 314,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of second finger of hand.l",
+          "Middle phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of third finger of foot",
+        "vertices": 233,
+        "triangles": 400,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of third finger of foot.l",
+          "Middle phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of third finger of hand",
+        "vertices": 211,
+        "triangles": 360,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of third finger of hand.l",
+          "Middle phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Nasal bone",
+        "vertices": 210,
+        "triangles": 292,
+        "materials": 4,
+        "object_users": [
+          "Nasal bone.l",
+          "Nasal bone.r"
+        ]
+      },
+      {
+        "name": "Nasal septal cartilage",
+        "vertices": 182,
+        "triangles": 360,
+        "materials": 1,
+        "object_users": [
+          "Nasal septal cartilage"
+        ]
+      },
+      {
+        "name": "Navicular bone",
+        "vertices": 428,
+        "triangles": 732,
+        "materials": 2,
+        "object_users": [
+          "Navicular bone.l",
+          "Navicular bone.r"
+        ]
+      },
+      {
+        "name": "Ninth rib",
+        "vertices": 4046,
+        "triangles": 7778,
+        "materials": 2,
+        "object_users": [
+          "Ninth rib.l",
+          "Ninth rib.r"
+        ]
+      },
+      {
+        "name": "Occipital bone",
+        "vertices": 5014,
+        "triangles": 7531,
+        "materials": 5,
+        "object_users": [
+          "Occipital bone"
+        ]
+      },
+      {
+        "name": "Palatine bone",
+        "vertices": 844,
+        "triangles": 1460,
+        "materials": 5,
+        "object_users": [
+          "Palatine bone.l",
+          "Palatine bone.r"
+        ]
+      },
+      {
+        "name": "Parietal bone.l",
+        "vertices": 4676,
+        "triangles": 6886,
+        "materials": 5,
+        "object_users": [
+          "Parietal bone.l"
+        ]
+      },
+      {
+        "name": "Parietal bone.r",
+        "vertices": 4489,
+        "triangles": 6780,
+        "materials": 6,
+        "object_users": [
+          "Parietal bone.r"
+        ]
+      },
+      {
+        "name": "Patella",
+        "vertices": 165,
+        "triangles": 276,
+        "materials": 2,
+        "object_users": [
+          "Patella.l",
+          "Patella.r"
+        ]
+      },
+      {
+        "name": "Pisiform bone",
+        "vertices": 151,
+        "triangles": 278,
+        "materials": 2,
+        "object_users": [
+          "Pisiform bone.l",
+          "Pisiform bone.r"
+        ]
+      },
+      {
+        "name": "Posterior cells of ethmoid bone",
+        "vertices": 159,
+        "triangles": 216,
+        "materials": 0,
+        "object_users": [
+          "Posterior cells of ethmoid bone.l",
+          "Posterior cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fifth finger of foot",
+        "vertices": 294,
+        "triangles": 516,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fifth finger of foot.l",
+          "Proximal phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fifth finger of hand",
+        "vertices": 319,
+        "triangles": 560,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fifth finger of hand.l",
+          "Proximal phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of first finger of foot",
+        "vertices": 319,
+        "triangles": 532,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of first finger of foot.l",
+          "Proximal phalanx of first finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of first finger of hand",
+        "vertices": 205,
+        "triangles": 328,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of first finger of hand.l",
+          "Proximal phalanx of first finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fourth finger of foot",
+        "vertices": 270,
+        "triangles": 460,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fourth finger of foot.l",
+          "Proximal phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fourth finger of hand",
+        "vertices": 228,
+        "triangles": 368,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fourth finger of hand.l",
+          "Proximal phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of second finger of foot",
+        "vertices": 255,
+        "triangles": 426,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of second finger of foot.l",
+          "Proximal phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of second finger of hand",
+        "vertices": 247,
+        "triangles": 414,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of second finger of hand.l",
+          "Proximal phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of third finger of foot",
+        "vertices": 274,
+        "triangles": 460,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of third finger of foot.l",
+          "Proximal phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of third finger of hand",
+        "vertices": 256,
+        "triangles": 440,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of third finger of hand.l",
+          "Proximal phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Radius",
+        "vertices": 447,
+        "triangles": 784,
+        "materials": 2,
+        "object_users": [
+          "Radius.l",
+          "Radius.r"
+        ]
+      },
+      {
+        "name": "Sacrum",
+        "vertices": 7780,
+        "triangles": 11676,
+        "materials": 2,
+        "object_users": [
+          "Sacrum"
+        ]
+      },
+      {
+        "name": "Scaphoid bone",
+        "vertices": 268,
+        "triangles": 390,
+        "materials": 2,
+        "object_users": [
+          "Scaphoid bone.r",
+          "Scaphoid bone.l"
+        ]
+      },
+      {
+        "name": "Scapula",
+        "vertices": 12746,
+        "triangles": 25326,
+        "materials": 2,
+        "object_users": [
+          "Scapula.l",
+          "Scapula.r"
+        ]
+      },
+      {
+        "name": "Second metacarpal bone",
+        "vertices": 442,
+        "triangles": 764,
+        "materials": 2,
+        "object_users": [
+          "Second metacarpal bone.l",
+          "Second metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Second metatarsal bone",
+        "vertices": 408,
+        "triangles": 690,
+        "materials": 2,
+        "object_users": [
+          "Second metatarsal bone.r",
+          "Second metatarsal bone.l"
+        ]
+      },
+      {
+        "name": "Second rib",
+        "vertices": 2811,
+        "triangles": 5364,
+        "materials": 2,
+        "object_users": [
+          "Second rib.r",
+          "Second rib.l"
+        ]
+      },
+      {
+        "name": "Sesamoid bones of foot",
+        "vertices": 180,
+        "triangles": 290,
+        "materials": 2,
+        "object_users": [
+          "Sesamoid bones of foot.r",
+          "Sesamoid bones of foot.l"
+        ]
+      },
+      {
+        "name": "Seventh rib",
+        "vertices": 5076,
+        "triangles": 9776,
+        "materials": 2,
+        "object_users": [
+          "Seventh rib.l",
+          "Seventh rib.r"
+        ]
+      },
+      {
+        "name": "Sinus of frontal bone",
+        "vertices": 1036,
+        "triangles": 1504,
+        "materials": 1,
+        "object_users": [
+          "Sinus of frontal bone"
+        ]
+      },
+      {
+        "name": "Sinus of sphenoid bone",
+        "vertices": 266,
+        "triangles": 384,
+        "materials": 1,
+        "object_users": [
+          "Sinus of sphenoid bone"
+        ]
+      },
+      {
+        "name": "Sixth rib",
+        "vertices": 5262,
+        "triangles": 10132,
+        "materials": 2,
+        "object_users": [
+          "Sixth rib.l",
+          "Sixth rib.r"
+        ]
+      },
+      {
+        "name": "Sphenoid bone.l",
+        "vertices": 4562,
+        "triangles": 7308,
+        "materials": 7,
+        "object_users": [
+          "Sphenoid bone"
+        ]
+      },
+      {
+        "name": "Stapes",
+        "vertices": 2432,
+        "triangles": 4342,
+        "materials": 2,
+        "object_users": [
+          "Stapes.l",
+          "Stapes.r"
+        ]
+      },
+      {
+        "name": "Talus.r",
+        "vertices": 784,
+        "triangles": 1350,
+        "materials": 2,
+        "object_users": [
+          "Talus.l",
+          "Talus.r"
+        ]
+      },
+      {
+        "name": "Temporal bone",
+        "vertices": 7283,
+        "triangles": 14094,
+        "materials": 5,
+        "object_users": [
+          "Temporal bone.l",
+          "Temporal bone.r"
+        ]
+      },
+      {
+        "name": "Tenth rib",
+        "vertices": 3667,
+        "triangles": 7026,
+        "materials": 2,
+        "object_users": [
+          "Tenth rib.l",
+          "Tenth rib.r"
+        ]
+      },
+      {
+        "name": "Third metacarpal bone",
+        "vertices": 410,
+        "triangles": 708,
+        "materials": 2,
+        "object_users": [
+          "Third metacarpal bone.l",
+          "Third metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Third metatarsal bone",
+        "vertices": 454,
+        "triangles": 814,
+        "materials": 2,
+        "object_users": [
+          "Third metatarsal bone.l",
+          "Third metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Third rib",
+        "vertices": 3646,
+        "triangles": 6980,
+        "materials": 2,
+        "object_users": [
+          "Third rib.l",
+          "Third rib.r"
+        ]
+      },
+      {
+        "name": "Thyroid cartilage",
+        "vertices": 2246,
+        "triangles": 4488,
+        "materials": 1,
+        "object_users": [
+          "Thyroid cartilage"
+        ]
+      },
+      {
+        "name": "Tibia",
+        "vertices": 930,
+        "triangles": 1670,
+        "materials": 2,
+        "object_users": [
+          "Tibia.l",
+          "Tibia.r"
+        ]
+      },
+      {
+        "name": "Trapezium bone",
+        "vertices": 293,
+        "triangles": 500,
+        "materials": 2,
+        "object_users": [
+          "Trapezium bone.l",
+          "Trapezium bone.r"
+        ]
+      },
+      {
+        "name": "Trapezoid bone",
+        "vertices": 213,
+        "triangles": 364,
+        "materials": 2,
+        "object_users": [
+          "Trapezoid bone.l",
+          "Trapezoid bone.r"
+        ]
+      },
+      {
+        "name": "Triquetrum bone",
+        "vertices": 124,
+        "triangles": 176,
+        "materials": 2,
+        "object_users": [
+          "Triquetrum bone.l",
+          "Triquetrum bone.r"
+        ]
+      },
+      {
+        "name": "Twelfth rib",
+        "vertices": 1549,
+        "triangles": 3002,
+        "materials": 2,
+        "object_users": [
+          "Twelfth rib.l",
+          "Twelfth rib.r"
+        ]
+      },
+      {
+        "name": "Ulna",
+        "vertices": 531,
+        "triangles": 904,
+        "materials": 2,
+        "object_users": [
+          "Ulna.l",
+          "Ulna.r"
+        ]
+      },
+      {
+        "name": "Upper canine",
+        "vertices": 781,
+        "triangles": 1470,
+        "materials": 2,
+        "object_users": [
+          "Upper canine.l",
+          "Upper canine.r"
+        ]
+      },
+      {
+        "name": "Upper first molar tooth",
+        "vertices": 1118,
+        "triangles": 2176,
+        "materials": 2,
+        "object_users": [
+          "Upper first molar tooth.l",
+          "Upper first molar tooth.r"
+        ]
+      },
+      {
+        "name": "Upper first premolar",
+        "vertices": 885,
+        "triangles": 1684,
+        "materials": 2,
+        "object_users": [
+          "Upper first premolar.l",
+          "Upper first premolar.r"
+        ]
+      },
+      {
+        "name": "Upper lateral incisor",
+        "vertices": 771,
+        "triangles": 1454,
+        "materials": 2,
+        "object_users": [
+          "Upper lateral incisor.l",
+          "Upper lateral incisor.r"
+        ]
+      },
+      {
+        "name": "Upper medial incisor",
+        "vertices": 731,
+        "triangles": 1368,
+        "materials": 2,
+        "object_users": [
+          "Upper medial incisor.l",
+          "Upper medial incisor.r"
+        ]
+      },
+      {
+        "name": "Upper second molar tooth",
+        "vertices": 950,
+        "triangles": 1844,
+        "materials": 2,
+        "object_users": [
+          "Upper second molar tooth.l",
+          "Upper second molar tooth.r"
+        ]
+      },
+      {
+        "name": "Upper second premolar",
+        "vertices": 825,
+        "triangles": 1554,
+        "materials": 2,
+        "object_users": [
+          "Upper second premolar.l",
+          "Upper second premolar.r"
+        ]
+      },
+      {
+        "name": "Vertebra C3",
+        "vertices": 1330,
+        "triangles": 2440,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C3"
+        ]
+      },
+      {
+        "name": "Vertebra C4",
+        "vertices": 1080,
+        "triangles": 1940,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C4"
+        ]
+      },
+      {
+        "name": "Vertebra C5",
+        "vertices": 1276,
+        "triangles": 2336,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C5"
+        ]
+      },
+      {
+        "name": "Vertebra C6",
+        "vertices": 1245,
+        "triangles": 2304,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C6"
+        ]
+      },
+      {
+        "name": "Vertebra C7",
+        "vertices": 1078,
+        "triangles": 2164,
+        "materials": 1,
+        "object_users": [
+          "Vertebra C7"
+        ]
+      },
+      {
+        "name": "Vertebra L1",
+        "vertices": 1687,
+        "triangles": 3162,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L1"
+        ]
+      },
+      {
+        "name": "Vertebra L2",
+        "vertices": 1446,
+        "triangles": 2688,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L2"
+        ]
+      },
+      {
+        "name": "Vertebra L3",
+        "vertices": 1716,
+        "triangles": 3160,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L3"
+        ]
+      },
+      {
+        "name": "Vertebra L4",
+        "vertices": 2039,
+        "triangles": 3804,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L4"
+        ]
+      },
+      {
+        "name": "Vertebra L5",
+        "vertices": 2150,
+        "triangles": 4032,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L5"
+        ]
+      },
+      {
+        "name": "Vertebra T1",
+        "vertices": 1135,
+        "triangles": 1946,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T1"
+        ]
+      },
+      {
+        "name": "Vertebra T10",
+        "vertices": 1651,
+        "triangles": 3058,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T10"
+        ]
+      },
+      {
+        "name": "Vertebra T11",
+        "vertices": 1045,
+        "triangles": 1798,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T11"
+        ]
+      },
+      {
+        "name": "Vertebra T12",
+        "vertices": 1427,
+        "triangles": 2586,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T12"
+        ]
+      },
+      {
+        "name": "Vertebra T2",
+        "vertices": 1247,
+        "triangles": 2142,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T2"
+        ]
+      },
+      {
+        "name": "Vertebra T3",
+        "vertices": 1306,
+        "triangles": 2344,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T3"
+        ]
+      },
+      {
+        "name": "Vertebra T4",
+        "vertices": 1252,
+        "triangles": 2216,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T4"
+        ]
+      },
+      {
+        "name": "Vertebra T5",
+        "vertices": 1233,
+        "triangles": 2152,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T5"
+        ]
+      },
+      {
+        "name": "Vertebra T6",
+        "vertices": 1026,
+        "triangles": 1780,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T6"
+        ]
+      },
+      {
+        "name": "Vertebra T7",
+        "vertices": 1545,
+        "triangles": 2794,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T7"
+        ]
+      },
+      {
+        "name": "Vertebra T8",
+        "vertices": 1041,
+        "triangles": 1733,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T8"
+        ]
+      },
+      {
+        "name": "Vertebra T9",
+        "vertices": 1661,
+        "triangles": 2978,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T9"
+        ]
+      },
+      {
+        "name": "Vomer",
+        "vertices": 513,
+        "triangles": 1022,
+        "materials": 1,
+        "object_users": [
+          "Vomer"
+        ]
+      },
+      {
+        "name": "Xiphoid process",
+        "vertices": 516,
+        "triangles": 914,
+        "materials": 2,
+        "object_users": [
+          "Xiphoid process"
+        ]
+      },
+      {
+        "name": "Zygomatic bone",
+        "vertices": 766,
+        "triangles": 1328,
+        "materials": 5,
+        "object_users": [
+          "Zygomatic bone.l",
+          "Zygomatic bone.r"
+        ]
+      }
+    ]
+  },
+  "after_processing": {
+    "mesh_objects": 277,
+    "unique_meshes": 160,
+    "unique_triangles": 217288,
+    "instantiated_triangles": 346879,
+    "instantiated_vertices": 198434,
+    "estimated_draw_calls": 575,
+    "bounds_min": [
+      -0.334646,
+      -0.137308,
+      0.009203
+    ],
+    "bounds_max": [
+      0.334646,
+      0.112814,
+      1.705453
+    ],
+    "bounds_size": [
+      0.669293,
+      0.250122,
+      1.696249
+    ],
+    "object_names": [
+      "Anterior cells of ethmoid bone.l",
+      "Anterior cells of ethmoid bone.r",
+      "Arytenoid cartilage.l",
+      "Arytenoid cartilage.r",
+      "Atlas (C1)",
+      "Axis (C2)",
+      "Body of sternum",
+      "Calcaneus.l",
+      "Calcaneus.r",
+      "Capitate bone.l",
+      "Capitate bone.r",
+      "Clavicle.l",
+      "Clavicle.r",
+      "Coccyx",
+      "Corniculate cartilage.l",
+      "Corniculate cartilage.r",
+      "Costal cartilage of eighth rib.l",
+      "Costal cartilage of eighth rib.r",
+      "Costal cartilage of fifth rib.l",
+      "Costal cartilage of fifth rib.r",
+      "Costal cartilage of first rib.l",
+      "Costal cartilage of first rib.r",
+      "Costal cartilage of fourth rib.l",
+      "Costal cartilage of fourth rib.r",
+      "Costal cartilage of ninth rib.l",
+      "Costal cartilage of ninth rib.r",
+      "Costal cartilage of second rib.l",
+      "Costal cartilage of second rib.r",
+      "Costal cartilage of seventh rib.l",
+      "Costal cartilage of seventh rib.r",
+      "Costal cartilage of sixth rib.l",
+      "Costal cartilage of sixth rib.r",
+      "Costal cartilage of tenth rib.l",
+      "Costal cartilage of tenth rib.r",
+      "Costal cartilage of third rib.l",
+      "Costal cartilage of third rib.r",
+      "Cricoid cartilage",
+      "Cuboid bone.l",
+      "Cuboid bone.r",
+      "Distal phalanx of fifth finger of foot.l",
+      "Distal phalanx of fifth finger of foot.r",
+      "Distal phalanx of fifth finger of hand.l",
+      "Distal phalanx of fifth finger of hand.r",
+      "Distal phalanx of first finger of foot.l",
+      "Distal phalanx of first finger of foot.r",
+      "Distal phalanx of first finger of hand.l",
+      "Distal phalanx of first finger of hand.r",
+      "Distal phalanx of fourth finger of foot.l",
+      "Distal phalanx of fourth finger of foot.r",
+      "Distal phalanx of fourth finger of hand.l",
+      "Distal phalanx of fourth finger of hand.r",
+      "Distal phalanx of second finger of foot.l",
+      "Distal phalanx of second finger of foot.r",
+      "Distal phalanx of second finger of hand.l",
+      "Distal phalanx of second finger of hand.r",
+      "Distal phalanx of third finger of foot.l",
+      "Distal phalanx of third finger of foot.r",
+      "Distal phalanx of third finger of hand.l",
+      "Distal phalanx of third finger of hand.r",
+      "Eighth rib.l",
+      "Eighth rib.r",
+      "Eleventh rib.l",
+      "Eleventh rib.r",
+      "Ethmoid bone",
+      "Femur.l",
+      "Femur.r",
+      "Fibula.l",
+      "Fibula.r",
+      "Fifth metacarpal bone.l",
+      "Fifth metacarpal bone.r",
+      "Fifth metatarsal bone.l",
+      "Fifth metatarsal bone.r",
+      "Fifth rib.l",
+      "Fifth rib.r",
+      "First metacarpal bone.l",
+      "First metacarpal bone.r",
+      "First metatarsal bone.l",
+      "First metatarsal bone.r",
+      "First rib.l",
+      "First rib.r",
+      "Fourth metacarpal bone.l",
+      "Fourth metacarpal bone.r",
+      "Fourth metatarsal bone.l",
+      "Fourth metatarsal bone.r",
+      "Fourth rib.l",
+      "Fourth rib.r",
+      "Frontal bone",
+      "Hamate bone.l",
+      "Hamate bone.r",
+      "Hip bone.l",
+      "Hip bone.r",
+      "Humerus.l",
+      "Humerus.r",
+      "Hyoid bone",
+      "Incus.l",
+      "Incus.r",
+      "Inferior nasal concha bone.l",
+      "Inferior nasal concha bone.r",
+      "Intermediate cuneiform bone.l",
+      "Intermediate cuneiform bone.r",
+      "Lacrimal bone.l",
+      "Lacrimal bone.r",
+      "Lateral cuneiform bone.l",
+      "Lateral cuneiform bone.r",
+      "Lateral process of nasal septal cartilage.l",
+      "Lateral process of nasal septal cartilage.r",
+      "Lower canine.l",
+      "Lower canine.r",
+      "Lower first molar tooth.l",
+      "Lower first molar tooth.r",
+      "Lower first premolar.l",
+      "Lower first premolar.r",
+      "Lower lateral incisor.l",
+      "Lower lateral incisor.r",
+      "Lower medial incisor.l",
+      "Lower medial incisor.r",
+      "Lower second molar tooth.l",
+      "Lower second molar tooth.r",
+      "Lower second premolar.l",
+      "Lower second premolar.r",
+      "Lunate bone.l",
+      "Lunate bone.r",
+      "Major alar cartilage.l",
+      "Major alar cartilage.r",
+      "Malleus.l",
+      "Malleus.r",
+      "Mandible",
+      "Manubrium of sternum",
+      "Maxilla.l",
+      "Maxilla.r",
+      "Medial cuneiform bone.l",
+      "Medial cuneiform bone.r",
+      "Middle cells of ethmoid bone.l",
+      "Middle cells of ethmoid bone.r",
+      "Middle phalanx of fifth finger of foot.l",
+      "Middle phalanx of fifth finger of foot.r",
+      "Middle phalanx of fifth finger of hand.l",
+      "Middle phalanx of fifth finger of hand.r",
+      "Middle phalanx of fourth finger of foot.l",
+      "Middle phalanx of fourth finger of foot.r",
+      "Middle phalanx of fourth finger of hand.l",
+      "Middle phalanx of fourth finger of hand.r",
+      "Middle phalanx of second finger of foot.l",
+      "Middle phalanx of second finger of foot.r",
+      "Middle phalanx of second finger of hand.l",
+      "Middle phalanx of second finger of hand.r",
+      "Middle phalanx of third finger of foot.l",
+      "Middle phalanx of third finger of foot.r",
+      "Middle phalanx of third finger of hand.l",
+      "Middle phalanx of third finger of hand.r",
+      "Nasal bone.l",
+      "Nasal bone.r",
+      "Nasal septal cartilage",
+      "Navicular bone.l",
+      "Navicular bone.r",
+      "Ninth rib.l",
+      "Ninth rib.r",
+      "Occipital bone",
+      "Palatine bone.l",
+      "Palatine bone.r",
+      "Parietal bone.l",
+      "Parietal bone.r",
+      "Patella.l",
+      "Patella.r",
+      "Pisiform bone.l",
+      "Pisiform bone.r",
+      "Posterior cells of ethmoid bone.l",
+      "Posterior cells of ethmoid bone.r",
+      "Proximal phalanx of fifth finger of foot.l",
+      "Proximal phalanx of fifth finger of foot.r",
+      "Proximal phalanx of fifth finger of hand.l",
+      "Proximal phalanx of fifth finger of hand.r",
+      "Proximal phalanx of first finger of foot.l",
+      "Proximal phalanx of first finger of foot.r",
+      "Proximal phalanx of first finger of hand.l",
+      "Proximal phalanx of first finger of hand.r",
+      "Proximal phalanx of fourth finger of foot.l",
+      "Proximal phalanx of fourth finger of foot.r",
+      "Proximal phalanx of fourth finger of hand.l",
+      "Proximal phalanx of fourth finger of hand.r",
+      "Proximal phalanx of second finger of foot.l",
+      "Proximal phalanx of second finger of foot.r",
+      "Proximal phalanx of second finger of hand.l",
+      "Proximal phalanx of second finger of hand.r",
+      "Proximal phalanx of third finger of foot.l",
+      "Proximal phalanx of third finger of foot.r",
+      "Proximal phalanx of third finger of hand.l",
+      "Proximal phalanx of third finger of hand.r",
+      "Radius.l",
+      "Radius.r",
+      "Sacrum",
+      "Scaphoid bone.l",
+      "Scaphoid bone.r",
+      "Scapula.l",
+      "Scapula.r",
+      "Second metacarpal bone.l",
+      "Second metacarpal bone.r",
+      "Second metatarsal bone.l",
+      "Second metatarsal bone.r",
+      "Second rib.l",
+      "Second rib.r",
+      "Sesamoid bones of foot.l",
+      "Sesamoid bones of foot.r",
+      "Seventh rib.l",
+      "Seventh rib.r",
+      "Sinus of frontal bone",
+      "Sinus of sphenoid bone",
+      "Sixth rib.l",
+      "Sixth rib.r",
+      "Sphenoid bone",
+      "Stapes.l",
+      "Stapes.r",
+      "Talus.l",
+      "Talus.r",
+      "Temporal bone.l",
+      "Temporal bone.r",
+      "Tenth rib.l",
+      "Tenth rib.r",
+      "Third metacarpal bone.l",
+      "Third metacarpal bone.r",
+      "Third metatarsal bone.l",
+      "Third metatarsal bone.r",
+      "Third rib.l",
+      "Third rib.r",
+      "Thyroid cartilage",
+      "Tibia.l",
+      "Tibia.r",
+      "Trapezium bone.l",
+      "Trapezium bone.r",
+      "Trapezoid bone.l",
+      "Trapezoid bone.r",
+      "Triquetrum bone.l",
+      "Triquetrum bone.r",
+      "Twelfth rib.l",
+      "Twelfth rib.r",
+      "Ulna.l",
+      "Ulna.r",
+      "Upper canine.l",
+      "Upper canine.r",
+      "Upper first molar tooth.l",
+      "Upper first molar tooth.r",
+      "Upper first premolar.l",
+      "Upper first premolar.r",
+      "Upper lateral incisor.l",
+      "Upper lateral incisor.r",
+      "Upper medial incisor.l",
+      "Upper medial incisor.r",
+      "Upper second molar tooth.l",
+      "Upper second molar tooth.r",
+      "Upper second premolar.l",
+      "Upper second premolar.r",
+      "Vertebra C3",
+      "Vertebra C4",
+      "Vertebra C5",
+      "Vertebra C6",
+      "Vertebra C7",
+      "Vertebra L1",
+      "Vertebra L2",
+      "Vertebra L3",
+      "Vertebra L4",
+      "Vertebra L5",
+      "Vertebra T1",
+      "Vertebra T10",
+      "Vertebra T11",
+      "Vertebra T12",
+      "Vertebra T2",
+      "Vertebra T3",
+      "Vertebra T4",
+      "Vertebra T5",
+      "Vertebra T6",
+      "Vertebra T7",
+      "Vertebra T8",
+      "Vertebra T9",
+      "Vomer",
+      "Xiphoid process",
+      "Zygomatic bone.l",
+      "Zygomatic bone.r"
+    ],
+    "triangle_soup_targets": {},
+    "meshes": [
+      {
+        "name": "Anterior cells of ethmoid bone",
+        "vertices": 64,
+        "triangles": 78,
+        "materials": 0,
+        "object_users": [
+          "Anterior cells of ethmoid bone.l",
+          "Anterior cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Arytenoid cartilage",
+        "vertices": 194,
+        "triangles": 370,
+        "materials": 1,
+        "object_users": [
+          "Arytenoid cartilage.r",
+          "Arytenoid cartilage.l"
+        ]
+      },
+      {
+        "name": "Atlas (C1)",
+        "vertices": 684,
+        "triangles": 1272,
+        "materials": 2,
+        "object_users": [
+          "Atlas (C1)"
+        ]
+      },
+      {
+        "name": "Axis (C2)",
+        "vertices": 769,
+        "triangles": 1352,
+        "materials": 2,
+        "object_users": [
+          "Axis (C2)"
+        ]
+      },
+      {
+        "name": "Body of sternum",
+        "vertices": 1688,
+        "triangles": 2590,
+        "materials": 2,
+        "object_users": [
+          "Body of sternum"
+        ]
+      },
+      {
+        "name": "Calcaneus.r",
+        "vertices": 497,
+        "triangles": 838,
+        "materials": 2,
+        "object_users": [
+          "Calcaneus.l",
+          "Calcaneus.r"
+        ]
+      },
+      {
+        "name": "Capitate bone",
+        "vertices": 171,
+        "triangles": 272,
+        "materials": 2,
+        "object_users": [
+          "Capitate bone.l",
+          "Capitate bone.r"
+        ]
+      },
+      {
+        "name": "Clavicle",
+        "vertices": 493,
+        "triangles": 898,
+        "materials": 2,
+        "object_users": [
+          "Clavicle.l",
+          "Clavicle.r"
+        ]
+      },
+      {
+        "name": "Coccyx",
+        "vertices": 340,
+        "triangles": 676,
+        "materials": 1,
+        "object_users": [
+          "Coccyx"
+        ]
+      },
+      {
+        "name": "Corniculate cartilage.r",
+        "vertices": 41,
+        "triangles": 78,
+        "materials": 1,
+        "object_users": [
+          "Corniculate cartilage.r",
+          "Corniculate cartilage.l"
+        ]
+      },
+      {
+        "name": "Costal cartilage of eighth rib",
+        "vertices": 217,
+        "triangles": 377,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of eighth rib.l",
+          "Costal cartilage of eighth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of fifth rib",
+        "vertices": 315,
+        "triangles": 626,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of fifth rib.l",
+          "Costal cartilage of fifth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of first rib",
+        "vertices": 135,
+        "triangles": 266,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of first rib.l",
+          "Costal cartilage of first rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of fourth rib",
+        "vertices": 224,
+        "triangles": 432,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of fourth rib.l",
+          "Costal cartilage of fourth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of ninth rib",
+        "vertices": 153,
+        "triangles": 282,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of ninth rib.l",
+          "Costal cartilage of ninth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of second rib",
+        "vertices": 166,
+        "triangles": 328,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of second rib.l",
+          "Costal cartilage of second rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of seventh rib",
+        "vertices": 667,
+        "triangles": 1330,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of seventh rib.l",
+          "Costal cartilage of seventh rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of sixth rib",
+        "vertices": 394,
+        "triangles": 784,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of sixth rib.l",
+          "Costal cartilage of sixth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of tenth rib",
+        "vertices": 121,
+        "triangles": 218,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of tenth rib.l",
+          "Costal cartilage of tenth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of third rib",
+        "vertices": 176,
+        "triangles": 348,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of third rib.l",
+          "Costal cartilage of third rib.r"
+        ]
+      },
+      {
+        "name": "Cricoid cartilage",
+        "vertices": 549,
+        "triangles": 1091,
+        "materials": 1,
+        "object_users": [
+          "Cricoid cartilage"
+        ]
+      },
+      {
+        "name": "Cuboid bone",
+        "vertices": 353,
+        "triangles": 577,
+        "materials": 2,
+        "object_users": [
+          "Cuboid bone.l",
+          "Cuboid bone.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fifth finger of foot",
+        "vertices": 79,
+        "triangles": 136,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fifth finger of foot.l",
+          "Distal phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fifth finger of hand.r",
+        "vertices": 67,
+        "triangles": 110,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fifth finger of hand.l",
+          "Distal phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of first finger of foot",
+        "vertices": 158,
+        "triangles": 269,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of first finger of foot.l",
+          "Distal phalanx of first finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of first finger of hand",
+        "vertices": 80,
+        "triangles": 128,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of first finger of hand.l",
+          "Distal phalanx of first finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fourth finger of foot",
+        "vertices": 94,
+        "triangles": 160,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fourth finger of foot.l",
+          "Distal phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fourth finger of hand",
+        "vertices": 50,
+        "triangles": 76,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fourth finger of hand.l",
+          "Distal phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of second finger of foot",
+        "vertices": 83,
+        "triangles": 136,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of second finger of foot.l",
+          "Distal phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of second finger of hand",
+        "vertices": 90,
+        "triangles": 145,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of second finger of hand.l",
+          "Distal phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of third finger of foot",
+        "vertices": 109,
+        "triangles": 183,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of third finger of foot.l",
+          "Distal phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of third finger of hand",
+        "vertices": 70,
+        "triangles": 110,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of third finger of hand.l",
+          "Distal phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Eighth rib",
+        "vertices": 2538,
+        "triangles": 4796,
+        "materials": 2,
+        "object_users": [
+          "Eighth rib.l",
+          "Eighth rib.r"
+        ]
+      },
+      {
+        "name": "Eleventh rib",
+        "vertices": 1503,
+        "triangles": 2919,
+        "materials": 2,
+        "object_users": [
+          "Eleventh rib.l",
+          "Eleventh rib.r"
+        ]
+      },
+      {
+        "name": "Ethmoid bone",
+        "vertices": 1400,
+        "triangles": 2444,
+        "materials": 1,
+        "object_users": [
+          "Ethmoid bone"
+        ]
+      },
+      {
+        "name": "Femur",
+        "vertices": 1221,
+        "triangles": 2200,
+        "materials": 2,
+        "object_users": [
+          "Femur.l",
+          "Femur.r"
+        ]
+      },
+      {
+        "name": "Fibula",
+        "vertices": 399,
+        "triangles": 732,
+        "materials": 2,
+        "object_users": [
+          "Fibula.l",
+          "Fibula.r"
+        ]
+      },
+      {
+        "name": "Fifth metacarpal bone",
+        "vertices": 188,
+        "triangles": 296,
+        "materials": 2,
+        "object_users": [
+          "Fifth metacarpal bone.l",
+          "Fifth metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Fifth metatarsal bone",
+        "vertices": 311,
+        "triangles": 518,
+        "materials": 2,
+        "object_users": [
+          "Fifth metatarsal bone.l",
+          "Fifth metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Fifth rib",
+        "vertices": 2885,
+        "triangles": 5438,
+        "materials": 2,
+        "object_users": [
+          "Fifth rib.l",
+          "Fifth rib.r"
+        ]
+      },
+      {
+        "name": "First metacarpal bone",
+        "vertices": 251,
+        "triangles": 395,
+        "materials": 2,
+        "object_users": [
+          "First metacarpal bone.l",
+          "First metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "First metatarsal bone",
+        "vertices": 383,
+        "triangles": 630,
+        "materials": 2,
+        "object_users": [
+          "First metatarsal bone.l",
+          "First metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "First rib",
+        "vertices": 1021,
+        "triangles": 1861,
+        "materials": 2,
+        "object_users": [
+          "First rib.l",
+          "First rib.r"
+        ]
+      },
+      {
+        "name": "Fourth metacarpal bone",
+        "vertices": 227,
+        "triangles": 371,
+        "materials": 2,
+        "object_users": [
+          "Fourth metacarpal bone.l",
+          "Fourth metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Fourth metatarsal bone",
+        "vertices": 279,
+        "triangles": 482,
+        "materials": 2,
+        "object_users": [
+          "Fourth metatarsal bone.l",
+          "Fourth metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Fourth rib",
+        "vertices": 2654,
+        "triangles": 5014,
+        "materials": 2,
+        "object_users": [
+          "Fourth rib.l",
+          "Fourth rib.r"
+        ]
+      },
+      {
+        "name": "Frontal bone",
+        "vertices": 3467,
+        "triangles": 4510,
+        "materials": 7,
+        "object_users": [
+          "Frontal bone"
+        ]
+      },
+      {
+        "name": "Hamate bone",
+        "vertices": 204,
+        "triangles": 309,
+        "materials": 2,
+        "object_users": [
+          "Hamate bone.l",
+          "Hamate bone.r"
+        ]
+      },
+      {
+        "name": "Hip bone",
+        "vertices": 1243,
+        "triangles": 2197,
+        "materials": 4,
+        "object_users": [
+          "Hip bone.l",
+          "Hip bone.r"
+        ]
+      },
+      {
+        "name": "Humerus",
+        "vertices": 1379,
+        "triangles": 2481,
+        "materials": 2,
+        "object_users": [
+          "Humerus.l",
+          "Humerus.r"
+        ]
+      },
+      {
+        "name": "Hyoid bone",
+        "vertices": 385,
+        "triangles": 766,
+        "materials": 1,
+        "object_users": [
+          "Hyoid bone"
+        ]
+      },
+      {
+        "name": "Incus",
+        "vertices": 852,
+        "triangles": 1467,
+        "materials": 2,
+        "object_users": [
+          "Incus.l",
+          "Incus.r"
+        ]
+      },
+      {
+        "name": "Inferior nasal concha bone",
+        "vertices": 138,
+        "triangles": 276,
+        "materials": 1,
+        "object_users": [
+          "Inferior nasal concha bone.l",
+          "Inferior nasal concha bone.r"
+        ]
+      },
+      {
+        "name": "Intermediate cuneiform bone.r",
+        "vertices": 189,
+        "triangles": 257,
+        "materials": 2,
+        "object_users": [
+          "Intermediate cuneiform bone.l",
+          "Intermediate cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Lacrimal bone",
+        "vertices": 256,
+        "triangles": 340,
+        "materials": 5,
+        "object_users": [
+          "Lacrimal bone.l",
+          "Lacrimal bone.r"
+        ]
+      },
+      {
+        "name": "Lateral cuneiform bone.r",
+        "vertices": 255,
+        "triangles": 370,
+        "materials": 2,
+        "object_users": [
+          "Lateral cuneiform bone.l",
+          "Lateral cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Lateral process of nasal septal cartilage",
+        "vertices": 103,
+        "triangles": 201,
+        "materials": 1,
+        "object_users": [
+          "Lateral process of nasal septal cartilage.l",
+          "Lateral process of nasal septal cartilage.r"
+        ]
+      },
+      {
+        "name": "Lower canine",
+        "vertices": 413,
+        "triangles": 739,
+        "materials": 2,
+        "object_users": [
+          "Lower canine.l",
+          "Lower canine.r"
+        ]
+      },
+      {
+        "name": "Lower first molar tooth",
+        "vertices": 1354,
+        "triangles": 2614,
+        "materials": 3,
+        "object_users": [
+          "Lower first molar tooth.l",
+          "Lower first molar tooth.r"
+        ]
+      },
+      {
+        "name": "Lower first premolar",
+        "vertices": 386,
+        "triangles": 708,
+        "materials": 2,
+        "object_users": [
+          "Lower first premolar.l",
+          "Lower first premolar.r"
+        ]
+      },
+      {
+        "name": "Lower lateral incisor",
+        "vertices": 338,
+        "triangles": 602,
+        "materials": 2,
+        "object_users": [
+          "Lower lateral incisor.l",
+          "Lower lateral incisor.r"
+        ]
+      },
+      {
+        "name": "Lower medial incisor",
+        "vertices": 320,
+        "triangles": 570,
+        "materials": 2,
+        "object_users": [
+          "Lower medial incisor.r",
+          "Lower medial incisor.l"
+        ]
+      },
+      {
+        "name": "Lower second molar tooth",
+        "vertices": 524,
+        "triangles": 972,
+        "materials": 2,
+        "object_users": [
+          "Lower second molar tooth.l",
+          "Lower second molar tooth.r"
+        ]
+      },
+      {
+        "name": "Lower second premolar",
+        "vertices": 378,
+        "triangles": 684,
+        "materials": 2,
+        "object_users": [
+          "Lower second premolar.l",
+          "Lower second premolar.r"
+        ]
+      },
+      {
+        "name": "Lunate bone",
+        "vertices": 152,
+        "triangles": 200,
+        "materials": 2,
+        "object_users": [
+          "Lunate bone.l",
+          "Lunate bone.r"
+        ]
+      },
+      {
+        "name": "Major alar cartilage",
+        "vertices": 101,
+        "triangles": 198,
+        "materials": 1,
+        "object_users": [
+          "Major alar cartilage.l",
+          "Major alar cartilage.r"
+        ]
+      },
+      {
+        "name": "Malleus",
+        "vertices": 1293,
+        "triangles": 2308,
+        "materials": 2,
+        "object_users": [
+          "Malleus.l",
+          "Malleus.r"
+        ]
+      },
+      {
+        "name": "Mandible",
+        "vertices": 6491,
+        "triangles": 10922,
+        "materials": 3,
+        "object_users": [
+          "Mandible"
+        ]
+      },
+      {
+        "name": "Manubrium of sternum",
+        "vertices": 856,
+        "triangles": 1542,
+        "materials": 2,
+        "object_users": [
+          "Manubrium of sternum"
+        ]
+      },
+      {
+        "name": "Maxilla",
+        "vertices": 1755,
+        "triangles": 2782,
+        "materials": 8,
+        "object_users": [
+          "Maxilla.l",
+          "Maxilla.r"
+        ]
+      },
+      {
+        "name": "Medial cuneiform bone.r",
+        "vertices": 350,
+        "triangles": 574,
+        "materials": 2,
+        "object_users": [
+          "Medial cuneiform bone.l",
+          "Medial cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Middle cells of ethmoid bone",
+        "vertices": 80,
+        "triangles": 92,
+        "materials": 0,
+        "object_users": [
+          "Middle cells of ethmoid bone.l",
+          "Middle cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fifth finger of foot",
+        "vertices": 91,
+        "triangles": 124,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fifth finger of foot.l",
+          "Middle phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fifth finger of hand",
+        "vertices": 119,
+        "triangles": 168,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fifth finger of hand.l",
+          "Middle phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fourth finger of foot",
+        "vertices": 167,
+        "triangles": 258,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fourth finger of foot.l",
+          "Middle phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fourth finger of hand",
+        "vertices": 170,
+        "triangles": 258,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fourth finger of hand.l",
+          "Middle phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of second finger of foot",
+        "vertices": 145,
+        "triangles": 220,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of second finger of foot.l",
+          "Middle phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of second finger of hand",
+        "vertices": 120,
+        "triangles": 182,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of second finger of hand.l",
+          "Middle phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of third finger of foot",
+        "vertices": 147,
+        "triangles": 232,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of third finger of foot.l",
+          "Middle phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of third finger of hand",
+        "vertices": 135,
+        "triangles": 208,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of third finger of hand.l",
+          "Middle phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Nasal bone",
+        "vertices": 144,
+        "triangles": 169,
+        "materials": 4,
+        "object_users": [
+          "Nasal bone.l",
+          "Nasal bone.r"
+        ]
+      },
+      {
+        "name": "Nasal septal cartilage",
+        "vertices": 106,
+        "triangles": 208,
+        "materials": 1,
+        "object_users": [
+          "Nasal septal cartilage"
+        ]
+      },
+      {
+        "name": "Navicular bone",
+        "vertices": 271,
+        "triangles": 424,
+        "materials": 2,
+        "object_users": [
+          "Navicular bone.l",
+          "Navicular bone.r"
+        ]
+      },
+      {
+        "name": "Ninth rib",
+        "vertices": 2392,
+        "triangles": 4510,
+        "materials": 2,
+        "object_users": [
+          "Ninth rib.l",
+          "Ninth rib.r"
+        ]
+      },
+      {
+        "name": "Occipital bone",
+        "vertices": 3304,
+        "triangles": 4367,
+        "materials": 5,
+        "object_users": [
+          "Occipital bone"
+        ]
+      },
+      {
+        "name": "Palatine bone",
+        "vertices": 531,
+        "triangles": 845,
+        "materials": 5,
+        "object_users": [
+          "Palatine bone.l",
+          "Palatine bone.r"
+        ]
+      },
+      {
+        "name": "Parietal bone.l",
+        "vertices": 3115,
+        "triangles": 3993,
+        "materials": 5,
+        "object_users": [
+          "Parietal bone.l"
+        ]
+      },
+      {
+        "name": "Parietal bone.r",
+        "vertices": 2990,
+        "triangles": 3932,
+        "materials": 6,
+        "object_users": [
+          "Parietal bone.r"
+        ]
+      },
+      {
+        "name": "Patella",
+        "vertices": 105,
+        "triangles": 159,
+        "materials": 2,
+        "object_users": [
+          "Patella.l",
+          "Patella.r"
+        ]
+      },
+      {
+        "name": "Pisiform bone",
+        "vertices": 92,
+        "triangles": 160,
+        "materials": 2,
+        "object_users": [
+          "Pisiform bone.l",
+          "Pisiform bone.r"
+        ]
+      },
+      {
+        "name": "Posterior cells of ethmoid bone",
+        "vertices": 106,
+        "triangles": 125,
+        "materials": 0,
+        "object_users": [
+          "Posterior cells of ethmoid bone.l",
+          "Posterior cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fifth finger of foot",
+        "vertices": 182,
+        "triangles": 298,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fifth finger of foot.l",
+          "Proximal phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fifth finger of hand",
+        "vertices": 200,
+        "triangles": 324,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fifth finger of hand.l",
+          "Proximal phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of first finger of foot",
+        "vertices": 200,
+        "triangles": 307,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of first finger of foot.l",
+          "Proximal phalanx of first finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of first finger of hand",
+        "vertices": 133,
+        "triangles": 190,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of first finger of hand.l",
+          "Proximal phalanx of first finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fourth finger of foot",
+        "vertices": 171,
+        "triangles": 265,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fourth finger of foot.l",
+          "Proximal phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fourth finger of hand",
+        "vertices": 143,
+        "triangles": 212,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fourth finger of hand.l",
+          "Proximal phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of second finger of foot",
+        "vertices": 159,
+        "triangles": 246,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of second finger of foot.l",
+          "Proximal phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of second finger of hand",
+        "vertices": 157,
+        "triangles": 240,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of second finger of hand.l",
+          "Proximal phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of third finger of foot",
+        "vertices": 171,
+        "triangles": 266,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of third finger of foot.l",
+          "Proximal phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of third finger of hand",
+        "vertices": 162,
+        "triangles": 255,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of third finger of hand.l",
+          "Proximal phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Radius",
+        "vertices": 272,
+        "triangles": 453,
+        "materials": 2,
+        "object_users": [
+          "Radius.l",
+          "Radius.r"
+        ]
+      },
+      {
+        "name": "Sacrum",
+        "vertices": 5105,
+        "triangles": 6771,
+        "materials": 2,
+        "object_users": [
+          "Sacrum"
+        ]
+      },
+      {
+        "name": "Scaphoid bone",
+        "vertices": 174,
+        "triangles": 225,
+        "materials": 2,
+        "object_users": [
+          "Scaphoid bone.r",
+          "Scaphoid bone.l"
+        ]
+      },
+      {
+        "name": "Scapula",
+        "vertices": 7420,
+        "triangles": 14688,
+        "materials": 2,
+        "object_users": [
+          "Scapula.l",
+          "Scapula.r"
+        ]
+      },
+      {
+        "name": "Second metacarpal bone",
+        "vertices": 277,
+        "triangles": 443,
+        "materials": 2,
+        "object_users": [
+          "Second metacarpal bone.l",
+          "Second metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Second metatarsal bone",
+        "vertices": 256,
+        "triangles": 399,
+        "materials": 2,
+        "object_users": [
+          "Second metatarsal bone.r",
+          "Second metatarsal bone.l"
+        ]
+      },
+      {
+        "name": "Second rib",
+        "vertices": 1672,
+        "triangles": 3110,
+        "materials": 2,
+        "object_users": [
+          "Second rib.r",
+          "Second rib.l"
+        ]
+      },
+      {
+        "name": "Sesamoid bones of foot",
+        "vertices": 114,
+        "triangles": 167,
+        "materials": 2,
+        "object_users": [
+          "Sesamoid bones of foot.r",
+          "Sesamoid bones of foot.l"
+        ]
+      },
+      {
+        "name": "Seventh rib",
+        "vertices": 3004,
+        "triangles": 5669,
+        "materials": 2,
+        "object_users": [
+          "Seventh rib.l",
+          "Seventh rib.r"
+        ]
+      },
+      {
+        "name": "Sinus of frontal bone",
+        "vertices": 688,
+        "triangles": 872,
+        "materials": 1,
+        "object_users": [
+          "Sinus of frontal bone"
+        ]
+      },
+      {
+        "name": "Sinus of sphenoid bone",
+        "vertices": 177,
+        "triangles": 222,
+        "materials": 1,
+        "object_users": [
+          "Sinus of sphenoid bone"
+        ]
+      },
+      {
+        "name": "Sixth rib",
+        "vertices": 3110,
+        "triangles": 5875,
+        "materials": 2,
+        "object_users": [
+          "Sixth rib.l",
+          "Sixth rib.r"
+        ]
+      },
+      {
+        "name": "Sphenoid bone.l",
+        "vertices": 2894,
+        "triangles": 4238,
+        "materials": 7,
+        "object_users": [
+          "Sphenoid bone"
+        ]
+      },
+      {
+        "name": "Stapes",
+        "vertices": 1504,
+        "triangles": 2517,
+        "materials": 2,
+        "object_users": [
+          "Stapes.l",
+          "Stapes.r"
+        ]
+      },
+      {
+        "name": "Talus.r",
+        "vertices": 491,
+        "triangles": 782,
+        "materials": 2,
+        "object_users": [
+          "Talus.l",
+          "Talus.r"
+        ]
+      },
+      {
+        "name": "Temporal bone",
+        "vertices": 4316,
+        "triangles": 8173,
+        "materials": 5,
+        "object_users": [
+          "Temporal bone.l",
+          "Temporal bone.r"
+        ]
+      },
+      {
+        "name": "Tenth rib",
+        "vertices": 2177,
+        "triangles": 4074,
+        "materials": 2,
+        "object_users": [
+          "Tenth rib.l",
+          "Tenth rib.r"
+        ]
+      },
+      {
+        "name": "Third metacarpal bone",
+        "vertices": 258,
+        "triangles": 409,
+        "materials": 2,
+        "object_users": [
+          "Third metacarpal bone.l",
+          "Third metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Third metatarsal bone",
+        "vertices": 279,
+        "triangles": 471,
+        "materials": 2,
+        "object_users": [
+          "Third metatarsal bone.l",
+          "Third metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Third rib",
+        "vertices": 2166,
+        "triangles": 4047,
+        "materials": 2,
+        "object_users": [
+          "Third rib.l",
+          "Third rib.r"
+        ]
+      },
+      {
+        "name": "Thyroid cartilage",
+        "vertices": 1303,
+        "triangles": 2602,
+        "materials": 1,
+        "object_users": [
+          "Thyroid cartilage"
+        ]
+      },
+      {
+        "name": "Tibia",
+        "vertices": 575,
+        "triangles": 968,
+        "materials": 2,
+        "object_users": [
+          "Tibia.l",
+          "Tibia.r"
+        ]
+      },
+      {
+        "name": "Trapezium bone",
+        "vertices": 186,
+        "triangles": 290,
+        "materials": 2,
+        "object_users": [
+          "Trapezium bone.l",
+          "Trapezium bone.r"
+        ]
+      },
+      {
+        "name": "Trapezoid bone",
+        "vertices": 136,
+        "triangles": 210,
+        "materials": 2,
+        "object_users": [
+          "Trapezoid bone.l",
+          "Trapezoid bone.r"
+        ]
+      },
+      {
+        "name": "Triquetrum bone",
+        "vertices": 83,
+        "triangles": 101,
+        "materials": 2,
+        "object_users": [
+          "Triquetrum bone.l",
+          "Triquetrum bone.r"
+        ]
+      },
+      {
+        "name": "Twelfth rib",
+        "vertices": 910,
+        "triangles": 1740,
+        "materials": 2,
+        "object_users": [
+          "Twelfth rib.l",
+          "Twelfth rib.r"
+        ]
+      },
+      {
+        "name": "Ulna",
+        "vertices": 326,
+        "triangles": 523,
+        "materials": 2,
+        "object_users": [
+          "Ulna.l",
+          "Ulna.r"
+        ]
+      },
+      {
+        "name": "Upper canine",
+        "vertices": 464,
+        "triangles": 851,
+        "materials": 2,
+        "object_users": [
+          "Upper canine.l",
+          "Upper canine.r"
+        ]
+      },
+      {
+        "name": "Upper first molar tooth",
+        "vertices": 660,
+        "triangles": 1262,
+        "materials": 2,
+        "object_users": [
+          "Upper first molar tooth.l",
+          "Upper first molar tooth.r"
+        ]
+      },
+      {
+        "name": "Upper first premolar",
+        "vertices": 522,
+        "triangles": 976,
+        "materials": 2,
+        "object_users": [
+          "Upper first premolar.l",
+          "Upper first premolar.r"
+        ]
+      },
+      {
+        "name": "Upper lateral incisor",
+        "vertices": 462,
+        "triangles": 843,
+        "materials": 2,
+        "object_users": [
+          "Upper lateral incisor.l",
+          "Upper lateral incisor.r"
+        ]
+      },
+      {
+        "name": "Upper medial incisor",
+        "vertices": 436,
+        "triangles": 793,
+        "materials": 2,
+        "object_users": [
+          "Upper medial incisor.l",
+          "Upper medial incisor.r"
+        ]
+      },
+      {
+        "name": "Upper second molar tooth",
+        "vertices": 561,
+        "triangles": 1069,
+        "materials": 2,
+        "object_users": [
+          "Upper second molar tooth.l",
+          "Upper second molar tooth.r"
+        ]
+      },
+      {
+        "name": "Upper second premolar",
+        "vertices": 486,
+        "triangles": 901,
+        "materials": 2,
+        "object_users": [
+          "Upper second premolar.l",
+          "Upper second premolar.r"
+        ]
+      },
+      {
+        "name": "Vertebra C3",
+        "vertices": 814,
+        "triangles": 1415,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C3"
+        ]
+      },
+      {
+        "name": "Vertebra C4",
+        "vertices": 666,
+        "triangles": 1124,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C4"
+        ]
+      },
+      {
+        "name": "Vertebra C5",
+        "vertices": 782,
+        "triangles": 1354,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C5"
+        ]
+      },
+      {
+        "name": "Vertebra C6",
+        "vertices": 761,
+        "triangles": 1336,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C6"
+        ]
+      },
+      {
+        "name": "Vertebra C7",
+        "vertices": 623,
+        "triangles": 1254,
+        "materials": 1,
+        "object_users": [
+          "Vertebra C7"
+        ]
+      },
+      {
+        "name": "Vertebra L1",
+        "vertices": 1018,
+        "triangles": 1833,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L1"
+        ]
+      },
+      {
+        "name": "Vertebra L2",
+        "vertices": 874,
+        "triangles": 1558,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L2"
+        ]
+      },
+      {
+        "name": "Vertebra L3",
+        "vertices": 1036,
+        "triangles": 1831,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L3"
+        ]
+      },
+      {
+        "name": "Vertebra L4",
+        "vertices": 1229,
+        "triangles": 2206,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L4"
+        ]
+      },
+      {
+        "name": "Vertebra L5",
+        "vertices": 1295,
+        "triangles": 2337,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L5"
+        ]
+      },
+      {
+        "name": "Vertebra T1",
+        "vertices": 720,
+        "triangles": 1128,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T1"
+        ]
+      },
+      {
+        "name": "Vertebra T10",
+        "vertices": 999,
+        "triangles": 1773,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T10"
+        ]
+      },
+      {
+        "name": "Vertebra T11",
+        "vertices": 652,
+        "triangles": 1042,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T11"
+        ]
+      },
+      {
+        "name": "Vertebra T12",
+        "vertices": 875,
+        "triangles": 1499,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T12"
+        ]
+      },
+      {
+        "name": "Vertebra T2",
+        "vertices": 777,
+        "triangles": 1242,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T2"
+        ]
+      },
+      {
+        "name": "Vertebra T3",
+        "vertices": 805,
+        "triangles": 1359,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T3"
+        ]
+      },
+      {
+        "name": "Vertebra T4",
+        "vertices": 781,
+        "triangles": 1284,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T4"
+        ]
+      },
+      {
+        "name": "Vertebra T5",
+        "vertices": 765,
+        "triangles": 1248,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T5"
+        ]
+      },
+      {
+        "name": "Vertebra T6",
+        "vertices": 642,
+        "triangles": 1032,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T6"
+        ]
+      },
+      {
+        "name": "Vertebra T7",
+        "vertices": 952,
+        "triangles": 1620,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T7"
+        ]
+      },
+      {
+        "name": "Vertebra T8",
+        "vertices": 664,
+        "triangles": 1004,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T8"
+        ]
+      },
+      {
+        "name": "Vertebra T9",
+        "vertices": 1029,
+        "triangles": 1726,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T9"
+        ]
+      },
+      {
+        "name": "Vomer",
+        "vertices": 298,
+        "triangles": 592,
+        "materials": 1,
+        "object_users": [
+          "Vomer"
+        ]
+      },
+      {
+        "name": "Xiphoid process",
+        "vertices": 322,
+        "triangles": 530,
+        "materials": 2,
+        "object_users": [
+          "Xiphoid process"
+        ]
+      },
+      {
+        "name": "Zygomatic bone",
+        "vertices": 478,
+        "triangles": 769,
+        "materials": 5,
+        "object_users": [
+          "Zygomatic bone.l",
+          "Zygomatic bone.r"
+        ]
+      }
+    ]
+  },
+  "after_reimport": {
+    "mesh_objects": 277,
+    "unique_meshes": 160,
+    "unique_triangles": 217288,
+    "instantiated_triangles": 346879,
+    "instantiated_vertices": 198361,
+    "estimated_draw_calls": 575,
+    "bounds_min": [
+      -0.334646,
+      -0.137308,
+      0.009203
+    ],
+    "bounds_max": [
+      0.334646,
+      0.112814,
+      1.705454
+    ],
+    "bounds_size": [
+      0.669293,
+      0.250122,
+      1.696251
+    ],
+    "object_names": [
+      "Anterior cells of ethmoid bone.l",
+      "Anterior cells of ethmoid bone.r",
+      "Arytenoid cartilage.l",
+      "Arytenoid cartilage.r",
+      "Atlas (C1)",
+      "Axis (C2)",
+      "Body of sternum",
+      "Calcaneus.l",
+      "Calcaneus.r",
+      "Capitate bone.l",
+      "Capitate bone.r",
+      "Clavicle.l",
+      "Clavicle.r",
+      "Coccyx",
+      "Corniculate cartilage.l",
+      "Corniculate cartilage.r",
+      "Costal cartilage of eighth rib.l",
+      "Costal cartilage of eighth rib.r",
+      "Costal cartilage of fifth rib.l",
+      "Costal cartilage of fifth rib.r",
+      "Costal cartilage of first rib.l",
+      "Costal cartilage of first rib.r",
+      "Costal cartilage of fourth rib.l",
+      "Costal cartilage of fourth rib.r",
+      "Costal cartilage of ninth rib.l",
+      "Costal cartilage of ninth rib.r",
+      "Costal cartilage of second rib.l",
+      "Costal cartilage of second rib.r",
+      "Costal cartilage of seventh rib.l",
+      "Costal cartilage of seventh rib.r",
+      "Costal cartilage of sixth rib.l",
+      "Costal cartilage of sixth rib.r",
+      "Costal cartilage of tenth rib.l",
+      "Costal cartilage of tenth rib.r",
+      "Costal cartilage of third rib.l",
+      "Costal cartilage of third rib.r",
+      "Cricoid cartilage",
+      "Cuboid bone.l",
+      "Cuboid bone.r",
+      "Distal phalanx of fifth finger of foot.l",
+      "Distal phalanx of fifth finger of foot.r",
+      "Distal phalanx of fifth finger of hand.l",
+      "Distal phalanx of fifth finger of hand.r",
+      "Distal phalanx of first finger of foot.l",
+      "Distal phalanx of first finger of foot.r",
+      "Distal phalanx of first finger of hand.l",
+      "Distal phalanx of first finger of hand.r",
+      "Distal phalanx of fourth finger of foot.l",
+      "Distal phalanx of fourth finger of foot.r",
+      "Distal phalanx of fourth finger of hand.l",
+      "Distal phalanx of fourth finger of hand.r",
+      "Distal phalanx of second finger of foot.l",
+      "Distal phalanx of second finger of foot.r",
+      "Distal phalanx of second finger of hand.l",
+      "Distal phalanx of second finger of hand.r",
+      "Distal phalanx of third finger of foot.l",
+      "Distal phalanx of third finger of foot.r",
+      "Distal phalanx of third finger of hand.l",
+      "Distal phalanx of third finger of hand.r",
+      "Eighth rib.l",
+      "Eighth rib.r",
+      "Eleventh rib.l",
+      "Eleventh rib.r",
+      "Ethmoid bone",
+      "Femur.l",
+      "Femur.r",
+      "Fibula.l",
+      "Fibula.r",
+      "Fifth metacarpal bone.l",
+      "Fifth metacarpal bone.r",
+      "Fifth metatarsal bone.l",
+      "Fifth metatarsal bone.r",
+      "Fifth rib.l",
+      "Fifth rib.r",
+      "First metacarpal bone.l",
+      "First metacarpal bone.r",
+      "First metatarsal bone.l",
+      "First metatarsal bone.r",
+      "First rib.l",
+      "First rib.r",
+      "Fourth metacarpal bone.l",
+      "Fourth metacarpal bone.r",
+      "Fourth metatarsal bone.l",
+      "Fourth metatarsal bone.r",
+      "Fourth rib.l",
+      "Fourth rib.r",
+      "Frontal bone",
+      "Hamate bone.l",
+      "Hamate bone.r",
+      "Hip bone.l",
+      "Hip bone.r",
+      "Humerus.l",
+      "Humerus.r",
+      "Hyoid bone",
+      "Incus.l",
+      "Incus.r",
+      "Inferior nasal concha bone.l",
+      "Inferior nasal concha bone.r",
+      "Intermediate cuneiform bone.l",
+      "Intermediate cuneiform bone.r",
+      "Lacrimal bone.l",
+      "Lacrimal bone.r",
+      "Lateral cuneiform bone.l",
+      "Lateral cuneiform bone.r",
+      "Lateral process of nasal septal cartilage.l",
+      "Lateral process of nasal septal cartilage.r",
+      "Lower canine.l",
+      "Lower canine.r",
+      "Lower first molar tooth.l",
+      "Lower first molar tooth.r",
+      "Lower first premolar.l",
+      "Lower first premolar.r",
+      "Lower lateral incisor.l",
+      "Lower lateral incisor.r",
+      "Lower medial incisor.l",
+      "Lower medial incisor.r",
+      "Lower second molar tooth.l",
+      "Lower second molar tooth.r",
+      "Lower second premolar.l",
+      "Lower second premolar.r",
+      "Lunate bone.l",
+      "Lunate bone.r",
+      "Major alar cartilage.l",
+      "Major alar cartilage.r",
+      "Malleus.l",
+      "Malleus.r",
+      "Mandible",
+      "Manubrium of sternum",
+      "Maxilla.l",
+      "Maxilla.r",
+      "Medial cuneiform bone.l",
+      "Medial cuneiform bone.r",
+      "Middle cells of ethmoid bone.l",
+      "Middle cells of ethmoid bone.r",
+      "Middle phalanx of fifth finger of foot.l",
+      "Middle phalanx of fifth finger of foot.r",
+      "Middle phalanx of fifth finger of hand.l",
+      "Middle phalanx of fifth finger of hand.r",
+      "Middle phalanx of fourth finger of foot.l",
+      "Middle phalanx of fourth finger of foot.r",
+      "Middle phalanx of fourth finger of hand.l",
+      "Middle phalanx of fourth finger of hand.r",
+      "Middle phalanx of second finger of foot.l",
+      "Middle phalanx of second finger of foot.r",
+      "Middle phalanx of second finger of hand.l",
+      "Middle phalanx of second finger of hand.r",
+      "Middle phalanx of third finger of foot.l",
+      "Middle phalanx of third finger of foot.r",
+      "Middle phalanx of third finger of hand.l",
+      "Middle phalanx of third finger of hand.r",
+      "Nasal bone.l",
+      "Nasal bone.r",
+      "Nasal septal cartilage",
+      "Navicular bone.l",
+      "Navicular bone.r",
+      "Ninth rib.l",
+      "Ninth rib.r",
+      "Occipital bone",
+      "Palatine bone.l",
+      "Palatine bone.r",
+      "Parietal bone.l",
+      "Parietal bone.r",
+      "Patella.l",
+      "Patella.r",
+      "Pisiform bone.l",
+      "Pisiform bone.r",
+      "Posterior cells of ethmoid bone.l",
+      "Posterior cells of ethmoid bone.r",
+      "Proximal phalanx of fifth finger of foot.l",
+      "Proximal phalanx of fifth finger of foot.r",
+      "Proximal phalanx of fifth finger of hand.l",
+      "Proximal phalanx of fifth finger of hand.r",
+      "Proximal phalanx of first finger of foot.l",
+      "Proximal phalanx of first finger of foot.r",
+      "Proximal phalanx of first finger of hand.l",
+      "Proximal phalanx of first finger of hand.r",
+      "Proximal phalanx of fourth finger of foot.l",
+      "Proximal phalanx of fourth finger of foot.r",
+      "Proximal phalanx of fourth finger of hand.l",
+      "Proximal phalanx of fourth finger of hand.r",
+      "Proximal phalanx of second finger of foot.l",
+      "Proximal phalanx of second finger of foot.r",
+      "Proximal phalanx of second finger of hand.l",
+      "Proximal phalanx of second finger of hand.r",
+      "Proximal phalanx of third finger of foot.l",
+      "Proximal phalanx of third finger of foot.r",
+      "Proximal phalanx of third finger of hand.l",
+      "Proximal phalanx of third finger of hand.r",
+      "Radius.l",
+      "Radius.r",
+      "Sacrum",
+      "Scaphoid bone.l",
+      "Scaphoid bone.r",
+      "Scapula.l",
+      "Scapula.r",
+      "Second metacarpal bone.l",
+      "Second metacarpal bone.r",
+      "Second metatarsal bone.l",
+      "Second metatarsal bone.r",
+      "Second rib.l",
+      "Second rib.r",
+      "Sesamoid bones of foot.l",
+      "Sesamoid bones of foot.r",
+      "Seventh rib.l",
+      "Seventh rib.r",
+      "Sinus of frontal bone",
+      "Sinus of sphenoid bone",
+      "Sixth rib.l",
+      "Sixth rib.r",
+      "Sphenoid bone",
+      "Stapes.l",
+      "Stapes.r",
+      "Talus.l",
+      "Talus.r",
+      "Temporal bone.l",
+      "Temporal bone.r",
+      "Tenth rib.l",
+      "Tenth rib.r",
+      "Third metacarpal bone.l",
+      "Third metacarpal bone.r",
+      "Third metatarsal bone.l",
+      "Third metatarsal bone.r",
+      "Third rib.l",
+      "Third rib.r",
+      "Thyroid cartilage",
+      "Tibia.l",
+      "Tibia.r",
+      "Trapezium bone.l",
+      "Trapezium bone.r",
+      "Trapezoid bone.l",
+      "Trapezoid bone.r",
+      "Triquetrum bone.l",
+      "Triquetrum bone.r",
+      "Twelfth rib.l",
+      "Twelfth rib.r",
+      "Ulna.l",
+      "Ulna.r",
+      "Upper canine.l",
+      "Upper canine.r",
+      "Upper first molar tooth.l",
+      "Upper first molar tooth.r",
+      "Upper first premolar.l",
+      "Upper first premolar.r",
+      "Upper lateral incisor.l",
+      "Upper lateral incisor.r",
+      "Upper medial incisor.l",
+      "Upper medial incisor.r",
+      "Upper second molar tooth.l",
+      "Upper second molar tooth.r",
+      "Upper second premolar.l",
+      "Upper second premolar.r",
+      "Vertebra C3",
+      "Vertebra C4",
+      "Vertebra C5",
+      "Vertebra C6",
+      "Vertebra C7",
+      "Vertebra L1",
+      "Vertebra L2",
+      "Vertebra L3",
+      "Vertebra L4",
+      "Vertebra L5",
+      "Vertebra T1",
+      "Vertebra T10",
+      "Vertebra T11",
+      "Vertebra T12",
+      "Vertebra T2",
+      "Vertebra T3",
+      "Vertebra T4",
+      "Vertebra T5",
+      "Vertebra T6",
+      "Vertebra T7",
+      "Vertebra T8",
+      "Vertebra T9",
+      "Vomer",
+      "Xiphoid process",
+      "Zygomatic bone.l",
+      "Zygomatic bone.r"
+    ],
+    "triangle_soup_targets": {},
+    "meshes": [
+      {
+        "name": "Anterior cells of ethmoid bone",
+        "vertices": 64,
+        "triangles": 78,
+        "materials": 0,
+        "object_users": [
+          "Anterior cells of ethmoid bone.l",
+          "Anterior cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Arytenoid cartilage",
+        "vertices": 194,
+        "triangles": 370,
+        "materials": 1,
+        "object_users": [
+          "Arytenoid cartilage.r",
+          "Arytenoid cartilage.l"
+        ]
+      },
+      {
+        "name": "Atlas (C1)",
+        "vertices": 684,
+        "triangles": 1272,
+        "materials": 2,
+        "object_users": [
+          "Atlas (C1)"
+        ]
+      },
+      {
+        "name": "Axis (C2)",
+        "vertices": 769,
+        "triangles": 1352,
+        "materials": 2,
+        "object_users": [
+          "Axis (C2)"
+        ]
+      },
+      {
+        "name": "Body of sternum",
+        "vertices": 1688,
+        "triangles": 2590,
+        "materials": 2,
+        "object_users": [
+          "Body of sternum"
+        ]
+      },
+      {
+        "name": "Calcaneus.r",
+        "vertices": 497,
+        "triangles": 838,
+        "materials": 2,
+        "object_users": [
+          "Calcaneus.l",
+          "Calcaneus.r"
+        ]
+      },
+      {
+        "name": "Capitate bone",
+        "vertices": 171,
+        "triangles": 272,
+        "materials": 2,
+        "object_users": [
+          "Capitate bone.l",
+          "Capitate bone.r"
+        ]
+      },
+      {
+        "name": "Clavicle",
+        "vertices": 493,
+        "triangles": 898,
+        "materials": 2,
+        "object_users": [
+          "Clavicle.l",
+          "Clavicle.r"
+        ]
+      },
+      {
+        "name": "Coccyx",
+        "vertices": 340,
+        "triangles": 676,
+        "materials": 1,
+        "object_users": [
+          "Coccyx"
+        ]
+      },
+      {
+        "name": "Corniculate cartilage.r",
+        "vertices": 41,
+        "triangles": 78,
+        "materials": 1,
+        "object_users": [
+          "Corniculate cartilage.r",
+          "Corniculate cartilage.l"
+        ]
+      },
+      {
+        "name": "Costal cartilage of eighth rib",
+        "vertices": 217,
+        "triangles": 377,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of eighth rib.l",
+          "Costal cartilage of eighth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of fifth rib",
+        "vertices": 315,
+        "triangles": 626,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of fifth rib.l",
+          "Costal cartilage of fifth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of first rib",
+        "vertices": 135,
+        "triangles": 266,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of first rib.l",
+          "Costal cartilage of first rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of fourth rib",
+        "vertices": 224,
+        "triangles": 432,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of fourth rib.l",
+          "Costal cartilage of fourth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of ninth rib",
+        "vertices": 153,
+        "triangles": 282,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of ninth rib.l",
+          "Costal cartilage of ninth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of second rib",
+        "vertices": 166,
+        "triangles": 328,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of second rib.l",
+          "Costal cartilage of second rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of seventh rib",
+        "vertices": 667,
+        "triangles": 1330,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of seventh rib.l",
+          "Costal cartilage of seventh rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of sixth rib",
+        "vertices": 394,
+        "triangles": 784,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of sixth rib.l",
+          "Costal cartilage of sixth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of tenth rib",
+        "vertices": 121,
+        "triangles": 218,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of tenth rib.l",
+          "Costal cartilage of tenth rib.r"
+        ]
+      },
+      {
+        "name": "Costal cartilage of third rib",
+        "vertices": 176,
+        "triangles": 348,
+        "materials": 1,
+        "object_users": [
+          "Costal cartilage of third rib.l",
+          "Costal cartilage of third rib.r"
+        ]
+      },
+      {
+        "name": "Cricoid cartilage",
+        "vertices": 546,
+        "triangles": 1091,
+        "materials": 1,
+        "object_users": [
+          "Cricoid cartilage"
+        ]
+      },
+      {
+        "name": "Cuboid bone",
+        "vertices": 353,
+        "triangles": 577,
+        "materials": 2,
+        "object_users": [
+          "Cuboid bone.l",
+          "Cuboid bone.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fifth finger of foot",
+        "vertices": 79,
+        "triangles": 136,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fifth finger of foot.l",
+          "Distal phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fifth finger of hand.r",
+        "vertices": 67,
+        "triangles": 110,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fifth finger of hand.l",
+          "Distal phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of first finger of foot",
+        "vertices": 158,
+        "triangles": 269,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of first finger of foot.l",
+          "Distal phalanx of first finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of first finger of hand",
+        "vertices": 80,
+        "triangles": 128,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of first finger of hand.l",
+          "Distal phalanx of first finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fourth finger of foot",
+        "vertices": 94,
+        "triangles": 160,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fourth finger of foot.l",
+          "Distal phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of fourth finger of hand",
+        "vertices": 50,
+        "triangles": 76,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of fourth finger of hand.l",
+          "Distal phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of second finger of foot",
+        "vertices": 83,
+        "triangles": 136,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of second finger of foot.l",
+          "Distal phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of second finger of hand",
+        "vertices": 90,
+        "triangles": 145,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of second finger of hand.l",
+          "Distal phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of third finger of foot",
+        "vertices": 109,
+        "triangles": 183,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of third finger of foot.l",
+          "Distal phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Distal phalanx of third finger of hand",
+        "vertices": 70,
+        "triangles": 110,
+        "materials": 2,
+        "object_users": [
+          "Distal phalanx of third finger of hand.l",
+          "Distal phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Eighth rib",
+        "vertices": 2538,
+        "triangles": 4796,
+        "materials": 2,
+        "object_users": [
+          "Eighth rib.l",
+          "Eighth rib.r"
+        ]
+      },
+      {
+        "name": "Eleventh rib",
+        "vertices": 1503,
+        "triangles": 2919,
+        "materials": 2,
+        "object_users": [
+          "Eleventh rib.l",
+          "Eleventh rib.r"
+        ]
+      },
+      {
+        "name": "Ethmoid bone",
+        "vertices": 1400,
+        "triangles": 2444,
+        "materials": 1,
+        "object_users": [
+          "Ethmoid bone"
+        ]
+      },
+      {
+        "name": "Femur",
+        "vertices": 1221,
+        "triangles": 2200,
+        "materials": 2,
+        "object_users": [
+          "Femur.l",
+          "Femur.r"
+        ]
+      },
+      {
+        "name": "Fibula",
+        "vertices": 399,
+        "triangles": 732,
+        "materials": 2,
+        "object_users": [
+          "Fibula.l",
+          "Fibula.r"
+        ]
+      },
+      {
+        "name": "Fifth metacarpal bone",
+        "vertices": 188,
+        "triangles": 296,
+        "materials": 2,
+        "object_users": [
+          "Fifth metacarpal bone.l",
+          "Fifth metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Fifth metatarsal bone",
+        "vertices": 311,
+        "triangles": 518,
+        "materials": 2,
+        "object_users": [
+          "Fifth metatarsal bone.l",
+          "Fifth metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Fifth rib",
+        "vertices": 2885,
+        "triangles": 5438,
+        "materials": 2,
+        "object_users": [
+          "Fifth rib.l",
+          "Fifth rib.r"
+        ]
+      },
+      {
+        "name": "First metacarpal bone",
+        "vertices": 251,
+        "triangles": 395,
+        "materials": 2,
+        "object_users": [
+          "First metacarpal bone.l",
+          "First metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "First metatarsal bone",
+        "vertices": 383,
+        "triangles": 630,
+        "materials": 2,
+        "object_users": [
+          "First metatarsal bone.l",
+          "First metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "First rib",
+        "vertices": 1021,
+        "triangles": 1861,
+        "materials": 2,
+        "object_users": [
+          "First rib.l",
+          "First rib.r"
+        ]
+      },
+      {
+        "name": "Fourth metacarpal bone",
+        "vertices": 227,
+        "triangles": 371,
+        "materials": 2,
+        "object_users": [
+          "Fourth metacarpal bone.l",
+          "Fourth metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Fourth metatarsal bone",
+        "vertices": 279,
+        "triangles": 482,
+        "materials": 2,
+        "object_users": [
+          "Fourth metatarsal bone.l",
+          "Fourth metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Fourth rib",
+        "vertices": 2654,
+        "triangles": 5014,
+        "materials": 2,
+        "object_users": [
+          "Fourth rib.l",
+          "Fourth rib.r"
+        ]
+      },
+      {
+        "name": "Frontal bone",
+        "vertices": 3467,
+        "triangles": 4510,
+        "materials": 7,
+        "object_users": [
+          "Frontal bone"
+        ]
+      },
+      {
+        "name": "Hamate bone",
+        "vertices": 204,
+        "triangles": 309,
+        "materials": 2,
+        "object_users": [
+          "Hamate bone.l",
+          "Hamate bone.r"
+        ]
+      },
+      {
+        "name": "Hip bone",
+        "vertices": 1243,
+        "triangles": 2197,
+        "materials": 4,
+        "object_users": [
+          "Hip bone.l",
+          "Hip bone.r"
+        ]
+      },
+      {
+        "name": "Humerus",
+        "vertices": 1379,
+        "triangles": 2481,
+        "materials": 2,
+        "object_users": [
+          "Humerus.l",
+          "Humerus.r"
+        ]
+      },
+      {
+        "name": "Hyoid bone",
+        "vertices": 385,
+        "triangles": 766,
+        "materials": 1,
+        "object_users": [
+          "Hyoid bone"
+        ]
+      },
+      {
+        "name": "Incus",
+        "vertices": 852,
+        "triangles": 1467,
+        "materials": 2,
+        "object_users": [
+          "Incus.l",
+          "Incus.r"
+        ]
+      },
+      {
+        "name": "Inferior nasal concha bone",
+        "vertices": 138,
+        "triangles": 276,
+        "materials": 1,
+        "object_users": [
+          "Inferior nasal concha bone.l",
+          "Inferior nasal concha bone.r"
+        ]
+      },
+      {
+        "name": "Intermediate cuneiform bone.r",
+        "vertices": 189,
+        "triangles": 257,
+        "materials": 2,
+        "object_users": [
+          "Intermediate cuneiform bone.l",
+          "Intermediate cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Lacrimal bone",
+        "vertices": 256,
+        "triangles": 340,
+        "materials": 5,
+        "object_users": [
+          "Lacrimal bone.l",
+          "Lacrimal bone.r"
+        ]
+      },
+      {
+        "name": "Lateral cuneiform bone.r",
+        "vertices": 255,
+        "triangles": 370,
+        "materials": 2,
+        "object_users": [
+          "Lateral cuneiform bone.l",
+          "Lateral cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Lateral process of nasal septal cartilage",
+        "vertices": 103,
+        "triangles": 201,
+        "materials": 1,
+        "object_users": [
+          "Lateral process of nasal septal cartilage.l",
+          "Lateral process of nasal septal cartilage.r"
+        ]
+      },
+      {
+        "name": "Lower canine",
+        "vertices": 413,
+        "triangles": 739,
+        "materials": 2,
+        "object_users": [
+          "Lower canine.l",
+          "Lower canine.r"
+        ]
+      },
+      {
+        "name": "Lower first molar tooth",
+        "vertices": 1354,
+        "triangles": 2614,
+        "materials": 3,
+        "object_users": [
+          "Lower first molar tooth.l",
+          "Lower first molar tooth.r"
+        ]
+      },
+      {
+        "name": "Lower first premolar",
+        "vertices": 386,
+        "triangles": 708,
+        "materials": 2,
+        "object_users": [
+          "Lower first premolar.l",
+          "Lower first premolar.r"
+        ]
+      },
+      {
+        "name": "Lower lateral incisor",
+        "vertices": 338,
+        "triangles": 602,
+        "materials": 2,
+        "object_users": [
+          "Lower lateral incisor.l",
+          "Lower lateral incisor.r"
+        ]
+      },
+      {
+        "name": "Lower medial incisor",
+        "vertices": 320,
+        "triangles": 570,
+        "materials": 2,
+        "object_users": [
+          "Lower medial incisor.r",
+          "Lower medial incisor.l"
+        ]
+      },
+      {
+        "name": "Lower second molar tooth",
+        "vertices": 524,
+        "triangles": 972,
+        "materials": 2,
+        "object_users": [
+          "Lower second molar tooth.l",
+          "Lower second molar tooth.r"
+        ]
+      },
+      {
+        "name": "Lower second premolar",
+        "vertices": 378,
+        "triangles": 684,
+        "materials": 2,
+        "object_users": [
+          "Lower second premolar.l",
+          "Lower second premolar.r"
+        ]
+      },
+      {
+        "name": "Lunate bone",
+        "vertices": 152,
+        "triangles": 200,
+        "materials": 2,
+        "object_users": [
+          "Lunate bone.l",
+          "Lunate bone.r"
+        ]
+      },
+      {
+        "name": "Major alar cartilage",
+        "vertices": 101,
+        "triangles": 198,
+        "materials": 1,
+        "object_users": [
+          "Major alar cartilage.l",
+          "Major alar cartilage.r"
+        ]
+      },
+      {
+        "name": "Malleus",
+        "vertices": 1293,
+        "triangles": 2308,
+        "materials": 2,
+        "object_users": [
+          "Malleus.l",
+          "Malleus.r"
+        ]
+      },
+      {
+        "name": "Mandible",
+        "vertices": 6497,
+        "triangles": 10922,
+        "materials": 3,
+        "object_users": [
+          "Mandible"
+        ]
+      },
+      {
+        "name": "Manubrium of sternum",
+        "vertices": 856,
+        "triangles": 1542,
+        "materials": 2,
+        "object_users": [
+          "Manubrium of sternum"
+        ]
+      },
+      {
+        "name": "Maxilla",
+        "vertices": 1761,
+        "triangles": 2782,
+        "materials": 8,
+        "object_users": [
+          "Maxilla.l",
+          "Maxilla.r"
+        ]
+      },
+      {
+        "name": "Medial cuneiform bone.r",
+        "vertices": 350,
+        "triangles": 574,
+        "materials": 2,
+        "object_users": [
+          "Medial cuneiform bone.l",
+          "Medial cuneiform bone.r"
+        ]
+      },
+      {
+        "name": "Middle cells of ethmoid bone",
+        "vertices": 80,
+        "triangles": 92,
+        "materials": 0,
+        "object_users": [
+          "Middle cells of ethmoid bone.l",
+          "Middle cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fifth finger of foot",
+        "vertices": 91,
+        "triangles": 124,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fifth finger of foot.l",
+          "Middle phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fifth finger of hand",
+        "vertices": 119,
+        "triangles": 168,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fifth finger of hand.l",
+          "Middle phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fourth finger of foot",
+        "vertices": 167,
+        "triangles": 258,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fourth finger of foot.l",
+          "Middle phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of fourth finger of hand",
+        "vertices": 170,
+        "triangles": 258,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of fourth finger of hand.l",
+          "Middle phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of second finger of foot",
+        "vertices": 145,
+        "triangles": 220,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of second finger of foot.l",
+          "Middle phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of second finger of hand",
+        "vertices": 120,
+        "triangles": 182,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of second finger of hand.l",
+          "Middle phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of third finger of foot",
+        "vertices": 147,
+        "triangles": 232,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of third finger of foot.l",
+          "Middle phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Middle phalanx of third finger of hand",
+        "vertices": 135,
+        "triangles": 208,
+        "materials": 2,
+        "object_users": [
+          "Middle phalanx of third finger of hand.l",
+          "Middle phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Nasal bone",
+        "vertices": 144,
+        "triangles": 169,
+        "materials": 4,
+        "object_users": [
+          "Nasal bone.l",
+          "Nasal bone.r"
+        ]
+      },
+      {
+        "name": "Nasal septal cartilage",
+        "vertices": 106,
+        "triangles": 208,
+        "materials": 1,
+        "object_users": [
+          "Nasal septal cartilage"
+        ]
+      },
+      {
+        "name": "Navicular bone",
+        "vertices": 271,
+        "triangles": 424,
+        "materials": 2,
+        "object_users": [
+          "Navicular bone.l",
+          "Navicular bone.r"
+        ]
+      },
+      {
+        "name": "Ninth rib",
+        "vertices": 2392,
+        "triangles": 4510,
+        "materials": 2,
+        "object_users": [
+          "Ninth rib.l",
+          "Ninth rib.r"
+        ]
+      },
+      {
+        "name": "Occipital bone",
+        "vertices": 3235,
+        "triangles": 4367,
+        "materials": 5,
+        "object_users": [
+          "Occipital bone"
+        ]
+      },
+      {
+        "name": "Palatine bone",
+        "vertices": 531,
+        "triangles": 845,
+        "materials": 5,
+        "object_users": [
+          "Palatine bone.l",
+          "Palatine bone.r"
+        ]
+      },
+      {
+        "name": "Parietal bone.l",
+        "vertices": 3114,
+        "triangles": 3993,
+        "materials": 5,
+        "object_users": [
+          "Parietal bone.l"
+        ]
+      },
+      {
+        "name": "Parietal bone.r",
+        "vertices": 2989,
+        "triangles": 3932,
+        "materials": 6,
+        "object_users": [
+          "Parietal bone.r"
+        ]
+      },
+      {
+        "name": "Patella",
+        "vertices": 105,
+        "triangles": 159,
+        "materials": 2,
+        "object_users": [
+          "Patella.l",
+          "Patella.r"
+        ]
+      },
+      {
+        "name": "Pisiform bone",
+        "vertices": 92,
+        "triangles": 160,
+        "materials": 2,
+        "object_users": [
+          "Pisiform bone.l",
+          "Pisiform bone.r"
+        ]
+      },
+      {
+        "name": "Posterior cells of ethmoid bone",
+        "vertices": 106,
+        "triangles": 125,
+        "materials": 0,
+        "object_users": [
+          "Posterior cells of ethmoid bone.l",
+          "Posterior cells of ethmoid bone.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fifth finger of foot",
+        "vertices": 182,
+        "triangles": 298,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fifth finger of foot.l",
+          "Proximal phalanx of fifth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fifth finger of hand",
+        "vertices": 200,
+        "triangles": 324,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fifth finger of hand.l",
+          "Proximal phalanx of fifth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of first finger of foot",
+        "vertices": 200,
+        "triangles": 307,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of first finger of foot.l",
+          "Proximal phalanx of first finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of first finger of hand",
+        "vertices": 133,
+        "triangles": 190,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of first finger of hand.l",
+          "Proximal phalanx of first finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fourth finger of foot",
+        "vertices": 171,
+        "triangles": 265,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fourth finger of foot.l",
+          "Proximal phalanx of fourth finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of fourth finger of hand",
+        "vertices": 143,
+        "triangles": 212,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of fourth finger of hand.l",
+          "Proximal phalanx of fourth finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of second finger of foot",
+        "vertices": 159,
+        "triangles": 246,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of second finger of foot.l",
+          "Proximal phalanx of second finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of second finger of hand",
+        "vertices": 157,
+        "triangles": 240,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of second finger of hand.l",
+          "Proximal phalanx of second finger of hand.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of third finger of foot",
+        "vertices": 171,
+        "triangles": 266,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of third finger of foot.l",
+          "Proximal phalanx of third finger of foot.r"
+        ]
+      },
+      {
+        "name": "Proximal phalanx of third finger of hand",
+        "vertices": 162,
+        "triangles": 255,
+        "materials": 2,
+        "object_users": [
+          "Proximal phalanx of third finger of hand.l",
+          "Proximal phalanx of third finger of hand.r"
+        ]
+      },
+      {
+        "name": "Radius",
+        "vertices": 272,
+        "triangles": 453,
+        "materials": 2,
+        "object_users": [
+          "Radius.l",
+          "Radius.r"
+        ]
+      },
+      {
+        "name": "Sacrum",
+        "vertices": 5090,
+        "triangles": 6771,
+        "materials": 2,
+        "object_users": [
+          "Sacrum"
+        ]
+      },
+      {
+        "name": "Scaphoid bone",
+        "vertices": 174,
+        "triangles": 225,
+        "materials": 2,
+        "object_users": [
+          "Scaphoid bone.r",
+          "Scaphoid bone.l"
+        ]
+      },
+      {
+        "name": "Scapula",
+        "vertices": 7420,
+        "triangles": 14688,
+        "materials": 2,
+        "object_users": [
+          "Scapula.l",
+          "Scapula.r"
+        ]
+      },
+      {
+        "name": "Second metacarpal bone",
+        "vertices": 277,
+        "triangles": 443,
+        "materials": 2,
+        "object_users": [
+          "Second metacarpal bone.l",
+          "Second metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Second metatarsal bone",
+        "vertices": 256,
+        "triangles": 399,
+        "materials": 2,
+        "object_users": [
+          "Second metatarsal bone.r",
+          "Second metatarsal bone.l"
+        ]
+      },
+      {
+        "name": "Second rib",
+        "vertices": 1672,
+        "triangles": 3110,
+        "materials": 2,
+        "object_users": [
+          "Second rib.r",
+          "Second rib.l"
+        ]
+      },
+      {
+        "name": "Sesamoid bones of foot",
+        "vertices": 114,
+        "triangles": 167,
+        "materials": 2,
+        "object_users": [
+          "Sesamoid bones of foot.r",
+          "Sesamoid bones of foot.l"
+        ]
+      },
+      {
+        "name": "Seventh rib",
+        "vertices": 3004,
+        "triangles": 5669,
+        "materials": 2,
+        "object_users": [
+          "Seventh rib.l",
+          "Seventh rib.r"
+        ]
+      },
+      {
+        "name": "Sinus of frontal bone",
+        "vertices": 690,
+        "triangles": 872,
+        "materials": 1,
+        "object_users": [
+          "Sinus of frontal bone"
+        ]
+      },
+      {
+        "name": "Sinus of sphenoid bone",
+        "vertices": 177,
+        "triangles": 222,
+        "materials": 1,
+        "object_users": [
+          "Sinus of sphenoid bone"
+        ]
+      },
+      {
+        "name": "Sixth rib",
+        "vertices": 3110,
+        "triangles": 5875,
+        "materials": 2,
+        "object_users": [
+          "Sixth rib.l",
+          "Sixth rib.r"
+        ]
+      },
+      {
+        "name": "Sphenoid bone.l",
+        "vertices": 2908,
+        "triangles": 4238,
+        "materials": 7,
+        "object_users": [
+          "Sphenoid bone"
+        ]
+      },
+      {
+        "name": "Stapes",
+        "vertices": 1504,
+        "triangles": 2517,
+        "materials": 2,
+        "object_users": [
+          "Stapes.l",
+          "Stapes.r"
+        ]
+      },
+      {
+        "name": "Talus.r",
+        "vertices": 491,
+        "triangles": 782,
+        "materials": 2,
+        "object_users": [
+          "Talus.l",
+          "Talus.r"
+        ]
+      },
+      {
+        "name": "Temporal bone",
+        "vertices": 4316,
+        "triangles": 8173,
+        "materials": 5,
+        "object_users": [
+          "Temporal bone.l",
+          "Temporal bone.r"
+        ]
+      },
+      {
+        "name": "Tenth rib",
+        "vertices": 2177,
+        "triangles": 4074,
+        "materials": 2,
+        "object_users": [
+          "Tenth rib.l",
+          "Tenth rib.r"
+        ]
+      },
+      {
+        "name": "Third metacarpal bone",
+        "vertices": 258,
+        "triangles": 409,
+        "materials": 2,
+        "object_users": [
+          "Third metacarpal bone.l",
+          "Third metacarpal bone.r"
+        ]
+      },
+      {
+        "name": "Third metatarsal bone",
+        "vertices": 279,
+        "triangles": 471,
+        "materials": 2,
+        "object_users": [
+          "Third metatarsal bone.l",
+          "Third metatarsal bone.r"
+        ]
+      },
+      {
+        "name": "Third rib",
+        "vertices": 2166,
+        "triangles": 4047,
+        "materials": 2,
+        "object_users": [
+          "Third rib.l",
+          "Third rib.r"
+        ]
+      },
+      {
+        "name": "Thyroid cartilage",
+        "vertices": 1303,
+        "triangles": 2602,
+        "materials": 1,
+        "object_users": [
+          "Thyroid cartilage"
+        ]
+      },
+      {
+        "name": "Tibia",
+        "vertices": 575,
+        "triangles": 968,
+        "materials": 2,
+        "object_users": [
+          "Tibia.l",
+          "Tibia.r"
+        ]
+      },
+      {
+        "name": "Trapezium bone",
+        "vertices": 186,
+        "triangles": 290,
+        "materials": 2,
+        "object_users": [
+          "Trapezium bone.l",
+          "Trapezium bone.r"
+        ]
+      },
+      {
+        "name": "Trapezoid bone",
+        "vertices": 136,
+        "triangles": 210,
+        "materials": 2,
+        "object_users": [
+          "Trapezoid bone.l",
+          "Trapezoid bone.r"
+        ]
+      },
+      {
+        "name": "Triquetrum bone",
+        "vertices": 83,
+        "triangles": 101,
+        "materials": 2,
+        "object_users": [
+          "Triquetrum bone.l",
+          "Triquetrum bone.r"
+        ]
+      },
+      {
+        "name": "Twelfth rib",
+        "vertices": 910,
+        "triangles": 1740,
+        "materials": 2,
+        "object_users": [
+          "Twelfth rib.l",
+          "Twelfth rib.r"
+        ]
+      },
+      {
+        "name": "Ulna",
+        "vertices": 326,
+        "triangles": 523,
+        "materials": 2,
+        "object_users": [
+          "Ulna.l",
+          "Ulna.r"
+        ]
+      },
+      {
+        "name": "Upper canine",
+        "vertices": 464,
+        "triangles": 851,
+        "materials": 2,
+        "object_users": [
+          "Upper canine.l",
+          "Upper canine.r"
+        ]
+      },
+      {
+        "name": "Upper first molar tooth",
+        "vertices": 660,
+        "triangles": 1262,
+        "materials": 2,
+        "object_users": [
+          "Upper first molar tooth.l",
+          "Upper first molar tooth.r"
+        ]
+      },
+      {
+        "name": "Upper first premolar",
+        "vertices": 522,
+        "triangles": 976,
+        "materials": 2,
+        "object_users": [
+          "Upper first premolar.l",
+          "Upper first premolar.r"
+        ]
+      },
+      {
+        "name": "Upper lateral incisor",
+        "vertices": 462,
+        "triangles": 843,
+        "materials": 2,
+        "object_users": [
+          "Upper lateral incisor.l",
+          "Upper lateral incisor.r"
+        ]
+      },
+      {
+        "name": "Upper medial incisor",
+        "vertices": 436,
+        "triangles": 793,
+        "materials": 2,
+        "object_users": [
+          "Upper medial incisor.l",
+          "Upper medial incisor.r"
+        ]
+      },
+      {
+        "name": "Upper second molar tooth",
+        "vertices": 561,
+        "triangles": 1069,
+        "materials": 2,
+        "object_users": [
+          "Upper second molar tooth.l",
+          "Upper second molar tooth.r"
+        ]
+      },
+      {
+        "name": "Upper second premolar",
+        "vertices": 486,
+        "triangles": 901,
+        "materials": 2,
+        "object_users": [
+          "Upper second premolar.l",
+          "Upper second premolar.r"
+        ]
+      },
+      {
+        "name": "Vertebra C3",
+        "vertices": 814,
+        "triangles": 1415,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C3"
+        ]
+      },
+      {
+        "name": "Vertebra C4",
+        "vertices": 666,
+        "triangles": 1124,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C4"
+        ]
+      },
+      {
+        "name": "Vertebra C5",
+        "vertices": 782,
+        "triangles": 1354,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C5"
+        ]
+      },
+      {
+        "name": "Vertebra C6",
+        "vertices": 761,
+        "triangles": 1336,
+        "materials": 2,
+        "object_users": [
+          "Vertebra C6"
+        ]
+      },
+      {
+        "name": "Vertebra C7",
+        "vertices": 623,
+        "triangles": 1254,
+        "materials": 1,
+        "object_users": [
+          "Vertebra C7"
+        ]
+      },
+      {
+        "name": "Vertebra L1",
+        "vertices": 1018,
+        "triangles": 1833,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L1"
+        ]
+      },
+      {
+        "name": "Vertebra L2",
+        "vertices": 874,
+        "triangles": 1558,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L2"
+        ]
+      },
+      {
+        "name": "Vertebra L3",
+        "vertices": 1036,
+        "triangles": 1831,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L3"
+        ]
+      },
+      {
+        "name": "Vertebra L4",
+        "vertices": 1225,
+        "triangles": 2206,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L4"
+        ]
+      },
+      {
+        "name": "Vertebra L5",
+        "vertices": 1295,
+        "triangles": 2337,
+        "materials": 2,
+        "object_users": [
+          "Vertebra L5"
+        ]
+      },
+      {
+        "name": "Vertebra T1",
+        "vertices": 720,
+        "triangles": 1128,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T1"
+        ]
+      },
+      {
+        "name": "Vertebra T10",
+        "vertices": 999,
+        "triangles": 1773,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T10"
+        ]
+      },
+      {
+        "name": "Vertebra T11",
+        "vertices": 652,
+        "triangles": 1042,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T11"
+        ]
+      },
+      {
+        "name": "Vertebra T12",
+        "vertices": 875,
+        "triangles": 1499,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T12"
+        ]
+      },
+      {
+        "name": "Vertebra T2",
+        "vertices": 777,
+        "triangles": 1242,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T2"
+        ]
+      },
+      {
+        "name": "Vertebra T3",
+        "vertices": 805,
+        "triangles": 1359,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T3"
+        ]
+      },
+      {
+        "name": "Vertebra T4",
+        "vertices": 781,
+        "triangles": 1284,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T4"
+        ]
+      },
+      {
+        "name": "Vertebra T5",
+        "vertices": 765,
+        "triangles": 1248,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T5"
+        ]
+      },
+      {
+        "name": "Vertebra T6",
+        "vertices": 642,
+        "triangles": 1032,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T6"
+        ]
+      },
+      {
+        "name": "Vertebra T7",
+        "vertices": 952,
+        "triangles": 1620,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T7"
+        ]
+      },
+      {
+        "name": "Vertebra T8",
+        "vertices": 650,
+        "triangles": 1004,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T8"
+        ]
+      },
+      {
+        "name": "Vertebra T9",
+        "vertices": 1029,
+        "triangles": 1726,
+        "materials": 2,
+        "object_users": [
+          "Vertebra T9"
+        ]
+      },
+      {
+        "name": "Vomer",
+        "vertices": 298,
+        "triangles": 592,
+        "materials": 1,
+        "object_users": [
+          "Vomer"
+        ]
+      },
+      {
+        "name": "Xiphoid process",
+        "vertices": 322,
+        "triangles": 530,
+        "materials": 2,
+        "object_users": [
+          "Xiphoid process"
+        ]
+      },
+      {
+        "name": "Zygomatic bone",
+        "vertices": 478,
+        "triangles": 769,
+        "materials": 5,
+        "object_users": [
+          "Zygomatic bone.l",
+          "Zygomatic bone.r"
+        ]
+      }
+    ]
+  },
+  "triangle_soup_repairs": [],
+  "lod_operations": [
+    {
+      "mesh": "Anterior cells of ethmoid bone",
+      "users": [
+        "Anterior cells of ethmoid bone.l",
+        "Anterior cells of ethmoid bone.r"
+      ],
+      "triangles_before": 136,
+      "triangles_after": 78,
+      "ratio_actual": 0.573529
+    },
+    {
+      "mesh": "Arytenoid cartilage",
+      "users": [
+        "Arytenoid cartilage.r",
+        "Arytenoid cartilage.l"
+      ],
+      "triangles_before": 640,
+      "triangles_after": 370,
+      "ratio_actual": 0.578125
+    },
+    {
+      "mesh": "Atlas (C1)",
+      "users": [
+        "Atlas (C1)"
+      ],
+      "triangles_before": 2194,
+      "triangles_after": 1272,
+      "ratio_actual": 0.579763
+    },
+    {
+      "mesh": "Axis (C2)",
+      "users": [
+        "Axis (C2)"
+      ],
+      "triangles_before": 2334,
+      "triangles_after": 1352,
+      "ratio_actual": 0.579263
+    },
+    {
+      "mesh": "Body of sternum",
+      "users": [
+        "Body of sternum"
+      ],
+      "triangles_before": 4466,
+      "triangles_after": 2590,
+      "ratio_actual": 0.579937
+    },
+    {
+      "mesh": "Calcaneus.r",
+      "users": [
+        "Calcaneus.l",
+        "Calcaneus.r"
+      ],
+      "triangles_before": 1448,
+      "triangles_after": 838,
+      "ratio_actual": 0.578729
+    },
+    {
+      "mesh": "Capitate bone",
+      "users": [
+        "Capitate bone.l",
+        "Capitate bone.r"
+      ],
+      "triangles_before": 472,
+      "triangles_after": 272,
+      "ratio_actual": 0.576271
+    },
+    {
+      "mesh": "Clavicle",
+      "users": [
+        "Clavicle.l",
+        "Clavicle.r"
+      ],
+      "triangles_before": 1550,
+      "triangles_after": 898,
+      "ratio_actual": 0.579355
+    },
+    {
+      "mesh": "Coccyx",
+      "users": [
+        "Coccyx"
+      ],
+      "triangles_before": 1166,
+      "triangles_after": 676,
+      "ratio_actual": 0.57976
+    },
+    {
+      "mesh": "Corniculate cartilage.r",
+      "users": [
+        "Corniculate cartilage.r",
+        "Corniculate cartilage.l"
+      ],
+      "triangles_before": 136,
+      "triangles_after": 78,
+      "ratio_actual": 0.573529
+    },
+    {
+      "mesh": "Costal cartilage of eighth rib",
+      "users": [
+        "Costal cartilage of eighth rib.l",
+        "Costal cartilage of eighth rib.r"
+      ],
+      "triangles_before": 652,
+      "triangles_after": 377,
+      "ratio_actual": 0.578221
+    },
+    {
+      "mesh": "Costal cartilage of fifth rib",
+      "users": [
+        "Costal cartilage of fifth rib.l",
+        "Costal cartilage of fifth rib.r"
+      ],
+      "triangles_before": 1082,
+      "triangles_after": 626,
+      "ratio_actual": 0.578558
+    },
+    {
+      "mesh": "Costal cartilage of first rib",
+      "users": [
+        "Costal cartilage of first rib.l",
+        "Costal cartilage of first rib.r"
+      ],
+      "triangles_before": 462,
+      "triangles_after": 266,
+      "ratio_actual": 0.575758
+    },
+    {
+      "mesh": "Costal cartilage of fourth rib",
+      "users": [
+        "Costal cartilage of fourth rib.l",
+        "Costal cartilage of fourth rib.r"
+      ],
+      "triangles_before": 746,
+      "triangles_after": 432,
+      "ratio_actual": 0.579088
+    },
+    {
+      "mesh": "Costal cartilage of ninth rib",
+      "users": [
+        "Costal cartilage of ninth rib.l",
+        "Costal cartilage of ninth rib.r"
+      ],
+      "triangles_before": 488,
+      "triangles_after": 282,
+      "ratio_actual": 0.577869
+    },
+    {
+      "mesh": "Costal cartilage of second rib",
+      "users": [
+        "Costal cartilage of second rib.l",
+        "Costal cartilage of second rib.r"
+      ],
+      "triangles_before": 568,
+      "triangles_after": 328,
+      "ratio_actual": 0.577465
+    },
+    {
+      "mesh": "Costal cartilage of seventh rib",
+      "users": [
+        "Costal cartilage of seventh rib.l",
+        "Costal cartilage of seventh rib.r"
+      ],
+      "triangles_before": 2294,
+      "triangles_after": 1330,
+      "ratio_actual": 0.579773
+    },
+    {
+      "mesh": "Costal cartilage of sixth rib",
+      "users": [
+        "Costal cartilage of sixth rib.l",
+        "Costal cartilage of sixth rib.r"
+      ],
+      "triangles_before": 1354,
+      "triangles_after": 784,
+      "ratio_actual": 0.579025
+    },
+    {
+      "mesh": "Costal cartilage of tenth rib",
+      "users": [
+        "Costal cartilage of tenth rib.l",
+        "Costal cartilage of tenth rib.r"
+      ],
+      "triangles_before": 378,
+      "triangles_after": 218,
+      "ratio_actual": 0.57672
+    },
+    {
+      "mesh": "Costal cartilage of third rib",
+      "users": [
+        "Costal cartilage of third rib.l",
+        "Costal cartilage of third rib.r"
+      ],
+      "triangles_before": 600,
+      "triangles_after": 348,
+      "ratio_actual": 0.58
+    },
+    {
+      "mesh": "Cricoid cartilage",
+      "users": [
+        "Cricoid cartilage"
+      ],
+      "triangles_before": 1882,
+      "triangles_after": 1091,
+      "ratio_actual": 0.579702
+    },
+    {
+      "mesh": "Cuboid bone",
+      "users": [
+        "Cuboid bone.l",
+        "Cuboid bone.r"
+      ],
+      "triangles_before": 998,
+      "triangles_after": 577,
+      "ratio_actual": 0.578156
+    },
+    {
+      "mesh": "Distal phalanx of fifth finger of foot",
+      "users": [
+        "Distal phalanx of fifth finger of foot.l",
+        "Distal phalanx of fifth finger of foot.r"
+      ],
+      "triangles_before": 236,
+      "triangles_after": 136,
+      "ratio_actual": 0.576271
+    },
+    {
+      "mesh": "Distal phalanx of fifth finger of hand.r",
+      "users": [
+        "Distal phalanx of fifth finger of hand.l",
+        "Distal phalanx of fifth finger of hand.r"
+      ],
+      "triangles_before": 192,
+      "triangles_after": 110,
+      "ratio_actual": 0.572917
+    },
+    {
+      "mesh": "Distal phalanx of first finger of foot",
+      "users": [
+        "Distal phalanx of first finger of foot.l",
+        "Distal phalanx of first finger of foot.r"
+      ],
+      "triangles_before": 466,
+      "triangles_after": 269,
+      "ratio_actual": 0.577253
+    },
+    {
+      "mesh": "Distal phalanx of first finger of hand",
+      "users": [
+        "Distal phalanx of first finger of hand.l",
+        "Distal phalanx of first finger of hand.r"
+      ],
+      "triangles_before": 222,
+      "triangles_after": 128,
+      "ratio_actual": 0.576577
+    },
+    {
+      "mesh": "Distal phalanx of fourth finger of foot",
+      "users": [
+        "Distal phalanx of fourth finger of foot.l",
+        "Distal phalanx of fourth finger of foot.r"
+      ],
+      "triangles_before": 278,
+      "triangles_after": 160,
+      "ratio_actual": 0.57554
+    },
+    {
+      "mesh": "Distal phalanx of fourth finger of hand",
+      "users": [
+        "Distal phalanx of fourth finger of hand.l",
+        "Distal phalanx of fourth finger of hand.r"
+      ],
+      "triangles_before": 134,
+      "triangles_after": 76,
+      "ratio_actual": 0.567164
+    },
+    {
+      "mesh": "Distal phalanx of second finger of foot",
+      "users": [
+        "Distal phalanx of second finger of foot.l",
+        "Distal phalanx of second finger of foot.r"
+      ],
+      "triangles_before": 236,
+      "triangles_after": 136,
+      "ratio_actual": 0.576271
+    },
+    {
+      "mesh": "Distal phalanx of second finger of hand",
+      "users": [
+        "Distal phalanx of second finger of hand.l",
+        "Distal phalanx of second finger of hand.r"
+      ],
+      "triangles_before": 250,
+      "triangles_after": 145,
+      "ratio_actual": 0.58
+    },
+    {
+      "mesh": "Distal phalanx of third finger of foot",
+      "users": [
+        "Distal phalanx of third finger of foot.l",
+        "Distal phalanx of third finger of foot.r"
+      ],
+      "triangles_before": 318,
+      "triangles_after": 183,
+      "ratio_actual": 0.575472
+    },
+    {
+      "mesh": "Distal phalanx of third finger of hand",
+      "users": [
+        "Distal phalanx of third finger of hand.l",
+        "Distal phalanx of third finger of hand.r"
+      ],
+      "triangles_before": 192,
+      "triangles_after": 110,
+      "ratio_actual": 0.572917
+    },
+    {
+      "mesh": "Eighth rib",
+      "users": [
+        "Eighth rib.l",
+        "Eighth rib.r"
+      ],
+      "triangles_before": 8270,
+      "triangles_after": 4796,
+      "ratio_actual": 0.579927
+    },
+    {
+      "mesh": "Eleventh rib",
+      "users": [
+        "Eleventh rib.l",
+        "Eleventh rib.r"
+      ],
+      "triangles_before": 5034,
+      "triangles_after": 2919,
+      "ratio_actual": 0.579857
+    },
+    {
+      "mesh": "Ethmoid bone",
+      "users": [
+        "Ethmoid bone"
+      ],
+      "triangles_before": 4215,
+      "triangles_after": 2444,
+      "ratio_actual": 0.579834
+    },
+    {
+      "mesh": "Femur",
+      "users": [
+        "Femur.l",
+        "Femur.r"
+      ],
+      "triangles_before": 3794,
+      "triangles_after": 2200,
+      "ratio_actual": 0.579863
+    },
+    {
+      "mesh": "Fibula",
+      "users": [
+        "Fibula.l",
+        "Fibula.r"
+      ],
+      "triangles_before": 1264,
+      "triangles_after": 732,
+      "ratio_actual": 0.579114
+    },
+    {
+      "mesh": "Fifth metacarpal bone",
+      "users": [
+        "Fifth metacarpal bone.l",
+        "Fifth metacarpal bone.r"
+      ],
+      "triangles_before": 512,
+      "triangles_after": 296,
+      "ratio_actual": 0.578125
+    },
+    {
+      "mesh": "Fifth metatarsal bone",
+      "users": [
+        "Fifth metatarsal bone.l",
+        "Fifth metatarsal bone.r"
+      ],
+      "triangles_before": 894,
+      "triangles_after": 518,
+      "ratio_actual": 0.579418
+    },
+    {
+      "mesh": "Fifth rib",
+      "users": [
+        "Fifth rib.l",
+        "Fifth rib.r"
+      ],
+      "triangles_before": 9376,
+      "triangles_after": 5438,
+      "ratio_actual": 0.579991
+    },
+    {
+      "mesh": "First metacarpal bone",
+      "users": [
+        "First metacarpal bone.l",
+        "First metacarpal bone.r"
+      ],
+      "triangles_before": 682,
+      "triangles_after": 395,
+      "ratio_actual": 0.579179
+    },
+    {
+      "mesh": "First metatarsal bone",
+      "users": [
+        "First metatarsal bone.l",
+        "First metatarsal bone.r"
+      ],
+      "triangles_before": 1088,
+      "triangles_after": 630,
+      "ratio_actual": 0.579044
+    },
+    {
+      "mesh": "First rib",
+      "users": [
+        "First rib.l",
+        "First rib.r"
+      ],
+      "triangles_before": 3210,
+      "triangles_after": 1861,
+      "ratio_actual": 0.579751
+    },
+    {
+      "mesh": "Fourth metacarpal bone",
+      "users": [
+        "Fourth metacarpal bone.l",
+        "Fourth metacarpal bone.r"
+      ],
+      "triangles_before": 642,
+      "triangles_after": 371,
+      "ratio_actual": 0.577882
+    },
+    {
+      "mesh": "Fourth metatarsal bone",
+      "users": [
+        "Fourth metatarsal bone.l",
+        "Fourth metatarsal bone.r"
+      ],
+      "triangles_before": 834,
+      "triangles_after": 482,
+      "ratio_actual": 0.577938
+    },
+    {
+      "mesh": "Fourth rib",
+      "users": [
+        "Fourth rib.l",
+        "Fourth rib.r"
+      ],
+      "triangles_before": 8646,
+      "triangles_after": 5014,
+      "ratio_actual": 0.579921
+    },
+    {
+      "mesh": "Frontal bone",
+      "users": [
+        "Frontal bone"
+      ],
+      "triangles_before": 7776,
+      "triangles_after": 4510,
+      "ratio_actual": 0.57999
+    },
+    {
+      "mesh": "Hamate bone",
+      "users": [
+        "Hamate bone.l",
+        "Hamate bone.r"
+      ],
+      "triangles_before": 536,
+      "triangles_after": 309,
+      "ratio_actual": 0.576493
+    },
+    {
+      "mesh": "Hip bone",
+      "users": [
+        "Hip bone.l",
+        "Hip bone.r"
+      ],
+      "triangles_before": 3788,
+      "triangles_after": 2197,
+      "ratio_actual": 0.579989
+    },
+    {
+      "mesh": "Humerus",
+      "users": [
+        "Humerus.l",
+        "Humerus.r"
+      ],
+      "triangles_before": 4280,
+      "triangles_after": 2481,
+      "ratio_actual": 0.579673
+    },
+    {
+      "mesh": "Hyoid bone",
+      "users": [
+        "Hyoid bone"
+      ],
+      "triangles_before": 1324,
+      "triangles_after": 766,
+      "ratio_actual": 0.57855
+    },
+    {
+      "mesh": "Incus",
+      "users": [
+        "Incus.l",
+        "Incus.r"
+      ],
+      "triangles_before": 2532,
+      "triangles_after": 1467,
+      "ratio_actual": 0.579384
+    },
+    {
+      "mesh": "Inferior nasal concha bone",
+      "users": [
+        "Inferior nasal concha bone.l",
+        "Inferior nasal concha bone.r"
+      ],
+      "triangles_before": 476,
+      "triangles_after": 276,
+      "ratio_actual": 0.579832
+    },
+    {
+      "mesh": "Intermediate cuneiform bone.r",
+      "users": [
+        "Intermediate cuneiform bone.l",
+        "Intermediate cuneiform bone.r"
+      ],
+      "triangles_before": 444,
+      "triangles_after": 257,
+      "ratio_actual": 0.578829
+    },
+    {
+      "mesh": "Lacrimal bone",
+      "users": [
+        "Lacrimal bone.l",
+        "Lacrimal bone.r"
+      ],
+      "triangles_before": 588,
+      "triangles_after": 340,
+      "ratio_actual": 0.578231
+    },
+    {
+      "mesh": "Lateral cuneiform bone.r",
+      "users": [
+        "Lateral cuneiform bone.l",
+        "Lateral cuneiform bone.r"
+      ],
+      "triangles_before": 638,
+      "triangles_after": 370,
+      "ratio_actual": 0.579937
+    },
+    {
+      "mesh": "Lateral process of nasal septal cartilage",
+      "users": [
+        "Lateral process of nasal septal cartilage.l",
+        "Lateral process of nasal septal cartilage.r"
+      ],
+      "triangles_before": 347,
+      "triangles_after": 201,
+      "ratio_actual": 0.579251
+    },
+    {
+      "mesh": "Lower canine",
+      "users": [
+        "Lower canine.l",
+        "Lower canine.r"
+      ],
+      "triangles_before": 1276,
+      "triangles_after": 739,
+      "ratio_actual": 0.579154
+    },
+    {
+      "mesh": "Lower first molar tooth",
+      "users": [
+        "Lower first molar tooth.l",
+        "Lower first molar tooth.r"
+      ],
+      "triangles_before": 4508,
+      "triangles_after": 2614,
+      "ratio_actual": 0.579858
+    },
+    {
+      "mesh": "Lower first premolar",
+      "users": [
+        "Lower first premolar.l",
+        "Lower first premolar.r"
+      ],
+      "triangles_before": 1222,
+      "triangles_after": 708,
+      "ratio_actual": 0.579378
+    },
+    {
+      "mesh": "Lower lateral incisor",
+      "users": [
+        "Lower lateral incisor.l",
+        "Lower lateral incisor.r"
+      ],
+      "triangles_before": 1040,
+      "triangles_after": 602,
+      "ratio_actual": 0.578846
+    },
+    {
+      "mesh": "Lower medial incisor",
+      "users": [
+        "Lower medial incisor.r",
+        "Lower medial incisor.l"
+      ],
+      "triangles_before": 984,
+      "triangles_after": 570,
+      "ratio_actual": 0.579268
+    },
+    {
+      "mesh": "Lower second molar tooth",
+      "users": [
+        "Lower second molar tooth.l",
+        "Lower second molar tooth.r"
+      ],
+      "triangles_before": 1676,
+      "triangles_after": 972,
+      "ratio_actual": 0.579952
+    },
+    {
+      "mesh": "Lower second premolar",
+      "users": [
+        "Lower second premolar.l",
+        "Lower second premolar.r"
+      ],
+      "triangles_before": 1180,
+      "triangles_after": 684,
+      "ratio_actual": 0.579661
+    },
+    {
+      "mesh": "Lunate bone",
+      "users": [
+        "Lunate bone.l",
+        "Lunate bone.r"
+      ],
+      "triangles_before": 348,
+      "triangles_after": 200,
+      "ratio_actual": 0.574713
+    },
+    {
+      "mesh": "Major alar cartilage",
+      "users": [
+        "Major alar cartilage.l",
+        "Major alar cartilage.r"
+      ],
+      "triangles_before": 344,
+      "triangles_after": 198,
+      "ratio_actual": 0.575581
+    },
+    {
+      "mesh": "Malleus",
+      "users": [
+        "Malleus.l",
+        "Malleus.r"
+      ],
+      "triangles_before": 3982,
+      "triangles_after": 2308,
+      "ratio_actual": 0.579608
+    },
+    {
+      "mesh": "Mandible",
+      "users": [
+        "Mandible"
+      ],
+      "triangles_before": 18834,
+      "triangles_after": 10922,
+      "ratio_actual": 0.579909
+    },
+    {
+      "mesh": "Manubrium of sternum",
+      "users": [
+        "Manubrium of sternum"
+      ],
+      "triangles_before": 2662,
+      "triangles_after": 1542,
+      "ratio_actual": 0.579264
+    },
+    {
+      "mesh": "Maxilla",
+      "users": [
+        "Maxilla.l",
+        "Maxilla.r"
+      ],
+      "triangles_before": 4798,
+      "triangles_after": 2782,
+      "ratio_actual": 0.579825
+    },
+    {
+      "mesh": "Medial cuneiform bone.r",
+      "users": [
+        "Medial cuneiform bone.l",
+        "Medial cuneiform bone.r"
+      ],
+      "triangles_before": 992,
+      "triangles_after": 574,
+      "ratio_actual": 0.578629
+    },
+    {
+      "mesh": "Middle cells of ethmoid bone",
+      "users": [
+        "Middle cells of ethmoid bone.l",
+        "Middle cells of ethmoid bone.r"
+      ],
+      "triangles_before": 160,
+      "triangles_after": 92,
+      "ratio_actual": 0.575
+    },
+    {
+      "mesh": "Middle phalanx of fifth finger of foot",
+      "users": [
+        "Middle phalanx of fifth finger of foot.l",
+        "Middle phalanx of fifth finger of foot.r"
+      ],
+      "triangles_before": 216,
+      "triangles_after": 124,
+      "ratio_actual": 0.574074
+    },
+    {
+      "mesh": "Middle phalanx of fifth finger of hand",
+      "users": [
+        "Middle phalanx of fifth finger of hand.l",
+        "Middle phalanx of fifth finger of hand.r"
+      ],
+      "triangles_before": 292,
+      "triangles_after": 168,
+      "ratio_actual": 0.575342
+    },
+    {
+      "mesh": "Middle phalanx of fourth finger of foot",
+      "users": [
+        "Middle phalanx of fourth finger of foot.l",
+        "Middle phalanx of fourth finger of foot.r"
+      ],
+      "triangles_before": 448,
+      "triangles_after": 258,
+      "ratio_actual": 0.575893
+    },
+    {
+      "mesh": "Middle phalanx of fourth finger of hand",
+      "users": [
+        "Middle phalanx of fourth finger of hand.l",
+        "Middle phalanx of fourth finger of hand.r"
+      ],
+      "triangles_before": 446,
+      "triangles_after": 258,
+      "ratio_actual": 0.578475
+    },
+    {
+      "mesh": "Middle phalanx of second finger of foot",
+      "users": [
+        "Middle phalanx of second finger of foot.l",
+        "Middle phalanx of second finger of foot.r"
+      ],
+      "triangles_before": 382,
+      "triangles_after": 220,
+      "ratio_actual": 0.575916
+    },
+    {
+      "mesh": "Middle phalanx of second finger of hand",
+      "users": [
+        "Middle phalanx of second finger of hand.l",
+        "Middle phalanx of second finger of hand.r"
+      ],
+      "triangles_before": 314,
+      "triangles_after": 182,
+      "ratio_actual": 0.579618
+    },
+    {
+      "mesh": "Middle phalanx of third finger of foot",
+      "users": [
+        "Middle phalanx of third finger of foot.l",
+        "Middle phalanx of third finger of foot.r"
+      ],
+      "triangles_before": 400,
+      "triangles_after": 232,
+      "ratio_actual": 0.58
+    },
+    {
+      "mesh": "Middle phalanx of third finger of hand",
+      "users": [
+        "Middle phalanx of third finger of hand.l",
+        "Middle phalanx of third finger of hand.r"
+      ],
+      "triangles_before": 360,
+      "triangles_after": 208,
+      "ratio_actual": 0.577778
+    },
+    {
+      "mesh": "Nasal bone",
+      "users": [
+        "Nasal bone.l",
+        "Nasal bone.r"
+      ],
+      "triangles_before": 292,
+      "triangles_after": 169,
+      "ratio_actual": 0.578767
+    },
+    {
+      "mesh": "Nasal septal cartilage",
+      "users": [
+        "Nasal septal cartilage"
+      ],
+      "triangles_before": 360,
+      "triangles_after": 208,
+      "ratio_actual": 0.577778
+    },
+    {
+      "mesh": "Navicular bone",
+      "users": [
+        "Navicular bone.l",
+        "Navicular bone.r"
+      ],
+      "triangles_before": 732,
+      "triangles_after": 424,
+      "ratio_actual": 0.579235
+    },
+    {
+      "mesh": "Ninth rib",
+      "users": [
+        "Ninth rib.l",
+        "Ninth rib.r"
+      ],
+      "triangles_before": 7778,
+      "triangles_after": 4510,
+      "ratio_actual": 0.579841
+    },
+    {
+      "mesh": "Occipital bone",
+      "users": [
+        "Occipital bone"
+      ],
+      "triangles_before": 7531,
+      "triangles_after": 4367,
+      "ratio_actual": 0.57987
+    },
+    {
+      "mesh": "Palatine bone",
+      "users": [
+        "Palatine bone.l",
+        "Palatine bone.r"
+      ],
+      "triangles_before": 1460,
+      "triangles_after": 845,
+      "ratio_actual": 0.578767
+    },
+    {
+      "mesh": "Parietal bone.l",
+      "users": [
+        "Parietal bone.l"
+      ],
+      "triangles_before": 6886,
+      "triangles_after": 3993,
+      "ratio_actual": 0.579872
+    },
+    {
+      "mesh": "Parietal bone.r",
+      "users": [
+        "Parietal bone.r"
+      ],
+      "triangles_before": 6780,
+      "triangles_after": 3932,
+      "ratio_actual": 0.579941
+    },
+    {
+      "mesh": "Patella",
+      "users": [
+        "Patella.l",
+        "Patella.r"
+      ],
+      "triangles_before": 276,
+      "triangles_after": 159,
+      "ratio_actual": 0.576087
+    },
+    {
+      "mesh": "Pisiform bone",
+      "users": [
+        "Pisiform bone.l",
+        "Pisiform bone.r"
+      ],
+      "triangles_before": 278,
+      "triangles_after": 160,
+      "ratio_actual": 0.57554
+    },
+    {
+      "mesh": "Posterior cells of ethmoid bone",
+      "users": [
+        "Posterior cells of ethmoid bone.l",
+        "Posterior cells of ethmoid bone.r"
+      ],
+      "triangles_before": 216,
+      "triangles_after": 125,
+      "ratio_actual": 0.578704
+    },
+    {
+      "mesh": "Proximal phalanx of fifth finger of foot",
+      "users": [
+        "Proximal phalanx of fifth finger of foot.l",
+        "Proximal phalanx of fifth finger of foot.r"
+      ],
+      "triangles_before": 516,
+      "triangles_after": 298,
+      "ratio_actual": 0.577519
+    },
+    {
+      "mesh": "Proximal phalanx of fifth finger of hand",
+      "users": [
+        "Proximal phalanx of fifth finger of hand.l",
+        "Proximal phalanx of fifth finger of hand.r"
+      ],
+      "triangles_before": 560,
+      "triangles_after": 324,
+      "ratio_actual": 0.578571
+    },
+    {
+      "mesh": "Proximal phalanx of first finger of foot",
+      "users": [
+        "Proximal phalanx of first finger of foot.l",
+        "Proximal phalanx of first finger of foot.r"
+      ],
+      "triangles_before": 532,
+      "triangles_after": 307,
+      "ratio_actual": 0.577068
+    },
+    {
+      "mesh": "Proximal phalanx of first finger of hand",
+      "users": [
+        "Proximal phalanx of first finger of hand.l",
+        "Proximal phalanx of first finger of hand.r"
+      ],
+      "triangles_before": 328,
+      "triangles_after": 190,
+      "ratio_actual": 0.579268
+    },
+    {
+      "mesh": "Proximal phalanx of fourth finger of foot",
+      "users": [
+        "Proximal phalanx of fourth finger of foot.l",
+        "Proximal phalanx of fourth finger of foot.r"
+      ],
+      "triangles_before": 460,
+      "triangles_after": 265,
+      "ratio_actual": 0.576087
+    },
+    {
+      "mesh": "Proximal phalanx of fourth finger of hand",
+      "users": [
+        "Proximal phalanx of fourth finger of hand.l",
+        "Proximal phalanx of fourth finger of hand.r"
+      ],
+      "triangles_before": 368,
+      "triangles_after": 212,
+      "ratio_actual": 0.576087
+    },
+    {
+      "mesh": "Proximal phalanx of second finger of foot",
+      "users": [
+        "Proximal phalanx of second finger of foot.l",
+        "Proximal phalanx of second finger of foot.r"
+      ],
+      "triangles_before": 426,
+      "triangles_after": 246,
+      "ratio_actual": 0.577465
+    },
+    {
+      "mesh": "Proximal phalanx of second finger of hand",
+      "users": [
+        "Proximal phalanx of second finger of hand.l",
+        "Proximal phalanx of second finger of hand.r"
+      ],
+      "triangles_before": 414,
+      "triangles_after": 240,
+      "ratio_actual": 0.57971
+    },
+    {
+      "mesh": "Proximal phalanx of third finger of foot",
+      "users": [
+        "Proximal phalanx of third finger of foot.l",
+        "Proximal phalanx of third finger of foot.r"
+      ],
+      "triangles_before": 460,
+      "triangles_after": 266,
+      "ratio_actual": 0.578261
+    },
+    {
+      "mesh": "Proximal phalanx of third finger of hand",
+      "users": [
+        "Proximal phalanx of third finger of hand.l",
+        "Proximal phalanx of third finger of hand.r"
+      ],
+      "triangles_before": 440,
+      "triangles_after": 255,
+      "ratio_actual": 0.579545
+    },
+    {
+      "mesh": "Radius",
+      "users": [
+        "Radius.l",
+        "Radius.r"
+      ],
+      "triangles_before": 784,
+      "triangles_after": 453,
+      "ratio_actual": 0.577806
+    },
+    {
+      "mesh": "Sacrum",
+      "users": [
+        "Sacrum"
+      ],
+      "triangles_before": 11676,
+      "triangles_after": 6771,
+      "ratio_actual": 0.579908
+    },
+    {
+      "mesh": "Scaphoid bone",
+      "users": [
+        "Scaphoid bone.r",
+        "Scaphoid bone.l"
+      ],
+      "triangles_before": 390,
+      "triangles_after": 225,
+      "ratio_actual": 0.576923
+    },
+    {
+      "mesh": "Scapula",
+      "users": [
+        "Scapula.l",
+        "Scapula.r"
+      ],
+      "triangles_before": 25326,
+      "triangles_after": 14688,
+      "ratio_actual": 0.579957
+    },
+    {
+      "mesh": "Second metacarpal bone",
+      "users": [
+        "Second metacarpal bone.l",
+        "Second metacarpal bone.r"
+      ],
+      "triangles_before": 764,
+      "triangles_after": 443,
+      "ratio_actual": 0.579843
+    },
+    {
+      "mesh": "Second metatarsal bone",
+      "users": [
+        "Second metatarsal bone.r",
+        "Second metatarsal bone.l"
+      ],
+      "triangles_before": 690,
+      "triangles_after": 399,
+      "ratio_actual": 0.578261
+    },
+    {
+      "mesh": "Second rib",
+      "users": [
+        "Second rib.r",
+        "Second rib.l"
+      ],
+      "triangles_before": 5364,
+      "triangles_after": 3110,
+      "ratio_actual": 0.579791
+    },
+    {
+      "mesh": "Sesamoid bones of foot",
+      "users": [
+        "Sesamoid bones of foot.r",
+        "Sesamoid bones of foot.l"
+      ],
+      "triangles_before": 290,
+      "triangles_after": 167,
+      "ratio_actual": 0.575862
+    },
+    {
+      "mesh": "Seventh rib",
+      "users": [
+        "Seventh rib.l",
+        "Seventh rib.r"
+      ],
+      "triangles_before": 9776,
+      "triangles_after": 5669,
+      "ratio_actual": 0.57989
+    },
+    {
+      "mesh": "Sinus of frontal bone",
+      "users": [
+        "Sinus of frontal bone"
+      ],
+      "triangles_before": 1504,
+      "triangles_after": 872,
+      "ratio_actual": 0.579787
+    },
+    {
+      "mesh": "Sinus of sphenoid bone",
+      "users": [
+        "Sinus of sphenoid bone"
+      ],
+      "triangles_before": 384,
+      "triangles_after": 222,
+      "ratio_actual": 0.578125
+    },
+    {
+      "mesh": "Sixth rib",
+      "users": [
+        "Sixth rib.l",
+        "Sixth rib.r"
+      ],
+      "triangles_before": 10132,
+      "triangles_after": 5875,
+      "ratio_actual": 0.579846
+    },
+    {
+      "mesh": "Sphenoid bone.l",
+      "users": [
+        "Sphenoid bone"
+      ],
+      "triangles_before": 7308,
+      "triangles_after": 4238,
+      "ratio_actual": 0.579912
+    },
+    {
+      "mesh": "Stapes",
+      "users": [
+        "Stapes.l",
+        "Stapes.r"
+      ],
+      "triangles_before": 4342,
+      "triangles_after": 2517,
+      "ratio_actual": 0.579687
+    },
+    {
+      "mesh": "Talus.r",
+      "users": [
+        "Talus.l",
+        "Talus.r"
+      ],
+      "triangles_before": 1350,
+      "triangles_after": 782,
+      "ratio_actual": 0.579259
+    },
+    {
+      "mesh": "Temporal bone",
+      "users": [
+        "Temporal bone.l",
+        "Temporal bone.r"
+      ],
+      "triangles_before": 14094,
+      "triangles_after": 8173,
+      "ratio_actual": 0.579892
+    },
+    {
+      "mesh": "Tenth rib",
+      "users": [
+        "Tenth rib.l",
+        "Tenth rib.r"
+      ],
+      "triangles_before": 7026,
+      "triangles_after": 4074,
+      "ratio_actual": 0.579846
+    },
+    {
+      "mesh": "Third metacarpal bone",
+      "users": [
+        "Third metacarpal bone.l",
+        "Third metacarpal bone.r"
+      ],
+      "triangles_before": 708,
+      "triangles_after": 409,
+      "ratio_actual": 0.577684
+    },
+    {
+      "mesh": "Third metatarsal bone",
+      "users": [
+        "Third metatarsal bone.l",
+        "Third metatarsal bone.r"
+      ],
+      "triangles_before": 814,
+      "triangles_after": 471,
+      "ratio_actual": 0.578624
+    },
+    {
+      "mesh": "Third rib",
+      "users": [
+        "Third rib.l",
+        "Third rib.r"
+      ],
+      "triangles_before": 6980,
+      "triangles_after": 4047,
+      "ratio_actual": 0.579799
+    },
+    {
+      "mesh": "Thyroid cartilage",
+      "users": [
+        "Thyroid cartilage"
+      ],
+      "triangles_before": 4488,
+      "triangles_after": 2602,
+      "ratio_actual": 0.579768
+    },
+    {
+      "mesh": "Tibia",
+      "users": [
+        "Tibia.l",
+        "Tibia.r"
+      ],
+      "triangles_before": 1670,
+      "triangles_after": 968,
+      "ratio_actual": 0.579641
+    },
+    {
+      "mesh": "Trapezium bone",
+      "users": [
+        "Trapezium bone.l",
+        "Trapezium bone.r"
+      ],
+      "triangles_before": 500,
+      "triangles_after": 290,
+      "ratio_actual": 0.58
+    },
+    {
+      "mesh": "Trapezoid bone",
+      "users": [
+        "Trapezoid bone.l",
+        "Trapezoid bone.r"
+      ],
+      "triangles_before": 364,
+      "triangles_after": 210,
+      "ratio_actual": 0.576923
+    },
+    {
+      "mesh": "Triquetrum bone",
+      "users": [
+        "Triquetrum bone.l",
+        "Triquetrum bone.r"
+      ],
+      "triangles_before": 176,
+      "triangles_after": 101,
+      "ratio_actual": 0.573864
+    },
+    {
+      "mesh": "Twelfth rib",
+      "users": [
+        "Twelfth rib.l",
+        "Twelfth rib.r"
+      ],
+      "triangles_before": 3002,
+      "triangles_after": 1740,
+      "ratio_actual": 0.579614
+    },
+    {
+      "mesh": "Ulna",
+      "users": [
+        "Ulna.l",
+        "Ulna.r"
+      ],
+      "triangles_before": 904,
+      "triangles_after": 523,
+      "ratio_actual": 0.57854
+    },
+    {
+      "mesh": "Upper canine",
+      "users": [
+        "Upper canine.l",
+        "Upper canine.r"
+      ],
+      "triangles_before": 1470,
+      "triangles_after": 851,
+      "ratio_actual": 0.578912
+    },
+    {
+      "mesh": "Upper first molar tooth",
+      "users": [
+        "Upper first molar tooth.l",
+        "Upper first molar tooth.r"
+      ],
+      "triangles_before": 2176,
+      "triangles_after": 1262,
+      "ratio_actual": 0.579963
+    },
+    {
+      "mesh": "Upper first premolar",
+      "users": [
+        "Upper first premolar.l",
+        "Upper first premolar.r"
+      ],
+      "triangles_before": 1684,
+      "triangles_after": 976,
+      "ratio_actual": 0.579572
+    },
+    {
+      "mesh": "Upper lateral incisor",
+      "users": [
+        "Upper lateral incisor.l",
+        "Upper lateral incisor.r"
+      ],
+      "triangles_before": 1454,
+      "triangles_after": 843,
+      "ratio_actual": 0.57978
+    },
+    {
+      "mesh": "Upper medial incisor",
+      "users": [
+        "Upper medial incisor.l",
+        "Upper medial incisor.r"
+      ],
+      "triangles_before": 1368,
+      "triangles_after": 793,
+      "ratio_actual": 0.579678
+    },
+    {
+      "mesh": "Upper second molar tooth",
+      "users": [
+        "Upper second molar tooth.l",
+        "Upper second molar tooth.r"
+      ],
+      "triangles_before": 1844,
+      "triangles_after": 1069,
+      "ratio_actual": 0.579718
+    },
+    {
+      "mesh": "Upper second premolar",
+      "users": [
+        "Upper second premolar.l",
+        "Upper second premolar.r"
+      ],
+      "triangles_before": 1554,
+      "triangles_after": 901,
+      "ratio_actual": 0.579794
+    },
+    {
+      "mesh": "Vertebra C3",
+      "users": [
+        "Vertebra C3"
+      ],
+      "triangles_before": 2440,
+      "triangles_after": 1415,
+      "ratio_actual": 0.579918
+    },
+    {
+      "mesh": "Vertebra C4",
+      "users": [
+        "Vertebra C4"
+      ],
+      "triangles_before": 1940,
+      "triangles_after": 1124,
+      "ratio_actual": 0.579381
+    },
+    {
+      "mesh": "Vertebra C5",
+      "users": [
+        "Vertebra C5"
+      ],
+      "triangles_before": 2336,
+      "triangles_after": 1354,
+      "ratio_actual": 0.579623
+    },
+    {
+      "mesh": "Vertebra C6",
+      "users": [
+        "Vertebra C6"
+      ],
+      "triangles_before": 2304,
+      "triangles_after": 1336,
+      "ratio_actual": 0.579861
+    },
+    {
+      "mesh": "Vertebra C7",
+      "users": [
+        "Vertebra C7"
+      ],
+      "triangles_before": 2164,
+      "triangles_after": 1254,
+      "ratio_actual": 0.579482
+    },
+    {
+      "mesh": "Vertebra L1",
+      "users": [
+        "Vertebra L1"
+      ],
+      "triangles_before": 3162,
+      "triangles_after": 1833,
+      "ratio_actual": 0.579696
+    },
+    {
+      "mesh": "Vertebra L2",
+      "users": [
+        "Vertebra L2"
+      ],
+      "triangles_before": 2688,
+      "triangles_after": 1558,
+      "ratio_actual": 0.579613
+    },
+    {
+      "mesh": "Vertebra L3",
+      "users": [
+        "Vertebra L3"
+      ],
+      "triangles_before": 3160,
+      "triangles_after": 1831,
+      "ratio_actual": 0.57943
+    },
+    {
+      "mesh": "Vertebra L4",
+      "users": [
+        "Vertebra L4"
+      ],
+      "triangles_before": 3804,
+      "triangles_after": 2206,
+      "ratio_actual": 0.579916
+    },
+    {
+      "mesh": "Vertebra L5",
+      "users": [
+        "Vertebra L5"
+      ],
+      "triangles_before": 4032,
+      "triangles_after": 2337,
+      "ratio_actual": 0.579613
+    },
+    {
+      "mesh": "Vertebra T1",
+      "users": [
+        "Vertebra T1"
+      ],
+      "triangles_before": 1946,
+      "triangles_after": 1128,
+      "ratio_actual": 0.579651
+    },
+    {
+      "mesh": "Vertebra T10",
+      "users": [
+        "Vertebra T10"
+      ],
+      "triangles_before": 3058,
+      "triangles_after": 1773,
+      "ratio_actual": 0.579791
+    },
+    {
+      "mesh": "Vertebra T11",
+      "users": [
+        "Vertebra T11"
+      ],
+      "triangles_before": 1798,
+      "triangles_after": 1042,
+      "ratio_actual": 0.579533
+    },
+    {
+      "mesh": "Vertebra T12",
+      "users": [
+        "Vertebra T12"
+      ],
+      "triangles_before": 2586,
+      "triangles_after": 1499,
+      "ratio_actual": 0.57966
+    },
+    {
+      "mesh": "Vertebra T2",
+      "users": [
+        "Vertebra T2"
+      ],
+      "triangles_before": 2142,
+      "triangles_after": 1242,
+      "ratio_actual": 0.579832
+    },
+    {
+      "mesh": "Vertebra T3",
+      "users": [
+        "Vertebra T3"
+      ],
+      "triangles_before": 2344,
+      "triangles_after": 1359,
+      "ratio_actual": 0.579778
+    },
+    {
+      "mesh": "Vertebra T4",
+      "users": [
+        "Vertebra T4"
+      ],
+      "triangles_before": 2216,
+      "triangles_after": 1284,
+      "ratio_actual": 0.579422
+    },
+    {
+      "mesh": "Vertebra T5",
+      "users": [
+        "Vertebra T5"
+      ],
+      "triangles_before": 2152,
+      "triangles_after": 1248,
+      "ratio_actual": 0.579926
+    },
+    {
+      "mesh": "Vertebra T6",
+      "users": [
+        "Vertebra T6"
+      ],
+      "triangles_before": 1780,
+      "triangles_after": 1032,
+      "ratio_actual": 0.579775
+    },
+    {
+      "mesh": "Vertebra T7",
+      "users": [
+        "Vertebra T7"
+      ],
+      "triangles_before": 2794,
+      "triangles_after": 1620,
+      "ratio_actual": 0.579814
+    },
+    {
+      "mesh": "Vertebra T8",
+      "users": [
+        "Vertebra T8"
+      ],
+      "triangles_before": 1733,
+      "triangles_after": 1004,
+      "ratio_actual": 0.579342
+    },
+    {
+      "mesh": "Vertebra T9",
+      "users": [
+        "Vertebra T9"
+      ],
+      "triangles_before": 2978,
+      "triangles_after": 1726,
+      "ratio_actual": 0.579584
+    },
+    {
+      "mesh": "Vomer",
+      "users": [
+        "Vomer"
+      ],
+      "triangles_before": 1022,
+      "triangles_after": 592,
+      "ratio_actual": 0.579256
+    },
+    {
+      "mesh": "Xiphoid process",
+      "users": [
+        "Xiphoid process"
+      ],
+      "triangles_before": 914,
+      "triangles_after": 530,
+      "ratio_actual": 0.579869
+    },
+    {
+      "mesh": "Zygomatic bone",
+      "users": [
+        "Zygomatic bone.l",
+        "Zygomatic bone.r"
+      ],
+      "triangles_before": 1328,
+      "triangles_after": 769,
+      "ratio_actual": 0.579066
+    }
+  ],
+  "validation": {
+    "mesh_object_names_preserved": true,
+    "bounds_size_delta": [
+      4.4e-05,
+      7e-06,
+      1e-06
+    ],
+    "instantiated_triangle_ratio": 0.579556
+  },
+  "duration_seconds": 7.693
+}
