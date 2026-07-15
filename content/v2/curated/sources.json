@@ -1,0 +1,25 @@
+[
+  {
+    "id": "source.localization.german_mesh.2025_v30",
+    "sourceType": "terminology",
+    "title": "German MeSH 2025 — German translation columns",
+    "provider": "ZB MED — Information Centre for Life Sciences",
+    "url": "https://doi.org/10.4126/FRL01-006526467",
+    "version": "30.0 (December 2025)",
+    "rightsPolicy": "terminology_only",
+    "rightsScope": "Only PreferredLabelDE and SynonymsDE are authorized by this source entry under CC BY 4.0. English columns remain subject to the NLM terms and are outside this entry's supported use.",
+    "license": {
+      "id": "CC-BY-4.0-GERMAN-TRANSLATION",
+      "url": "https://www.zbmed.de/en/open-science/terminologies/german-mesh",
+      "attributionPath": "docs/content-phase-b-review-plan.md"
+    },
+    "supports": [
+      "localization"
+    ],
+    "snapshot": {
+      "sha256": "90e2dba833aeae49a05508e24dad974c7c8264c9179427d8a7650beae6028f04",
+      "capturedAt": "2026-07-15",
+      "locatorBasis": "CSV row by DescriptorUI; PreferredLabelDE and SynonymsDE columns only"
+    }
+  }
+]

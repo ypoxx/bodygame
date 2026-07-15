@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/source.schema.json",
+  "title": "AnatomyQuest v2 source",
+  "type": "object",
+  "required": [
+    "id",
+    "sourceType",
+    "title",
+    "provider",
+    "version",
+    "rightsPolicy",
+    "supports"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^source\\.[a-z0-9._-]+$"
+    },
+    "sourceType": {
+      "enum": ["terminology", "institutional_reference", "textbook", "asset"]
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "provider": { "type": "string", "minLength": 1 },
+    "url": { "type": "string", "format": "uri" },
+    "version": { "type": "string", "minLength": 1 },
+    "rightsPolicy": {
+      "enum": [
+        "terminology_only",
+        "paraphrase_allowed",
+        "citation_only",
+        "public_domain"
+      ]
+    },
+    "rightsScope": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional field- or subset-specific rights boundary for mixed-license snapshots."
+    },
+    "license": {
+      "type": "object",
+      "required": ["id", "url", "attributionPath"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "attributionPath": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "supports": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "mesh_identity",
+          "geometry_provenance",
+          "terminology",
+          "classification",
+          "anatomical_claims",
+          "localization"
+        ]
+      }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "document": {
+      "type": "object",
+      "required": ["mediaType", "sha256", "part", "locatorBasis"],
+      "properties": {
+        "mediaType": { "const": "application/pdf" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "part": { "type": "string", "minLength": 1 },
+        "locatorBasis": { "const": "1-based PDF page + TA2 term row + language column" }
+      },
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["sha256", "capturedAt", "locatorBasis"],
+      "properties": {
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "capturedAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "locatorBasis": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "sourceType": { "const": "asset" } } },
+      "then": { "required": ["asset", "license", "url"] }
+    },
+    {
+      "if": { "properties": { "sourceType": { "const": "terminology" } } },
+      "then": {
+        "required": ["license", "url"],
+        "anyOf": [
+          { "required": ["document"] },
+          { "required": ["snapshot"] }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceType": {
+            "enum": ["institutional_reference", "textbook"]
+          }
+        }
+      },
+      "then": { "required": ["license", "url", "snapshot"] }
+    }
+  ],
+  "additionalProperties": false
+}

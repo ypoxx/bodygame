@@ -10,10 +10,13 @@ import { createRoundStateMachine } from "./src/game/roundStateMachine.js";
 import { createMutatorEngine } from "./src/game/mutators.js?v=20260714-3";
 import { createBossRoundManager } from "./src/game/bossRounds.js";
 import { computeAnswerScore, computeAccuracy, computeRank } from "./src/game/scoring.js";
-import { createRendererEngine } from "./src/engine/renderer.js?v=20260714-1";
+import { createRendererEngine } from "./src/engine/renderer.js?v=20260715-2";
 import { createCameraController } from "./src/engine/cameraController.js?v=20260714-3";
 import { createAudioEngine } from "./src/audio/audioEngine.js";
 import { createOnboarding } from "./src/ui/onboarding.js?v=20260715-4";
+import { createExploreSearchIndex, resolveExploreLayer } from "./src/ui/exploreSearch.js?v=20260715-1";
+import { getExplorePresentation } from "./src/ui/exploreContent.js?v=20260715-2";
+import { decorateExploreEntry, getExploreDisplay } from "./src/ui/exploreTerminology.js?v=20260715-2";
 import { createProgressionEngine } from "./src/progression/progression.js";
 import { createAdaptiveSelector } from "./src/learning/adaptiveSelector.js";
 import { createChallengeEngine } from "./src/challenges/challengeEngine.js";
@@ -45,7 +48,7 @@ const DEFAULT_SELECTION = {
 };
 
 const LAYER_CYCLE = ["bones", "muscles", "fasciae"];
-const BUILD_ID = "2026-07-15.mobile-atlas.5";
+const BUILD_ID = "2026-07-15.mobile-atlas.6";
 const USE_MOBILE_LOD = shouldUseMobileLod();
 const MODEL_ASSETS = {
   skeleton: USE_MOBILE_LOD
@@ -149,9 +152,35 @@ const ui = {
   toast: document.getElementById("toast"),
   panelTabButtons: Array.from(document.querySelectorAll("[data-panel-tab-btn]")),
   panelTabSections: Array.from(document.querySelectorAll("[data-panel-tab]")),
+  experienceExploreBtn: document.getElementById("experienceExploreBtn"),
+  experienceQuizBtn: document.getElementById("experienceQuizBtn"),
+  exploreSearchInput: document.getElementById("exploreSearchInput"),
+  exploreSearchClearBtn: document.getElementById("exploreSearchClearBtn"),
+  exploreSearchCancelBtn: document.getElementById("exploreSearchCancelBtn"),
+  exploreSearchPanel: document.getElementById("exploreSearchPanel"),
+  exploreSearchCount: document.getElementById("exploreSearchCount"),
+  exploreSearchResults: document.getElementById("exploreSearchResults"),
+  exploreSearchEmpty: document.getElementById("exploreSearchEmpty"),
+  exploreLayerButtons: Array.from(document.querySelectorAll("[data-explore-layer]")),
+  exploreFilterButtons: Array.from(document.querySelectorAll("[data-explore-filter]")),
+  exploreFocusBtn: document.getElementById("exploreFocusBtn"),
+  exploreIsolateBtn: document.getElementById("exploreIsolateBtn"),
+  exploreFrontBtn: document.getElementById("exploreFrontBtn"),
+  exploreBackBtn: document.getElementById("exploreBackBtn"),
+  exploreResetBtn: document.getElementById("exploreResetBtn"),
+  exploreCloseDetailBtn: document.getElementById("exploreCloseDetailBtn"),
+  exploreDetailPane: document.querySelector(".explore-detail-pane"),
+  explorePracticeBtn: document.getElementById("explorePracticeBtn"),
+  exploreTypeValue: document.getElementById("exploreTypeValue"),
+  exploreNameDeValue: document.getElementById("exploreNameDeValue"),
+  exploreNameLatinValue: document.getElementById("exploreNameLatinValue"),
+  exploreSummaryValue: document.getElementById("exploreSummaryValue"),
+  exploreDetailSections: document.getElementById("exploreDetailSections"),
+  exploreSourceNotice: document.getElementById("exploreSourceNotice"),
 };
 
 const state = {
+  experienceMode: "explore",
   activeLayer: "bones",
   simulatedMuscleLook: false,
   profileKey: loadStoredProfile(),
@@ -174,6 +203,12 @@ const state = {
   contentById: new Map(),
   tokenToId: new Map(),
   patternTokens: [],
+  exploreSearchIndex: createExploreSearchIndex(),
+  exploreSearchFilter: "all",
+  exploreSearchOpen: false,
+  exploreSelectedEntry: null,
+  exploreIsolated: false,
+  exploreSelectionRequestId: 0,
   score: 0,
   streak: 0,
   correct: 0,
@@ -181,6 +216,8 @@ const state = {
   unlocked: loadStoredUnlocked(),
   bestByMode: loadStoredBestByMode(),
   selectedMesh: null,
+  selectedMeshes: [],
+  selectedFocusObject: null,
   roots: {
     skeleton: null,
     muscle: null,
@@ -378,6 +415,7 @@ function bootstrap() {
   setSelection(DEFAULT_SELECTION);
   setGameMode(state.selectedGameMode);
   setLayer("bones");
+  setExperienceMode("explore", { initial: true });
   updateProfileButtons();
   updateRoundRuleText();
   updateChallengeBadge();
@@ -389,6 +427,7 @@ function bootstrap() {
   updateSoundButton();
   updateAudioSettingsUI();
   themeEngine.applyTheme(themeEngine.getActiveThemeKey());
+  applyEnvironmentLook();
   updateScoreboard();
   updateLeaderboardView();
   updateLayerLockHint();
@@ -404,9 +443,10 @@ function bootstrap() {
       resizeRenderer();
       frameModelInView(false);
       startRenderLoop();
-      scheduleMuscleLayerLoad(PROFILE_PRESETS[state.profileKey], true);
+      if (!USE_MOBILE_LOD) {
+        scheduleMuscleLayerLoad(PROFILE_PRESETS[state.profileKey], true);
+      }
       registerServiceWorker();
-      onboarding.showIfNeeded();
       telemetry.track("app_bootstrap_complete", {
         challenge: state.dailyChallenge?.key || null,
       });
@@ -420,6 +460,14 @@ function bootstrap() {
 }
 
 function bindUiEvents() {
+  ui.experienceExploreBtn?.addEventListener("click", () => {
+    setExperienceMode("explore");
+  });
+
+  ui.experienceQuizBtn?.addEventListener("click", () => {
+    setExperienceMode("quiz");
+  });
+
   ui.startRoundBtn.addEventListener("click", () => {
     sound.unlock();
     telemetry.track("round_start_clicked", { mode: state.selectedGameMode });
@@ -498,6 +546,103 @@ function bindUiEvents() {
   ui.layerMusclesBtn.addEventListener("click", () => setLayer("muscles"));
   ui.layerFasciaeBtn.addEventListener("click", () => setLayer("fasciae"));
 
+  for (const button of ui.exploreLayerButtons) {
+    button.addEventListener("click", () => {
+      clearExploreSelection();
+      setLayer(button.dataset.exploreLayer || "bones");
+    });
+  }
+
+  ui.exploreSearchInput?.addEventListener("focus", () => {
+    setExploreSearchOpen(true);
+  });
+
+  ui.exploreSearchInput?.addEventListener("input", () => {
+    setExploreSearchOpen(true);
+    updateExploreSearchResults();
+  });
+
+  ui.exploreSearchInput?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setExploreSearchOpen(false, { returnFocus: true });
+      return;
+    }
+    if (event.key === "ArrowDown") {
+      const firstResult = ui.exploreSearchResults?.querySelector("button");
+      if (firstResult) {
+        event.preventDefault();
+        firstResult.focus();
+      }
+      return;
+    }
+    if (event.key === "Enter") {
+      const firstResult = ui.exploreSearchResults?.querySelector("button");
+      if (firstResult instanceof HTMLButtonElement) {
+        event.preventDefault();
+        firstResult.click();
+      }
+    }
+  });
+
+  ui.exploreSearchClearBtn?.addEventListener("click", () => {
+    ui.exploreSearchInput.value = "";
+    updateExploreSearchResults();
+    ui.exploreSearchInput.focus();
+  });
+
+  ui.exploreSearchCancelBtn?.addEventListener("click", () => {
+    setExploreSearchOpen(false, { returnFocus: true });
+  });
+
+  for (const button of ui.exploreFilterButtons) {
+    button.addEventListener("click", () => {
+      state.exploreSearchFilter = button.dataset.exploreFilter || "all";
+      updateExploreFilterButtons();
+      updateExploreSearchResults();
+    });
+  }
+
+  ui.exploreSearchResults?.addEventListener("click", (event) => {
+    const button = event.target instanceof Element ? event.target.closest("[data-explore-result-id]") : null;
+    if (!(button instanceof HTMLButtonElement)) {
+      return;
+    }
+    const entry = state.contentById.get(button.dataset.exploreResultId || "");
+    if (entry) {
+      void selectExploreEntry(entry, { focus: true, moveFocusToCard: event.detail === 0 });
+    }
+  });
+
+  ui.exploreSearchResults?.addEventListener("keydown", (event) => {
+    if (!["ArrowDown", "ArrowUp", "Escape"].includes(event.key)) {
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      ui.exploreSearchInput?.focus();
+      return;
+    }
+    const buttons = Array.from(ui.exploreSearchResults.querySelectorAll("button"));
+    const currentIndex = buttons.indexOf(document.activeElement);
+    if (currentIndex < 0) {
+      return;
+    }
+    const nextIndex = event.key === "ArrowDown" ? Math.min(buttons.length - 1, currentIndex + 1) : Math.max(0, currentIndex - 1);
+    if (nextIndex !== currentIndex) {
+      event.preventDefault();
+      buttons[nextIndex].focus();
+    }
+  });
+
+  ui.exploreFocusBtn?.addEventListener("click", focusExploreSelection);
+  ui.exploreIsolateBtn?.addEventListener("click", toggleExploreIsolation);
+  ui.exploreFrontBtn?.addEventListener("click", () => setExploreView("front"));
+  ui.exploreBackBtn?.addEventListener("click", () => setExploreView("back"));
+  ui.exploreResetBtn?.addEventListener("click", resetExploreView);
+  ui.exploreCloseDetailBtn?.addEventListener("click", () => clearExploreSelection({ returnFocus: true }));
+  ui.explorePracticeBtn?.addEventListener("click", practiceExploreSelection);
+
   for (const tabButton of ui.panelTabButtons) {
     tabButton.addEventListener("click", () => {
       const requestedTab = tabButton.dataset.panelTabBtn || "play";
@@ -506,6 +651,10 @@ function bindUiEvents() {
   }
 
   ui.sheetHandleBtn?.addEventListener("click", () => {
+    if (state.experienceMode === "explore") {
+      clearExploreSelection({ returnFocus: true });
+      return;
+    }
     if (state.activePanelTab !== "play") {
       setPanelTab("play");
       return;
@@ -608,6 +757,44 @@ function handleGlobalKeydown(event) {
     return;
   }
 
+  if (state.experienceMode === "explore") {
+    if (event.code === "Escape") {
+      if (state.exploreSearchOpen) {
+        setExploreSearchOpen(false, { returnFocus: true });
+      } else if (state.exploreSelectedEntry || state.selectedMesh) {
+        clearExploreSelection({ returnFocus: true });
+      }
+      return;
+    }
+    if (event.code === "Digit1") {
+      clearExploreSelection();
+      setLayer("bones");
+      return;
+    }
+    if (event.code === "Digit2") {
+      clearExploreSelection();
+      setLayer("muscles");
+      return;
+    }
+    if (event.code === "Digit3") {
+      clearExploreSelection();
+      setLayer("fasciae");
+      return;
+    }
+    if (event.code === "KeyF") {
+      focusExploreSelection();
+      return;
+    }
+    if (event.code === "KeyI") {
+      toggleExploreIsolation();
+      return;
+    }
+    if (event.code === "KeyR") {
+      resetExploreView();
+    }
+    return;
+  }
+
   if (event.code === "Space") {
     event.preventDefault();
     if (state.round.status === "active") {
@@ -684,6 +871,387 @@ function handleResultsModalKeydown(event) {
     event.preventDefault();
     first.focus();
   }
+}
+
+function setExperienceMode(mode, options = {}) {
+  const next = mode === "quiz" ? "quiz" : "explore";
+  const activeRound = state.round.status === "countdown" || state.round.status === "active";
+  if (next === "explore" && activeRound) {
+    showToast("Beende zuerst die laufende Quizrunde.");
+    return false;
+  }
+
+  const changed = state.experienceMode !== next;
+  state.experienceMode = next;
+  ui.appShell.dataset.experienceMode = next;
+  ui.infoPanel?.setAttribute("aria-label", next === "explore" ? "Lernkarte" : "Spielsteuerung");
+
+  ui.experienceExploreBtn?.classList.toggle("active", next === "explore");
+  ui.experienceExploreBtn?.setAttribute("aria-pressed", String(next === "explore"));
+  ui.experienceQuizBtn?.classList.toggle("active", next === "quiz");
+  ui.experienceQuizBtn?.setAttribute("aria-pressed", String(next === "quiz"));
+
+  if (next === "quiz") {
+    setExploreSearchOpen(false);
+    clearExploreSelection();
+    setPanelTab("play");
+    setSheetState("expanded");
+    if (!options.initial) {
+      onboarding.showIfNeeded();
+    }
+  } else {
+    clearExploreSelection();
+    hideResults();
+    setExploreSearchOpen(false);
+    updateExploreSearchResults();
+    updateExploreActions();
+  }
+
+  applyEnvironmentLook();
+
+  if (changed && !options.initial) {
+    telemetry.track("experience_mode_changed", { mode: next });
+  }
+
+  window.requestAnimationFrame(() => {
+    resizeRenderer();
+    frameModelInView(!options.initial);
+  });
+  return true;
+}
+
+function setExploreSearchOpen(open, options = {}) {
+  const next = Boolean(open) && state.experienceMode === "explore";
+  state.exploreSearchOpen = next;
+  ui.appShell.dataset.searchState = next ? "open" : "closed";
+  ui.exploreSearchInput?.setAttribute("aria-expanded", String(next));
+  ui.exploreSearchPanel?.setAttribute("aria-hidden", String(!next));
+
+  if (next) {
+    updateExploreSearchResults();
+  } else if (options.returnFocus) {
+    ui.canvas?.focus({ preventScroll: true });
+  }
+}
+
+function updateExploreFilterButtons() {
+  for (const button of ui.exploreFilterButtons) {
+    const active = (button.dataset.exploreFilter || "all") === state.exploreSearchFilter;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+}
+
+function getExploreTypeLabel(entry) {
+  if (!entry) {
+    return "Struktur";
+  }
+  const display = getExploreDisplay(entry);
+  const typeKey = String(display.typeId || entry.tissueType || entry.anatomicalType || "").replace(/^type\./, "");
+  const typeLabel =
+    TISSUE_LABELS_DE[typeKey] ||
+    (resolveExploreLayer(entry) === "muscles"
+      ? "Muskel"
+      : resolveExploreLayer(entry) === "fasciae"
+        ? "Bindegewebe"
+        : "Skelettstruktur");
+  const typeReviewStatus = String(display.typeReviewStatus || "unreviewed");
+  const typeIsReleased = ["expert_reviewed", "published"].includes(typeReviewStatus);
+  const provisional = typeIsReleased ? "" : " · vorläufig";
+  return `${typeLabel}${display.sideLabel ? ` · ${display.sideLabel}` : ""}${provisional}`;
+}
+
+function updateExploreSearchResults() {
+  if (!ui.exploreSearchResults || !ui.exploreSearchCount || !ui.exploreSearchEmpty) {
+    return;
+  }
+
+  const query = ui.exploreSearchInput?.value || "";
+  const result = state.exploreSearchIndex.query(query, state.exploreSearchFilter, 80);
+  ui.exploreSearchResults.replaceChildren();
+
+  for (const entry of result.entries) {
+    const display = getExploreDisplay(entry);
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    const layer = resolveExploreLayer(entry);
+    button.type = "button";
+    button.className = `explore-result-btn result-${layer}`;
+    button.dataset.exploreResultId = entry.id;
+
+    const marker = document.createElement("span");
+    marker.className = "explore-result-marker";
+    marker.setAttribute("aria-hidden", "true");
+    marker.textContent = layer === "muscles" ? "M" : layer === "fasciae" ? "B" : "K";
+
+    const copy = document.createElement("span");
+    copy.className = "explore-result-copy";
+
+    const type = document.createElement("span");
+    type.className = "explore-result-type";
+    type.textContent = getExploreTypeLabel(entry);
+
+    const name = document.createElement("strong");
+    name.textContent = display.title || formatStructureName(entry.meshName) || "Unbenannte Struktur";
+
+    const latin = document.createElement("span");
+    latin.className = "explore-result-latin";
+    latin.textContent = display.latin || "Terminologie in Prüfung";
+
+    const arrow = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    arrow.setAttribute("viewBox", "0 0 24 24");
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.classList.add("explore-result-arrow");
+    const arrowPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    arrowPath.setAttribute("d", "m9 5 7 7-7 7");
+    arrow.append(arrowPath);
+
+    copy.append(type, name, latin);
+    button.append(marker, copy, arrow);
+    item.append(button);
+    ui.exploreSearchResults.append(item);
+  }
+
+  const countLabel = result.total === 1 ? "1 Ergebnis" : `${result.total} Ergebnisse`;
+  ui.exploreSearchCount.textContent = query.trim() ? countLabel : `${result.total} Strukturen`;
+  ui.exploreSearchEmpty.classList.toggle("hidden", result.total > 0);
+  updateExploreFilterButtons();
+}
+
+async function ensureExploreLayer(layer) {
+  if (layer !== "bones" && !state.roots.muscle) {
+    showToast("Weichteile werden geladen …");
+    await beginMuscleLayerLoad(PROFILE_PRESETS[state.profileKey], true, state.assetGeneration);
+  }
+  setLayer(layer);
+}
+
+function findMeshForEntry(entry) {
+  const layer = resolveExploreLayer(entry);
+  const meshes = state.selectables[layer] || [];
+  const targetMeshName = normalizeToken(entry?.meshName);
+  return (
+    meshes.find((mesh) => mesh.userData.boneId === entry?.id) ||
+    meshes.find((mesh) => normalizeToken(getSoftTissueNodeName(mesh)) === targetMeshName) ||
+    meshes.find((mesh) => inferBoneId(getSoftTissueNodeName(mesh)) === entry?.id) ||
+    null
+  );
+}
+
+async function selectExploreEntry(entry, options = {}) {
+  if (!entry || state.experienceMode !== "explore") {
+    return;
+  }
+
+  const requestId = ++state.exploreSelectionRequestId;
+  resetExploreIsolation();
+  await ensureExploreLayer(resolveExploreLayer(entry));
+  if (requestId !== state.exploreSelectionRequestId || state.experienceMode !== "explore") {
+    return;
+  }
+  const mesh = findMeshForEntry(entry);
+  if (mesh) {
+    selectMesh(mesh, "selected");
+  }
+
+  state.exploreSelectedEntry = entry;
+  ui.appShell.dataset.exploreSelection = "selected";
+  setSelection(entry);
+  updateExploreDetail(entry);
+  updateExploreActions();
+  setExploreSearchOpen(false);
+
+  if (mesh && options.focus !== false) {
+    focusExploreSelection();
+  }
+  if (!mesh) {
+    showToast("Die Lernkarte ist geöffnet; das 3D-Objekt konnte nicht eindeutig zugeordnet werden.");
+  }
+  if (options.moveFocusToCard) {
+    window.requestAnimationFrame(() => ui.exploreNameDeValue?.focus({ preventScroll: true }));
+  }
+}
+
+function updateExploreDetail(entry) {
+  setExploreDetailVisibility(Boolean(entry));
+  const display = getExploreDisplay(entry);
+  const presentation = getExplorePresentation(entry);
+  ui.exploreTypeValue.textContent = getExploreTypeLabel(entry);
+  ui.exploreNameDeValue.textContent = display.title || formatStructureName(entry?.meshName) || "Unbenannte Struktur";
+  ui.exploreNameLatinValue.textContent = display.latin || "Kein freigegebener lateinischer Einzelbegriff";
+  ui.exploreSummaryValue.textContent = presentation.summary;
+  ui.exploreSummaryValue.classList.toggle("hidden", !presentation.summary);
+  ui.exploreDetailSections.replaceChildren();
+
+  for (const section of presentation.sections) {
+    const sectionElement = document.createElement("section");
+    sectionElement.className = "explore-detail-section";
+    const title = document.createElement("h3");
+    title.textContent = section.label;
+    const list = document.createElement("ul");
+    for (const value of section.values) {
+      const item = document.createElement("li");
+      item.textContent = value;
+      list.append(item);
+    }
+    sectionElement.append(title, list);
+    ui.exploreDetailSections.append(sectionElement);
+  }
+
+  ui.exploreSourceNotice.textContent = display.terminologyNotice;
+  ui.exploreSourceNotice.classList.toggle("hidden", !display.terminologyNotice && presentation.hasSourcedContent);
+  ui.explorePracticeBtn.classList.toggle("hidden", entry?.quizEligible !== true || !entry?.id);
+}
+
+function setExploreDetailVisibility(visible) {
+  if (!ui.exploreDetailPane) {
+    return;
+  }
+  ui.exploreDetailPane.setAttribute("aria-hidden", String(!visible));
+  if (visible) {
+    ui.exploreDetailPane.removeAttribute("inert");
+  } else {
+    ui.exploreDetailPane.setAttribute("inert", "");
+  }
+  const handleInteractive = state.experienceMode === "quiz" || visible;
+  if (ui.sheetHandleBtn) {
+    ui.sheetHandleBtn.tabIndex = handleInteractive ? 0 : -1;
+    ui.sheetHandleBtn.setAttribute("aria-hidden", String(!handleInteractive));
+    ui.sheetHandleBtn.setAttribute(
+      "aria-label",
+      state.experienceMode === "explore" ? "Lernkarte schließen" : "Spielsteuerung ein- oder ausklappen",
+    );
+  }
+}
+
+function updateExploreActions() {
+  const hasMesh = getSelectedStructureMeshes().length > 0;
+  ui.exploreFocusBtn.disabled = !hasMesh;
+  ui.exploreIsolateBtn.disabled = !hasMesh;
+  ui.exploreIsolateBtn.classList.toggle("active", state.exploreIsolated);
+  ui.exploreIsolateBtn.setAttribute("aria-pressed", String(state.exploreIsolated));
+}
+
+function resetExploreIsolation() {
+  if (!state.exploreIsolated) {
+    return;
+  }
+  for (const mesh of state.selectables.bones) {
+    mesh.visible = true;
+  }
+  applySoftTissueVisibility(state.activeLayer);
+  state.exploreIsolated = false;
+  updateExploreActions();
+  window.requestAnimationFrame(() => updateStageFloor());
+}
+
+function toggleExploreIsolation() {
+  if (state.experienceMode !== "explore" || !state.selectedMesh) {
+    return;
+  }
+
+  if (state.exploreIsolated) {
+    resetExploreIsolation();
+    showToast("Kontext wieder eingeblendet.");
+    return;
+  }
+
+  const selectedMeshes = getSelectedStructureMeshes();
+  const selectedSet = new Set(selectedMeshes);
+  for (const mesh of getActiveSelectables()) {
+    mesh.visible = selectedSet.has(mesh);
+  }
+  state.exploreIsolated = true;
+  updateExploreActions();
+  updateStageFloor(selectedMeshes);
+  showToast("Ausgewählte Struktur isoliert.");
+}
+
+function focusExploreSelection() {
+  if (state.experienceMode === "explore" && state.selectedMesh) {
+    cameraController.fitToObject(
+      state.selectedFocusObject || state.selectedMesh,
+      {
+        margin: 0.92,
+        targetHeightRatio: 0.48,
+        targetWidthRatio: 0.62,
+        yOffsetRatio: -0.38,
+        constrainZoom: true,
+        direction: [0, 0.04, 1],
+        durationMs: 380,
+        smooth: true,
+      },
+      true,
+    );
+  }
+}
+
+function setExploreView(view) {
+  if (state.experienceMode !== "explore") {
+    return;
+  }
+  const target = state.selectedFocusObject || state.selectedMesh || getActiveModelRoot();
+  if (!target) {
+    return;
+  }
+  const selected = Boolean(state.selectedMesh);
+  cameraController.fitToObject(
+    target,
+    {
+      margin: selected ? 0.92 : 1,
+      targetHeightRatio: selected ? 0.48 : 0.76,
+      targetWidthRatio: selected ? 0.62 : 0.84,
+      yOffsetRatio: selected ? -0.38 : 0,
+      constrainZoom: true,
+      direction: view === "back" ? [0, 0.04, -1] : [0, 0.04, 1],
+      durationMs: 420,
+      smooth: true,
+    },
+    true,
+  );
+}
+
+function getActiveModelRoot() {
+  return state.activeLayer === "bones"
+    ? state.roots.skeleton || state.roots.muscle || rootGroup
+    : state.roots.muscle || state.roots.skeleton || rootGroup;
+}
+
+function clearExploreSelection(options = {}) {
+  state.exploreSelectionRequestId += 1;
+  resetExploreIsolation();
+  clearSelectedStructure();
+  state.exploreSelectedEntry = null;
+  setExploreDetailVisibility(false);
+  ui.appShell.dataset.exploreSelection = "empty";
+  updateExploreActions();
+  if (options.returnFocus) {
+    ui.canvas?.focus({ preventScroll: true });
+  }
+}
+
+function resetExploreView() {
+  if (state.experienceMode !== "explore") {
+    return;
+  }
+  setExploreSearchOpen(false);
+  clearExploreSelection();
+  updateStageFloor();
+  frameModelInView(true);
+}
+
+function practiceExploreSelection() {
+  const entry = state.exploreSelectedEntry;
+  if (!entry?.quizEligible) {
+    return;
+  }
+  const layer = resolveExploreLayer(entry);
+  if (!setExperienceMode("quiz")) {
+    return;
+  }
+  setLayer(layer);
+  setPanelTab("play");
+  showToast(`${entry.nameDe || "Struktur"}: passende Ebene ist für das Quiz gewählt.`);
 }
 
 function setGameMode(modeKey) {
@@ -941,21 +1509,41 @@ function applyThemeToScene(themeScene) {
 }
 
 function frameModelInView(smooth = true) {
-  const target =
-    state.activeLayer === "bones"
-      ? state.roots.skeleton || state.roots.muscle || rootGroup
-      : state.roots.muscle || state.roots.skeleton || rootGroup;
+  const exploreSelection =
+    state.experienceMode === "explore" ? state.selectedFocusObject || state.selectedMesh : null;
+  const target = exploreSelection || getActiveModelRoot();
 
   if (!target) {
     return;
   }
 
-  if (state.sheetState === "full") {
+  if (state.sheetState === "full" && state.experienceMode === "quiz") {
     return;
   }
 
   const compactSheet = state.sheetState === "peek";
   const shortStage = ui.canvas.clientHeight < 560;
+  if (state.experienceMode === "explore") {
+    if (exploreSelection) {
+      focusExploreSelection();
+      return;
+    }
+    cameraController.fitToObject(
+      target,
+      {
+        margin: 1,
+        targetHeightRatio: shortStage ? 0.59 : 0.67,
+        targetWidthRatio: 0.8,
+        yOffsetRatio: shortStage ? 0.16 : 0.12,
+        constrainZoom: true,
+        direction: [0, 0.035, 1],
+        durationMs: 420,
+        smooth,
+      },
+      smooth,
+    );
+    return;
+  }
   cameraController.fitToObject(
     target,
     {
@@ -1334,7 +1922,7 @@ function handleRoundAnswer(mesh, entry, hitPoint = null) {
     }
 
     adaptiveSelector.recordResult(question.id, true);
-    applyMeshStyle(mesh, "correct");
+    applySelectedStructureStyle(mesh, "correct");
     unlockCard(entry.id);
     sound.correct(state.round.combo);
     triggerHaptic(18);
@@ -1369,7 +1957,7 @@ function handleRoundAnswer(mesh, entry, hitPoint = null) {
 
     window.setTimeout(() => {
       if (state.selectedMesh === mesh) {
-        applyMeshStyle(mesh, "selected");
+        applySelectedStructureStyle(mesh, "selected");
       }
       if (state.round.status === "active") {
         nextQuestion();
@@ -1400,7 +1988,7 @@ function handleRoundAnswer(mesh, entry, hitPoint = null) {
     state.score = Math.max(0, state.score + scoreResult.pointsDelta);
 
     adaptiveSelector.recordResult(question.id, false);
-    applyMeshStyle(mesh, "wrong");
+    applySelectedStructureStyle(mesh, "wrong");
     sound.wrong();
     triggerHaptic([12, 30, 12]);
     pulseFlash("wrong");
@@ -1438,7 +2026,7 @@ function handleRoundAnswer(mesh, entry, hitPoint = null) {
 
     window.setTimeout(() => {
       if (state.selectedMesh === mesh) {
-        applyMeshStyle(mesh, "selected");
+        applySelectedStructureStyle(mesh, "selected");
       }
       if (state.round.status === "active") {
         nextQuestion();
@@ -1692,6 +2280,10 @@ function updateControls() {
         : "";
   }
 
+  for (const button of ui.exploreLayerButtons) {
+    button.disabled = state.isLoadingProfile;
+  }
+
   ui.profileMaleBtn.disabled = uiLocked;
   ui.profileFemaleBtn.disabled = uiLocked;
   ui.themeToggleBtn.disabled = state.isLoadingProfile;
@@ -1717,6 +2309,23 @@ function updateControls() {
 
 async function loadQuizData() {
   let allContent = [];
+  let runtimeById = new Map();
+
+  try {
+    const runtimeResponse = await fetch("./content/v2/runtime-index.json");
+    if (runtimeResponse.ok) {
+      const runtimeEntries = await runtimeResponse.json();
+      if (!Array.isArray(runtimeEntries) || runtimeEntries.length !== 946) {
+        throw new Error("Der v2-Terminologieindex hat nicht die erwarteten 946 Einträge.");
+      }
+      runtimeById = new Map(runtimeEntries.map((entry) => [entry.id, entry]));
+      if (runtimeById.size !== runtimeEntries.length) {
+        throw new Error("Der v2-Terminologieindex enthält doppelte IDs.");
+      }
+    }
+  } catch (runtimeError) {
+    console.warn("v2-Terminologieindex nicht verfügbar; sichere Asset-Bezeichnungen bleiben aktiv.", runtimeError);
+  }
 
   try {
     const response = await fetch("./content/structures.json");
@@ -1724,7 +2333,8 @@ async function loadQuizData() {
       throw new Error(`content/structures.json konnte nicht geladen werden (${response.status})`);
     }
     const structures = await response.json();
-    allContent = structures.map((item) => ({
+    allContent = structures.map((item) => decorateExploreEntry({
+      ...item,
       id: item.id,
       meshName: item.meshName || item.nameLatin,
       nameDe: item.nameDe,
@@ -1737,13 +2347,14 @@ async function loadQuizData() {
       reviewStatus: item.reviewStatus || "legacy",
       ta2Id: item.ta2Id ?? null,
       source: item.source || "legacy_content",
-    }));
+      aliases: Array.isArray(item.aliases) ? item.aliases : [],
+    }, runtimeById.get(item.id)));
   } catch (contentError) {
     const fallbackResponse = await fetch("./quizdata.json");
     if (!fallbackResponse.ok) {
       throw contentError;
     }
-    allContent = await fallbackResponse.json();
+    allContent = (await fallbackResponse.json()).map((item) => decorateExploreEntry(item, runtimeById.get(item.id)));
     showToast("Quiz aus quizdata.json geladen (Fallback).");
   }
 
@@ -1762,6 +2373,8 @@ async function loadQuizData() {
   state.contentById = new Map(allContent.map((item) => [item.id, item]));
   adaptiveSelector.setItems(quizData);
   buildTokenIndex(allContent);
+  state.exploreSearchIndex.replace(allContent);
+  updateExploreSearchResults();
 }
 
 function buildTokenIndex(data) {
@@ -1769,7 +2382,14 @@ function buildTokenIndex(data) {
   const availableIds = new Set(data.map((entry) => entry.id));
 
   for (const entry of data) {
-    const tokens = [entry.id, entry.meshName, entry.nameDe, entry.nameLatin];
+    const aliases = Array.isArray(entry.aliases)
+      ? entry.aliases.flatMap((alias) =>
+          typeof alias === "string"
+            ? [alias]
+            : [alias?.name, alias?.nameDe, alias?.nameLatin, alias?.value].filter(Boolean),
+        )
+      : [];
+    const tokens = [entry.id, entry.meshName, entry.nameDe, entry.nameLatin, ...aliases];
     for (const token of tokens) {
       const normalized = normalizeToken(token);
       if (normalized) {
@@ -1893,11 +2513,7 @@ function clearLoadedLayers() {
   state.muscleLoadPromise = null;
   state.muscleLoadScheduled = false;
   state.requestedLayer = null;
-  if (state.selectedMesh) {
-    applyMeshStyle(state.selectedMesh, "base");
-    state.selectedMesh = null;
-  }
-  rendererEngine.setOutlineSelection([]);
+  clearSelectedStructure();
 
   for (const root of [state.roots.skeleton, state.roots.muscle]) {
     if (!root) {
@@ -2265,9 +2881,7 @@ function setLayer(layerName) {
 
   const layerChanged = state.activeLayer !== layerName;
   if (layerChanged && state.selectedMesh) {
-    applyMeshStyle(state.selectedMesh, "base");
-    state.selectedMesh = null;
-    rendererEngine.setOutlineSelection([]);
+    clearSelectedStructure();
   }
 
   state.activeLayer = layerName;
@@ -2312,9 +2926,28 @@ function updateLayerButtons() {
   ui.layerBonesBtn.classList.toggle("active", state.activeLayer === "bones");
   ui.layerMusclesBtn.classList.toggle("active", state.activeLayer === "muscles");
   ui.layerFasciaeBtn.classList.toggle("active", state.activeLayer === "fasciae");
+  for (const button of ui.exploreLayerButtons) {
+    const active = (button.dataset.exploreLayer || "bones") === state.activeLayer;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
 }
 
 function applyEnvironmentLook() {
+  if (state.experienceMode === "explore") {
+    scene.background.set(0x0c1420);
+    scene.fog.color.set(0x0c1420);
+    keyLight.color.set(0xffeee2);
+    keyLight.intensity = 1.78;
+    fillLight.color.set(0xc99a91);
+    fillLight.intensity = 0.68;
+    hemiLight.color.set(0xffe9dd);
+    hemiLight.intensity = 0.72;
+    rimLight.color.set(0xdf8b7d);
+    rimLight.intensity = 0.62;
+    floorMaterial.color.set(0x14202e);
+    return;
+  }
   if (state.simulatedMuscleLook) {
     scene.background.set(0x1c1116);
     scene.fog.color.set(0x1c1116);
@@ -2343,8 +2976,21 @@ function getActiveSelectables() {
   return state.selectables.bones;
 }
 
+function isSelectableVisible(mesh) {
+  let current = mesh;
+  while (current) {
+    if (!current.visible) {
+      return false;
+    }
+    current = current.parent;
+  }
+  return true;
+}
+
 function pickMeshFromPointer(event) {
-  const meshes = getActiveSelectables();
+  // Three's Raycaster does not skip invisible objects. Filtering the complete
+  // ancestor chain prevents an isolated view from selecting hidden anatomy.
+  const meshes = getActiveSelectables().filter(isSelectableVisible);
   if (!meshes.length) {
     return;
   }
@@ -2360,20 +3006,51 @@ function pickMeshFromPointer(event) {
     return;
   }
   const entry = getEntryForMesh(mesh);
+  if (state.experienceMode === "explore") {
+    state.exploreSelectionRequestId += 1;
+  }
 
   selectMesh(mesh, "selected");
-  if (state.round.status !== "active" && state.round.status !== "countdown") {
+  if (state.experienceMode !== "explore" && state.round.status !== "active" && state.round.status !== "countdown") {
     focusIfTiny(mesh);
   }
   if (entry) {
     setSelection(entry);
   } else {
     const structureType = TISSUE_LABELS_DE[mesh.userData.structureType] || "Struktur";
-    setSelection({
+    const fallbackEntry = {
+      id: null,
+      meshName: getSoftTissueNodeName(mesh),
       nameDe: formatStructureName(getSoftTissueNodeName(mesh)),
       nameLatin: "-",
-      funFact: `${structureType} · fachliche Benennung noch nicht für das Quiz freigegeben.`,
+      funFact: "",
+      tissueType: mesh.userData.structureType,
+      displayGroup: mesh.userData.displayGroup || state.activeLayer,
+      quizEligible: false,
+      reviewStatus: "review_required",
+    };
+    setSelection({
+      ...fallbackEntry,
+      nameDe: structureType,
+      funFact: "Originalbezeichnung aus dem 3D-Modell. Die fachliche Benennung wird geprüft.",
     });
+    if (state.experienceMode === "explore") {
+      state.exploreSelectedEntry = fallbackEntry;
+      ui.appShell.dataset.exploreSelection = "selected";
+      updateExploreDetail(fallbackEntry);
+      updateExploreActions();
+      setExploreSearchOpen(false);
+      focusExploreSelection();
+    }
+  }
+
+  if (entry && state.experienceMode === "explore") {
+    state.exploreSelectedEntry = entry;
+    ui.appShell.dataset.exploreSelection = "selected";
+    updateExploreDetail(entry);
+    updateExploreActions();
+    setExploreSearchOpen(false);
+    focusExploreSelection();
   }
 
   if (state.round.status === "active") {
@@ -2386,8 +3063,7 @@ function findNearestMeshByScreenDistance(meshes, pointerNdc, maxDistancePx = 22)
   const centerNdc = new THREE.Vector3();
   const halfWidth = Math.max(1, ui.canvas.clientWidth / 2);
   const halfHeight = Math.max(1, ui.canvas.clientHeight / 2);
-  let bestMesh = null;
-  let bestDistance = Number.POSITIVE_INFINITY;
+  const candidates = [];
 
   for (const mesh of meshes) {
     if (!mesh.visible) {
@@ -2419,13 +3095,48 @@ function findNearestMeshByScreenDistance(meshes, pointerNdc, maxDistancePx = 22)
     const dxPx = (centerNdc.x - pointerNdc.x) * halfWidth;
     const dyPx = (centerNdc.y - pointerNdc.y) * halfHeight;
     const distance = Math.hypot(dxPx, dyPx);
-    if (distance < bestDistance && distance <= maxDistancePx) {
-      bestDistance = distance;
-      bestMesh = mesh;
+    if (distance <= maxDistancePx) {
+      candidates.push({ mesh, distance, centerX: centerNdc.x, centerY: centerNdc.y });
     }
   }
 
-  return bestMesh;
+  candidates.sort((left, right) => left.distance - right.distance);
+  const best = candidates[0];
+  if (!best) {
+    return null;
+  }
+
+  const runnerUp = candidates.find((candidate) => !sameStructureIdentity(candidate.mesh, best.mesh));
+  const ambiguityGap = Math.max(6, best.distance * 0.55);
+  if (runnerUp && runnerUp.distance - best.distance < ambiguityGap) {
+    showToast("Mehrere kleine Strukturen liegen hier eng zusammen. Bitte zoomen oder die Suche nutzen.");
+    return null;
+  }
+
+  const centerPointer = new THREE.Vector2(best.centerX, best.centerY);
+  raycaster.setFromCamera(centerPointer, camera);
+  const centerHits = raycaster.intersectObjects(meshes, false);
+  const visibleMesh = centerHits[0]?.object || null;
+  if (visibleMesh && !sameStructureIdentity(visibleMesh, best.mesh)) {
+    showToast("Die Struktur liegt hinter einer anderen Ebene. Bitte drehen, zoomen oder die Suche nutzen.");
+    return null;
+  }
+
+  return best.mesh;
+}
+
+function sameStructureIdentity(left, right) {
+  if (!left || !right) {
+    return false;
+  }
+  const leftId = left.userData?.boneId || null;
+  const rightId = right.userData?.boneId || null;
+  if (leftId && rightId) {
+    return leftId === rightId;
+  }
+  const leftName = normalizeToken(left.userData?.anatomyName || getSoftTissueNodeName(left));
+  const rightName = normalizeToken(right.userData?.anatomyName || getSoftTissueNodeName(right));
+  return Boolean(leftName) && leftName === rightName;
 }
 
 function getEntryForMesh(mesh) {
@@ -2447,12 +3158,81 @@ function formatStructureName(name) {
 }
 
 function selectMesh(mesh, styleName) {
-  if (state.selectedMesh && state.selectedMesh !== mesh) {
-    applyMeshStyle(state.selectedMesh, "base");
+  const nextMeshes = getStructureMeshes(mesh);
+  const nextSet = new Set(nextMeshes);
+  for (const selected of getSelectedStructureMeshes()) {
+    if (!nextSet.has(selected)) {
+      applyMeshStyle(selected, "base");
+    }
   }
   state.selectedMesh = mesh;
-  applyMeshStyle(mesh, styleName);
-  rendererEngine.setOutlineSelection([mesh]);
+  state.selectedMeshes = nextMeshes;
+  state.selectedFocusObject = getStructureFocusObject(mesh);
+  for (const selected of nextMeshes) {
+    applyMeshStyle(selected, styleName);
+  }
+  rendererEngine.setOutlineSelection(nextMeshes);
+}
+
+function getSelectedStructureMeshes() {
+  if (Array.isArray(state.selectedMeshes) && state.selectedMeshes.length) {
+    return state.selectedMeshes;
+  }
+  return state.selectedMesh ? [state.selectedMesh] : [];
+}
+
+function getStructureMeshes(mesh) {
+  if (!mesh) {
+    return [];
+  }
+  const selectedId = mesh.userData?.boneId || null;
+  const selectedName = normalizeToken(mesh.userData?.anatomyName || getSoftTissueNodeName(mesh));
+  const candidates = [
+    ...state.selectables.bones,
+    ...state.selectables.muscles,
+    ...state.selectables.fasciae,
+  ];
+  const matches = candidates.filter((candidate) => {
+    if (selectedId && candidate.userData?.boneId === selectedId) {
+      return true;
+    }
+    if (!selectedName) {
+      return candidate === mesh;
+    }
+    return normalizeToken(candidate.userData?.anatomyName || getSoftTissueNodeName(candidate)) === selectedName;
+  });
+  return matches.length ? matches : [mesh];
+}
+
+function getStructureFocusObject(mesh) {
+  const selectedName = normalizeToken(mesh?.userData?.anatomyName || getSoftTissueNodeName(mesh));
+  let focusObject = mesh;
+  let current = mesh?.parent || null;
+  while (current && selectedName) {
+    if (normalizeToken(getSoftTissueNodeName(current)) !== selectedName) {
+      break;
+    }
+    focusObject = current;
+    current = current.parent;
+  }
+  return focusObject;
+}
+
+function applySelectedStructureStyle(mesh, styleName) {
+  const selectedMeshes = state.selectedMesh === mesh ? getSelectedStructureMeshes() : getStructureMeshes(mesh);
+  for (const selected of selectedMeshes) {
+    applyMeshStyle(selected, styleName);
+  }
+}
+
+function clearSelectedStructure() {
+  for (const selected of getSelectedStructureMeshes()) {
+    applyMeshStyle(selected, "base");
+  }
+  state.selectedMesh = null;
+  state.selectedMeshes = [];
+  state.selectedFocusObject = null;
+  rendererEngine.setOutlineSelection([]);
 }
 
 function focusIfTiny(mesh) {

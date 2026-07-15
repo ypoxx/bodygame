@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "reviewArea": "terminology",
+  "status": "in_progress",
+  "records": [
+    {
+      "id": "review.terminology.phase_b_independent_check",
+      "targetType": "catalog",
+      "targetId": "anatomyquest.content.v2",
+      "status": "needs_review",
+      "notes": "Exact and rule-based TA2 2.07 mappings are source-bound; independent terminology review remains pending."
+    }
+  ]
+}

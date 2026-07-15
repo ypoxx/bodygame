@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2,
+  "taxonomyId": "anatomical-types",
+  "values": [
+    { "id": "type.unresolved", "labelDe": "Noch nicht klassifiziert" },
+    { "id": "type.bone", "labelDe": "Knochen" },
+    { "id": "type.cartilage", "labelDe": "Knorpel" },
+    { "id": "type.tooth", "labelDe": "Zahn" },
+    { "id": "type.cavity", "labelDe": "Hohlraum" },
+    { "id": "type.muscle", "labelDe": "Muskel" },
+    { "id": "type.fascia", "labelDe": "Faszie" },
+    { "id": "type.fascial_tract", "labelDe": "Faszienzug" },
+    { "id": "type.fascial_arch", "labelDe": "Faszienbogen" },
+    { "id": "type.fascial_septum", "labelDe": "Faszienseptum" },
+    { "id": "type.synovial_bursa", "labelDe": "Schleimbeutel" },
+    { "id": "type.tendon_sheath", "labelDe": "Sehnenscheide" },
+    { "id": "type.tendon", "labelDe": "Sehne" },
+    { "id": "type.ligament", "labelDe": "Band" },
+    { "id": "type.retinaculum", "labelDe": "Retinaculum" },
+    { "id": "type.aponeurosis", "labelDe": "Aponeurose" },
+    { "id": "type.capsule", "labelDe": "Kapsel" },
+    { "id": "type.tendinous_structure", "labelDe": "Sehnenstruktur" },
+    { "id": "type.muscle_trochlea", "labelDe": "Muskelrolle" },
+    { "id": "type.eyelid_tarsus", "labelDe": "Lidplatte" }
+  ]
+}

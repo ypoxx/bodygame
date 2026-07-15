@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/review.schema.json",
+  "title": "AnatomyQuest v2 review ledger",
+  "type": "object",
+  "required": ["schemaVersion", "reviewArea", "status", "records"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "reviewArea": {
+      "enum": ["terminology", "classification", "anatomical_content", "localization", "mesh_mapping"]
+    },
+    "status": { "enum": ["not_started", "in_progress", "complete", "blocked"] },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "targetType", "targetId", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^review\\.[a-z0-9._-]+$"
+          },
+          "targetType": { "enum": ["instance", "concept", "names", "claim", "catalog"] },
+          "targetId": { "type": "string", "minLength": 1 },
+          "targetHash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "status": { "enum": ["needs_review", "accepted", "changes_requested", "blocked"] },
+          "authorId": { "type": "string", "minLength": 1 },
+          "reviewerId": { "type": "string", "minLength": 1 },
+          "reviewerRole": {
+            "enum": ["automation", "editorial", "medical_domain_expert", "localization_expert"]
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["sourceId", "locator"],
+              "properties": {
+                "sourceId": {
+                  "type": "string",
+                  "pattern": "^source\\.[a-z0-9._-]+$"
+                },
+                "locator": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "notes": { "type": "string" }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": { "enum": ["accepted", "changes_requested"] }
+              }
+            },
+            "then": { "required": ["targetHash", "authorId", "reviewerId", "reviewerRole"] }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

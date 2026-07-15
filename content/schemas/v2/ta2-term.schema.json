@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/ta2-term.schema.json",
+  "title": "AnatomyQuest selected FIPAT TA2 2.07 primary term",
+  "$defs": {
+    "field": {
+      "type": "object",
+      "required": ["value", "sourceRef"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "sourceRef": {
+          "type": "object",
+          "required": ["sourceId", "locator"],
+          "properties": {
+            "sourceId": { "type": "string", "pattern": "^source\\.[a-z0-9._-]+$" },
+            "locator": {
+              "type": "object",
+              "required": ["kind", "pdfPage", "termId", "column"],
+              "properties": {
+                "kind": { "const": "pdf_term_row" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "termId": { "type": "integer", "minimum": 1 },
+                "column": { "enum": ["latin", "english_uk"] }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["termId", "edition", "version", "fields", "extractionStatus"],
+  "properties": {
+    "termId": { "type": "integer", "minimum": 1 },
+    "edition": { "const": "2" },
+    "version": { "const": "2.07" },
+    "fields": {
+      "type": "object",
+      "required": ["latin", "englishUk"],
+      "properties": {
+        "latin": { "$ref": "#/$defs/field" },
+        "englishUk": { "$ref": "#/$defs/field" }
+      },
+      "additionalProperties": false
+    },
+    "extractionStatus": {
+      "enum": ["direct_primary_columns", "agent_reconstructed_column_wrap"]
+    }
+  },
+  "additionalProperties": false
+}

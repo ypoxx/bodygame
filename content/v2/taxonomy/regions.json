@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 2,
+  "taxonomyId": "regions",
+  "values": [
+    { "id": "region.unresolved", "labelDe": "Noch nicht zugeordnet" },
+    { "id": "region.whole_body", "labelDe": "Körperübergreifend" },
+    { "id": "region.head", "labelDe": "Kopf" },
+    { "id": "region.neck", "labelDe": "Hals" },
+    { "id": "region.back", "labelDe": "Rücken" },
+    { "id": "region.spine", "labelDe": "Wirbelsäule" },
+    { "id": "region.thorax", "labelDe": "Brustkorb" },
+    { "id": "region.abdomen", "labelDe": "Bauch" },
+    { "id": "region.pelvis", "labelDe": "Becken" },
+    { "id": "region.upper_limb", "labelDe": "Obere Extremität" },
+    { "id": "region.hand", "labelDe": "Hand" },
+    { "id": "region.lower_limb", "labelDe": "Untere Extremität" },
+    { "id": "region.foot", "labelDe": "Fuß" }
+  ]
+}

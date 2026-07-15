@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "taxonomyId": "relation-types",
+  "values": [
+    { "id": "relation.part_of", "labelDe": "Teil von" },
+    { "id": "relation.has_part", "labelDe": "Enthält als Teil" },
+    { "id": "relation.articulates_with", "labelDe": "Steht in Gelenkverbindung mit" },
+    { "id": "relation.attaches_to", "labelDe": "Setzt an" },
+    { "id": "relation.continuous_with", "labelDe": "Steht in Kontinuität mit" },
+    { "id": "relation.contains", "labelDe": "Enthält" },
+    { "id": "relation.contained_in", "labelDe": "Liegt innerhalb von" },
+    { "id": "relation.related_to", "labelDe": "Steht in Beziehung zu" }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/instance.schema.json",
+  "title": "AnatomyQuest v2 mesh instance",
+  "type": "object",
+  "required": [
+    "id",
+    "conceptId",
+    "meshName",
+    "assetGroup",
+    "renderGroup",
+    "side",
+    "availability",
+    "sourceId",
+    "mapping"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable v1 structure id; it must not change during migration."
+    },
+    "conceptId": {
+      "type": "string",
+      "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "meshName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact, case-sensitive glTF mesh-node name."
+    },
+    "assetGroup": {
+      "type": "string",
+      "enum": ["skeleton", "soft_tissue"]
+    },
+    "renderGroup": {
+      "type": "string",
+      "enum": ["bones", "muscles", "fasciae"]
+    },
+    "side": {
+      "type": "string",
+      "enum": ["left", "right", "midline", "unresolved"]
+    },
+    "availability": {
+      "type": "object",
+      "required": ["discover", "quizPolicy", "legacyQuizEligible"],
+      "properties": {
+        "discover": { "const": true },
+        "quizPolicy": { "enum": ["inherit", "include", "exclude"] },
+        "legacyQuizEligible": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "sourceId": {
+      "type": "string",
+      "pattern": "^source\\.[a-z0-9._-]+$"
+    },
+    "mapping": {
+      "type": "object",
+      "required": ["method", "status"],
+      "properties": {
+        "method": { "const": "exact_mesh_name" },
+        "status": { "const": "verified" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

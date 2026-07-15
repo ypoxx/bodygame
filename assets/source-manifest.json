@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pipelineVersion": "1.0.0",
+  "pipelineVersion": "1.1.0",
   "blenderVersion": "5.0.1",
   "provenance": {
     "upstreamRepository": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
@@ -22,14 +22,18 @@
   },
   "outputs": {
     "skeletonMobileLod1": {
-      "path": "assets/derived/skeleton.mobile-lod1.v1.glb",
-      "sha256": "7ddef93240a6632fc732ea5bf69da2c99dfd1c8e5fe17d68a1d5e3f0939067c5",
+      "path": "assets/derived/skeleton.mobile-lod1.v2.glb",
+      "sha256": "c73144bba402af3d6fa664efac90a11443fbb7d9f6f01d3baaa5d3ae3c9d32c9",
+      "meshNodes": 277,
+      "instantiatedPrimitives": 277,
       "instantiatedTriangles": 346879
     },
     "musclesMobileLod1": {
-      "path": "assets/derived/muscles.mobile-lod1.v1.glb",
-      "sha256": "abbab649febdd51d3c7354d23b204c119940e9538793c3b7f035dd9f84697abd",
-      "instantiatedTriangles": 758897
+      "path": "assets/derived/muscles.mobile-lod1.v2.glb",
+      "sha256": "fb3ba0e7a10fd5b439982e0c368f7e386b1677f4cc5368494c435e542d37cc3b",
+      "meshNodes": 669,
+      "instantiatedPrimitives": 669,
+      "instantiatedTriangles": 775245
     }
   },
   "exportSettings": {

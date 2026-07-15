@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/concept-patch.schema.json",
+  "title": "AnatomyQuest v2 curated concept editorial patch",
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["sourceId", "locator"],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source\\.[a-z0-9._-]+$"
+        },
+        "locator": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "termId", "column"],
+              "properties": {
+                "kind": { "const": "pdf_term_row" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "termId": { "type": "integer", "minimum": 1 },
+                "column": { "enum": ["latin", "english_uk"] }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "descriptorUi"],
+              "properties": {
+                "kind": { "const": "mesh_descriptor" },
+                "descriptorUi": {
+                  "type": "string",
+                  "pattern": "^D[0-9]{6}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": ["claimId", "field", "textDe", "evidenceStatus", "sourceRefs"],
+      "properties": {
+        "claimId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+        },
+        "field": {
+          "enum": [
+            "summary",
+            "location",
+            "origin",
+            "insertion",
+            "action",
+            "innervation",
+            "articulation",
+            "landmark",
+            "attachment",
+            "role",
+            "continuity",
+            "content"
+          ]
+        },
+        "textDe": { "type": "string", "minLength": 1 },
+        "evidenceStatus": { "enum": ["partial", "sourced"] },
+        "sourceRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "evidenceStatus": { "const": "sourced" } } },
+          "then": { "properties": { "sourceRefs": { "minItems": 1 } } }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["conceptId"],
+  "properties": {
+    "conceptId": {
+      "type": "string",
+      "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "names": {
+      "type": "object",
+      "required": ["preferredDe", "preferredLatin", "sourceRefs"],
+      "properties": {
+        "preferredDe": { "type": "string", "minLength": 1 },
+        "preferredLatin": { "type": "string", "minLength": 1 },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "summary": { "$ref": "#/$defs/claim" },
+    "claims": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "details": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": [
+          "location",
+          "origins",
+          "insertions",
+          "actions",
+          "innervation",
+          "articulations",
+          "landmarks",
+          "attachments",
+          "role",
+          "continuities",
+          "contents"
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "$ref": "#/$defs/claim" }
+      }
+    },
+    "notApplicableFields": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "origin",
+          "insertion",
+          "action",
+          "innervation",
+          "articulation",
+          "landmark",
+          "attachment",
+          "role",
+          "continuity",
+          "content"
+        ]
+      }
+    },
+    "relations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["relationTypeId", "targetConceptId", "evidenceStatus", "sourceRefs"],
+        "properties": {
+          "relationTypeId": {
+            "type": "string",
+            "pattern": "^relation\\.[a-z0-9_]+$"
+          },
+          "targetConceptId": {
+            "type": "string",
+            "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+          },
+          "evidenceStatus": { "const": "sourced" },
+          "sourceRefs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/sourceRef" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "editorialStatus": {
+      "enum": ["draft", "agent_reviewed", "expert_reviewed", "published"]
+    },
+    "evidenceStatus": {
+      "enum": ["needs_source", "partial", "sourced", "not_applicable"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["editorialStatus"],
+        "properties": { "editorialStatus": { "const": "published" } }
+      },
+      "then": {
+        "required": ["names", "summary", "details", "evidenceStatus"],
+        "properties": { "evidenceStatus": { "const": "sourced" } }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

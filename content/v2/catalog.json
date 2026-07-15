@@ -1,0 +1,61 @@
+{
+  "$schema": "../schemas/v2/catalog.schema.json",
+  "schemaVersion": 2,
+  "catalogId": "anatomyquest.content.v2",
+  "stage": "content_migration",
+  "legacySnapshot": "legacy-snapshot.json",
+  "collections": {
+    "instances": {
+      "path": "instances.json",
+      "itemSchema": "../schemas/v2/instance.schema.json"
+    },
+    "concepts": [
+      {
+        "path": "concepts/terminology.json",
+        "itemSchema": "../schemas/v2/concept.schema.json",
+        "status": "draft"
+      }
+    ],
+    "curatedConcepts": {
+      "path": "curated/concepts.json",
+      "itemSchema": "../schemas/v2/concept-patch.schema.json",
+      "status": "draft"
+    },
+    "sources": {
+      "path": "sources.json",
+      "itemSchema": "../schemas/v2/source.schema.json"
+    },
+    "curatedSources": {
+      "path": "curated/sources.json",
+      "itemSchema": "../schemas/v2/source.schema.json",
+      "status": "draft"
+    },
+    "releaseStates": {
+      "path": "curated/release-states.json",
+      "itemSchema": "../schemas/v2/release-state.schema.json",
+      "status": "draft"
+    },
+    "terminology": {
+      "path": "terminology/ta2-2.07-selected-primary-terms.json",
+      "itemSchema": "../schemas/v2/ta2-term.schema.json",
+      "status": "draft"
+    },
+    "runtimeIndex": {
+      "path": "runtime-index.json",
+      "itemSchema": "../schemas/v2/runtime-index-entry.schema.json",
+      "status": "draft"
+    }
+  },
+  "taxonomies": {
+    "regions": "taxonomy/regions.json",
+    "anatomicalTypes": "taxonomy/anatomical-types.json",
+    "relationTypes": "taxonomy/relation-types.json"
+  },
+  "reviews": [
+    "reviews/terminology.json",
+    "reviews/classification.json",
+    "reviews/anatomy.json",
+    "reviews/localization.json",
+    "reviews/mesh-mapping.json"
+  ]
+}

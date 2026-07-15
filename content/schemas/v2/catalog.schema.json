@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/catalog.schema.json",
+  "title": "AnatomyQuest v2 content catalog",
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/).+$"
+    },
+    "collection": {
+      "type": "object",
+      "required": ["path", "itemSchema"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relativePath" },
+        "itemSchema": { "$ref": "#/$defs/relativePath" },
+        "status": { "enum": ["draft", "reviewed", "published"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "catalogId",
+    "stage",
+    "legacySnapshot",
+    "collections",
+    "taxonomies",
+    "reviews"
+  ],
+  "properties": {
+    "$schema": { "$ref": "#/$defs/relativePath" },
+    "schemaVersion": { "const": 2 },
+    "catalogId": { "const": "anatomyquest.content.v2" },
+    "stage": { "enum": ["foundation", "content_migration", "review", "production"] },
+    "legacySnapshot": { "$ref": "#/$defs/relativePath" },
+    "collections": {
+      "type": "object",
+      "required": [
+        "instances",
+        "concepts",
+        "curatedConcepts",
+        "sources",
+        "curatedSources",
+        "releaseStates",
+        "terminology",
+        "runtimeIndex"
+      ],
+      "properties": {
+        "instances": { "$ref": "#/$defs/collection" },
+        "concepts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/collection" }
+        },
+        "curatedConcepts": { "$ref": "#/$defs/collection" },
+        "sources": { "$ref": "#/$defs/collection" },
+        "curatedSources": { "$ref": "#/$defs/collection" },
+        "releaseStates": { "$ref": "#/$defs/collection" },
+        "terminology": { "$ref": "#/$defs/collection" },
+        "runtimeIndex": { "$ref": "#/$defs/collection" }
+      },
+      "additionalProperties": false
+    },
+    "taxonomies": {
+      "type": "object",
+      "required": ["regions", "anatomicalTypes", "relationTypes"],
+      "properties": {
+        "regions": { "$ref": "#/$defs/relativePath" },
+        "anatomicalTypes": { "$ref": "#/$defs/relativePath" },
+        "relationTypes": { "$ref": "#/$defs/relativePath" }
+      },
+      "additionalProperties": false
+    },
+    "reviews": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/relativePath" }
+    }
+  },
+  "additionalProperties": false
+}

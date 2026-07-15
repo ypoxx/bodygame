@@ -4,8 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-netlify.mjs",
-    "validate": "node scripts/validate-content.mjs",
+    "build": "npm run content:v2:check && node scripts/build-netlify.mjs",
+    "validate": "node scripts/validate-content.mjs && node scripts/validate-content-v2.mjs",
+    "validate:v2": "node scripts/validate-content-v2.mjs",
+    "content:v2:build": "node scripts/build-content-v2-foundation.mjs && node scripts/build-content-v2-terminology.mjs",
+    "content:v2:check": "node scripts/build-content-v2-foundation.mjs --check && node scripts/build-content-v2-terminology.mjs --check && node scripts/validate-content-v2.mjs",
+    "test:v2": "node --test tests/content-v2-foundation.test.mjs tests/content-v2-terminology.test.mjs tests/content-v2-pipeline.test.mjs",
+    "test:ui": "node --test tests/explore-mode.test.mjs",
+    "test": "npm run test:v2 && npm run test:ui",
     "perf:smoke": "node scripts/perf-smoke.mjs"
   },
   "engines": {

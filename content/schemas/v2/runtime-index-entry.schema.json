@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/runtime-index-entry.schema.json",
+  "title": "AnatomyQuest v2 runtime index entry",
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["sourceId", "locator"],
+      "properties": {
+        "sourceId": { "type": "string", "pattern": "^source\\.[a-z0-9._-]+$" },
+        "locator": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "termId", "column"],
+              "properties": {
+                "kind": { "const": "pdf_term_row" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "termId": { "type": "integer", "minimum": 1 },
+                "column": { "enum": ["latin", "english_uk"] }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "descriptorUi"],
+              "properties": {
+                "kind": { "const": "mesh_descriptor" },
+                "descriptorUi": {
+                  "type": "string",
+                  "pattern": "^D[0-9]{6}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "qualifier": {
+      "type": "object",
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": {
+          "enum": ["rib_number", "digit_number", "bone_number", "jaw", "tooth_position", "vertebral_level"]
+        },
+        "value": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "officialFields": {
+      "type": "object",
+      "required": ["latin", "englishUk", "sourceRefs"],
+      "properties": {
+        "latin": { "type": "string", "minLength": 1 },
+        "englishUk": { "type": "string", "minLength": 1 },
+        "sourceRefs": {
+          "type": "object",
+          "required": ["latin", "englishUk"],
+          "properties": {
+            "latin": { "$ref": "#/$defs/sourceRef" },
+            "englishUk": { "$ref": "#/$defs/sourceRef" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": ["claimId", "field", "textDe", "evidenceStatus", "sourceRefs"],
+      "properties": {
+        "claimId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+        },
+        "field": {
+          "enum": [
+            "summary",
+            "location",
+            "origin",
+            "insertion",
+            "action",
+            "innervation",
+            "articulation",
+            "landmark",
+            "attachment",
+            "role",
+            "continuity",
+            "content"
+          ]
+        },
+        "textDe": { "type": "string", "minLength": 1 },
+        "evidenceStatus": { "const": "sourced" },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "learningNames": {
+      "type": "object",
+      "required": ["preferredDe", "preferredLatin", "sourceRefs"],
+      "properties": {
+        "preferredDe": { "type": "string", "minLength": 1 },
+        "preferredLatin": { "type": "string", "minLength": 1 },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "reviewedState": {
+      "type": "object",
+      "required": ["anatomicalTypeId", "regionIds", "side", "meshMappingStatus"],
+      "properties": {
+        "anatomicalTypeId": {
+          "type": "string",
+          "pattern": "^type\\.[a-z0-9_]+$"
+        },
+        "regionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^region\\.[a-z0-9_]+$"
+          }
+        },
+        "side": { "enum": ["left", "right", "midline"] },
+        "meshMappingStatus": { "const": "human_verified" }
+      },
+      "additionalProperties": false
+    },
+    "learning": {
+      "type": "object",
+      "required": ["status", "names", "summary", "details", "reviewedState"],
+      "properties": {
+        "status": { "const": "published" },
+        "names": { "$ref": "#/$defs/learningNames" },
+        "summary": { "$ref": "#/$defs/claim" },
+        "reviewedState": { "$ref": "#/$defs/reviewedState" },
+        "claims": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/claim" }
+        },
+        "details": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "enum": [
+              "location",
+              "origins",
+              "insertions",
+              "actions",
+              "innervation",
+              "articulations",
+              "landmarks",
+              "attachments",
+              "role",
+              "continuities",
+              "contents"
+            ]
+          },
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/$defs/claim" }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["id", "conceptId", "meshName", "side", "renderGroup", "classification", "terminology"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "conceptId": {
+      "type": "string",
+      "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "meshName": { "type": "string", "minLength": 1 },
+    "side": { "enum": ["left", "right", "midline", "unresolved"] },
+    "renderGroup": { "enum": ["bones", "muscles", "fasciae"] },
+    "classification": {
+      "type": "object",
+      "required": ["typeId", "status", "reviewStatus", "method"],
+      "properties": {
+        "typeId": { "type": "string", "pattern": "^type\\.[a-z0-9_]+$" },
+        "status": { "const": "partial" },
+        "reviewStatus": { "const": "machine_inferred_from_asset_label" },
+        "method": { "const": "legacy_asset_label_taxonomy" }
+      },
+      "additionalProperties": false
+    },
+    "terminology": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["status", "baseTermId", "official", "qualifiers", "matchMethod", "matchStatus"],
+          "properties": {
+            "status": { "const": "official_base" },
+            "baseTermId": { "type": "integer", "minimum": 1 },
+            "official": { "$ref": "#/$defs/officialFields" },
+            "qualifiers": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/qualifier" }
+            },
+            "matchMethod": {
+              "enum": ["exact_v2_07", "series_variant", "reviewed_alias", "mesh_typo"]
+            },
+            "matchStatus": {
+              "enum": ["machine_verified", "agent_reviewed", "expert_review_required"]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["status", "relatedTermId", "relatedOfficial", "relation", "matchMethod", "matchStatus"],
+          "properties": {
+            "status": { "const": "derived_structure" },
+            "relatedTermId": { "type": "integer", "minimum": 1 },
+            "relatedOfficial": { "$ref": "#/$defs/officialFields" },
+            "relation": { "const": "tendon_of" },
+            "matchMethod": { "const": "derived_structure" },
+            "matchStatus": { "const": "expert_review_required" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "learning": { "$ref": "#/$defs/learning" }
+  },
+  "additionalProperties": false
+}

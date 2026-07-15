@@ -1,0 +1,401 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/concept.schema.json",
+  "title": "AnatomyQuest v2 anatomical concept",
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["sourceId", "locator"],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source\\.[a-z0-9._-]+$"
+        },
+        "locator": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "termId", "column"],
+              "properties": {
+                "kind": { "const": "pdf_term_row" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "termId": { "type": "integer", "minimum": 1 },
+                "column": { "enum": ["latin", "english_uk"] }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "descriptorUi"],
+              "properties": {
+                "kind": { "const": "mesh_descriptor" },
+                "descriptorUi": {
+                  "type": "string",
+                  "pattern": "^D[0-9]{6}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "officialField": {
+      "type": "object",
+      "required": ["value", "sourceRef"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "sourceRef": { "$ref": "#/$defs/sourceRef" }
+      },
+      "additionalProperties": false
+    },
+    "officialTerm": {
+      "type": "object",
+      "required": ["termId", "fields"],
+      "properties": {
+        "termId": { "type": "integer", "minimum": 1 },
+        "fields": {
+          "type": "object",
+          "required": ["latin", "englishUk"],
+          "properties": {
+            "latin": { "$ref": "#/$defs/officialField" },
+            "englishUk": { "$ref": "#/$defs/officialField" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "qualifier": {
+      "type": "object",
+      "required": ["kind", "value", "sourceRef"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "rib_number",
+            "digit_number",
+            "bone_number",
+            "jaw",
+            "tooth_position",
+            "vertebral_level"
+          ]
+        },
+        "value": { "type": "string", "minLength": 1 },
+        "sourceRef": { "$ref": "#/$defs/sourceRef" }
+      },
+      "additionalProperties": false
+    },
+    "terminologyMatch": {
+      "type": "object",
+      "required": ["method", "status", "inputLabel", "reasonCode"],
+      "properties": {
+        "method": {
+          "enum": [
+            "exact_v2_07",
+            "series_variant",
+            "reviewed_alias",
+            "mesh_typo",
+            "derived_structure"
+          ]
+        },
+        "status": {
+          "enum": ["machine_verified", "agent_reviewed", "expert_review_required"]
+        },
+        "inputLabel": { "type": "string", "minLength": 1 },
+        "reasonCode": {
+          "enum": [
+            "exact_primary_label",
+            "series_member_not_individually_numbered",
+            "asset_parenthetical_qualifier",
+            "official_column_wrap_reconstruction",
+            "asset_abbreviation",
+            "official_wording_update",
+            "corrected_asset_typo",
+            "singular_asset_for_plural_official_term",
+            "derived_not_enumerated"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminology": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["system", "edition", "version", "status", "baseTerm", "qualifiers", "match"],
+          "properties": {
+            "system": { "const": "FIPAT_TA2" },
+            "edition": { "const": "2" },
+            "version": { "const": "2.07" },
+            "status": { "const": "official_base" },
+            "baseTerm": { "$ref": "#/$defs/officialTerm" },
+            "qualifiers": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/qualifier" }
+            },
+            "match": { "$ref": "#/$defs/terminologyMatch" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["system", "edition", "version", "status", "derivedFrom", "match"],
+          "properties": {
+            "system": { "const": "FIPAT_TA2" },
+            "edition": { "const": "2" },
+            "version": { "const": "2.07" },
+            "status": { "const": "derived_structure" },
+            "derivedFrom": {
+              "type": "object",
+              "required": ["relation", "targetConceptId", "officialTerm", "assetSourceRef"],
+              "properties": {
+                "relation": { "const": "tendon_of" },
+                "targetConceptId": {
+                  "type": "string",
+                  "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+                },
+                "officialTerm": { "$ref": "#/$defs/officialTerm" },
+                "assetSourceRef": { "$ref": "#/$defs/sourceRef" }
+              },
+              "additionalProperties": false
+            },
+            "match": { "$ref": "#/$defs/terminologyMatch" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "required": ["claimId", "field", "textDe", "evidenceStatus", "sourceRefs"],
+      "properties": {
+        "claimId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+        },
+        "field": {
+          "enum": [
+            "summary",
+            "location",
+            "origin",
+            "insertion",
+            "action",
+            "innervation",
+            "articulation",
+            "landmark",
+            "attachment",
+            "role",
+            "continuity",
+            "content"
+          ]
+        },
+        "textDe": { "type": "string", "minLength": 1 },
+        "evidenceStatus": { "enum": ["partial", "sourced"] },
+        "sourceRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "evidenceStatus": { "const": "sourced" } } },
+          "then": { "properties": { "sourceRefs": { "minItems": 1 } } }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "workingLabel",
+    "workingLabelStatus",
+    "assetGroup",
+    "renderGroupHints",
+    "instanceIds",
+    "classification",
+    "editorialStatus",
+    "evidenceStatus"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "workingLabel": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unverified, side-neutral source-asset label; not publishable copy."
+    },
+    "workingLabelStatus": { "const": "asset_label_unverified" },
+    "assetGroup": { "enum": ["skeleton", "soft_tissue"] },
+    "renderGroupHints": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["bones", "muscles", "fasciae"] }
+    },
+    "instanceIds": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "parentConceptId": {
+      "type": "string",
+      "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "names": {
+      "type": "object",
+      "required": ["preferredDe", "preferredLatin", "sourceRefs"],
+      "properties": {
+        "preferredDe": { "type": "string", "minLength": 1 },
+        "preferredLatin": { "type": "string", "minLength": 1 },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "classification": {
+      "type": "object",
+      "required": ["anatomicalTypeId", "regionIds", "status", "reviewStatus", "method"],
+      "properties": {
+        "anatomicalTypeId": {
+          "type": "string",
+          "pattern": "^type\\.[a-z0-9_]+$"
+        },
+        "regionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^region\\.[a-z0-9_]+$"
+          }
+        },
+        "status": { "enum": ["needs_source", "partial", "sourced"] },
+        "reviewStatus": {
+          "enum": [
+            "unreviewed",
+            "machine_inferred_from_asset_label",
+            "agent_reviewed_terminology",
+            "expert_reviewed"
+          ]
+        },
+        "method": {
+          "enum": ["unresolved", "legacy_asset_label_taxonomy"]
+        },
+        "sourceRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminology": { "$ref": "#/$defs/terminology" },
+    "summary": { "$ref": "#/$defs/claim" },
+    "claims": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "details": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": [
+          "location",
+          "origins",
+          "insertions",
+          "actions",
+          "innervation",
+          "articulations",
+          "landmarks",
+          "attachments",
+          "role",
+          "continuities",
+          "contents"
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/claim" }
+      }
+    },
+    "notApplicableFields": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "origin",
+          "insertion",
+          "action",
+          "innervation",
+          "articulation",
+          "landmark",
+          "attachment",
+          "role",
+          "continuity",
+          "content"
+        ]
+      }
+    },
+    "relations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["relationTypeId", "targetConceptId", "evidenceStatus", "sourceRefs"],
+        "properties": {
+          "relationTypeId": {
+            "type": "string",
+            "pattern": "^relation\\.[a-z0-9_]+$"
+          },
+          "targetConceptId": {
+            "type": "string",
+            "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+          },
+          "evidenceStatus": { "const": "sourced" },
+          "sourceRefs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/sourceRef" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "editorialStatus": {
+      "enum": ["draft", "agent_reviewed", "expert_reviewed", "published"]
+    },
+    "evidenceStatus": {
+      "enum": ["needs_source", "partial", "sourced", "not_applicable"]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "editorialStatus": { "const": "published" } } },
+      "then": {
+        "required": ["names", "summary", "details"],
+        "properties": { "evidenceStatus": { "const": "sourced" } }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

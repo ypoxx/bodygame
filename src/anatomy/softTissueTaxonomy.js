@@ -5,7 +5,11 @@
  */
 
 export const TISSUE_LABELS_DE = Object.freeze({
+  unresolved: "Noch nicht klassifiziert",
   bone: "Knochen",
+  cartilage: "Knorpel",
+  tooth: "Zahn",
+  cavity: "Hohlraum",
   muscle: "Muskel",
   fascia: "Faszie",
   fascial_tract: "Faszienzug",
@@ -185,7 +189,15 @@ export function normalizeSoftTissueMeshName(meshName) {
  * `l`), but preserves the original glTF node name in userData.name.
  */
 export function getSoftTissueNodeName(node) {
-  return String(node?.userData?.name || node?.name || "");
+  let current = node;
+  while (current) {
+    const sourceName = current?.userData?.name;
+    if (typeof sourceName === "string" && sourceName.trim()) {
+      return sourceName;
+    }
+    current = current.parent;
+  }
+  return String(node?.name || "");
 }
 
 /**

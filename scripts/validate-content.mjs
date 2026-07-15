@@ -4,6 +4,7 @@ import { PropertyBinding } from "three";
 import {
   classifySoftTissue,
   classifySoftTissueNode,
+  getSoftTissueNodeName,
 } from "../src/anatomy/softTissueTaxonomy.js";
 
 const root = process.cwd();
@@ -119,6 +120,19 @@ for (const [meshName, displayGroup, tissueType, quizEligible, reviewStatus, ta2I
   ) {
     fail(`Taxonomy regression for '${meshName}'`);
   }
+}
+
+const nestedPrimitive = {
+  name: "Sternocostal_head_of_pectoralis_major_muscle_1",
+  userData: {},
+  parent: {
+    name: "Sternocostal_head_of_pectoralis_major_musclel",
+    userData: { name: "Sternocostal head of pectoralis major muscle.l" },
+    parent: null,
+  },
+};
+if (getSoftTissueNodeName(nestedPrimitive) !== "Sternocostal head of pectoralis major muscle.l") {
+  fail("Nested GLTF primitives must inherit their anatomical source-node name");
 }
 
 for (const [filepath, label] of [

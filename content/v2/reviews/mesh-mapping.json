@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "reviewArea": "mesh_mapping",
+  "status": "complete",
+  "records": [
+    {
+      "id": "review.mesh_mapping.production_glbs",
+      "targetType": "catalog",
+      "targetId": "anatomyquest.content.v2",
+      "targetHash": "sha256:20fde35768f10dccea82a53715432d0adffcae4e7eb1b11aa4db7ec299b22b86",
+      "status": "accepted",
+      "authorId": "automation:content-v2-foundation-builder",
+      "reviewerId": "automation:content-v2-validator",
+      "reviewerRole": "automation",
+      "sourceRefs": [
+        {
+          "sourceId": "source.asset.z_anatomy.skeleton.production",
+          "locator": "Exact glTF mesh-node names in assets/skeleton.glb"
+        },
+        {
+          "sourceId": "source.asset.z_anatomy.soft_tissue.production",
+          "locator": "Exact glTF mesh-node names in assets/muscles.glb"
+        }
+      ],
+      "notes": "Accepted only when the deterministic v2 validator passes 946/946 exact mappings."
+    }
+  ]
+}

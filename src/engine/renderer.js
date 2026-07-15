@@ -27,6 +27,10 @@ function isCoarsePointer() {
   return typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)").matches;
 }
 
+export function shouldUseSelectionOutline(width, coarsePointer = isCoarsePointer()) {
+  return Number(width) > MOBILE_BREAKPOINT && !coarsePointer;
+}
+
 function isConstrainedDevice() {
   if (typeof navigator === "undefined") {
     return false;
@@ -123,6 +127,7 @@ export function createRendererEngine({ canvas, scene, camera }) {
 
   const outlineColor = new THREE.Color(0xff755f);
   const outlineShells = new Map();
+  let outlineSelection = [];
   let lastWidth = 0;
   let lastHeight = 0;
   let lastPixelRatio = 0;
@@ -167,6 +172,7 @@ export function createRendererEngine({ canvas, scene, camera }) {
       return;
     }
 
+    const outlinesWereEnabled = shouldUseOutlineShells();
     const pixelRatio = getAdaptivePixelRatio(nextWidth);
     const pixelRatioChanged = Math.abs(pixelRatio - lastPixelRatio) > 0.001;
     if (pixelRatioChanged) {
@@ -179,14 +185,26 @@ export function createRendererEngine({ canvas, scene, camera }) {
       lastWidth = nextWidth;
       lastHeight = nextHeight;
     }
+
+    if (outlinesWereEnabled !== shouldUseOutlineShells()) {
+      refreshOutlineSelection();
+    }
   }
 
   function render() {
     renderer.render(scene, camera);
   }
 
-  function setOutlineSelection(objects) {
-    const selectedMeshes = collectOutlineMeshes(objects);
+  function shouldUseOutlineShells() {
+    return shouldUseSelectionOutline(lastWidth);
+  }
+
+  function refreshOutlineSelection() {
+    // The emissive/color treatment remains the primary mobile selection cue.
+    // Avoid duplicating selected geometry with an extra shader pass on narrow
+    // viewports: it costs another draw call and can stall software/mobile WebGL
+    // drivers while compiling the outline program during the first selection.
+    const selectedMeshes = shouldUseOutlineShells() ? collectOutlineMeshes(outlineSelection) : new Set();
 
     for (const mesh of outlineShells.keys()) {
       if (!selectedMeshes.has(mesh)) {
@@ -197,6 +215,11 @@ export function createRendererEngine({ canvas, scene, camera }) {
     for (const mesh of selectedMeshes) {
       addOutlineShell(mesh);
     }
+  }
+
+  function setOutlineSelection(objects) {
+    outlineSelection = Array.isArray(objects) ? [...objects] : [];
+    refreshOutlineSelection();
   }
 
   function applyTheme(themeScene) {
@@ -219,6 +242,7 @@ export function createRendererEngine({ canvas, scene, camera }) {
   }
 
   function dispose() {
+    outlineSelection = [];
     for (const mesh of [...outlineShells.keys()]) {
       removeOutlineShell(mesh);
     }

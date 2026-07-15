@@ -1,0 +1,117 @@
+[
+  {
+    "id": "source.asset.z_anatomy.skeleton.production",
+    "sourceType": "asset",
+    "title": "Z-Anatomy curated production skeleton GLB",
+    "provider": "Z-Anatomy",
+    "url": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+    "version": "sha256:ee48ce23d8a068478e42c7d7b722e0b3f8155920a60c5976dfc86e753eb33181",
+    "rightsPolicy": "citation_only",
+    "license": {
+      "id": "CC-BY-SA-4.0",
+      "url": "https://github.com/Z-Anatomy/Models-of-human-anatomy/blob/master/License.txt",
+      "attributionPath": "assets/ATTRIBUTION.md"
+    },
+    "supports": [
+      "mesh_identity",
+      "geometry_provenance"
+    ],
+    "asset": {
+      "path": "assets/skeleton.glb",
+      "sha256": "ee48ce23d8a068478e42c7d7b722e0b3f8155920a60c5976dfc86e753eb33181"
+    }
+  },
+  {
+    "id": "source.asset.z_anatomy.soft_tissue.production",
+    "sourceType": "asset",
+    "title": "Z-Anatomy curated production soft-tissue GLB",
+    "provider": "Z-Anatomy",
+    "url": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+    "version": "sha256:99f2c7ac0e5fc01658b8432df589d677e1ac2a0b186166b62f72c5760a202396",
+    "rightsPolicy": "citation_only",
+    "license": {
+      "id": "CC-BY-SA-4.0",
+      "url": "https://github.com/Z-Anatomy/Models-of-human-anatomy/blob/master/License.txt",
+      "attributionPath": "assets/ATTRIBUTION.md"
+    },
+    "supports": [
+      "mesh_identity",
+      "geometry_provenance"
+    ],
+    "asset": {
+      "path": "assets/muscles.glb",
+      "sha256": "99f2c7ac0e5fc01658b8432df589d677e1ac2a0b186166b62f72c5760a202396"
+    }
+  },
+  {
+    "id": "source.terminology.fipat.ta2_2_07.part_2",
+    "sourceType": "terminology",
+    "title": "Terminologia Anatomica, second edition, version 2.07 — Part II",
+    "provider": "Federative International Programme for Anatomical Terminology (FIPAT)",
+    "url": "https://cdn.dal.ca/content/dam/dalhousie/pdf/library/FIPAT/TA2/FIPAT-TA2-Part-2.pdf",
+    "version": "TA2 second edition 2.07",
+    "rightsPolicy": "terminology_only",
+    "license": {
+      "id": "FIPAT-TA2-INDIVIDUAL-TERMS-PUBLIC-DOMAIN",
+      "url": "https://libraries.dal.ca/Fipat/ta2.html",
+      "attributionPath": "docs/learning-mode-plan.md"
+    },
+    "supports": [
+      "terminology",
+      "classification"
+    ],
+    "document": {
+      "mediaType": "application/pdf",
+      "sha256": "d30ce0d578b266ce4c47a6ff911e007a0cc440d65e9acaeb0680ec3eafa2231b",
+      "part": "Part II: Musculoskeletal system",
+      "locatorBasis": "1-based PDF page + TA2 term row + language column"
+    }
+  },
+  {
+    "id": "source.terminology.fipat.ta2_2_07.part_5",
+    "sourceType": "terminology",
+    "title": "Terminologia Anatomica, second edition, version 2.07 — Part V",
+    "provider": "Federative International Programme for Anatomical Terminology (FIPAT)",
+    "url": "https://cdn.dal.ca/content/dam/dalhousie/pdf/library/FIPAT/TA2/FIPAT-TA2-Part-5.pdf",
+    "version": "TA2 second edition 2.07",
+    "rightsPolicy": "terminology_only",
+    "license": {
+      "id": "FIPAT-TA2-INDIVIDUAL-TERMS-PUBLIC-DOMAIN",
+      "url": "https://libraries.dal.ca/Fipat/ta2.html",
+      "attributionPath": "docs/learning-mode-plan.md"
+    },
+    "supports": [
+      "terminology",
+      "classification"
+    ],
+    "document": {
+      "mediaType": "application/pdf",
+      "sha256": "ebda279a51bac4c62221c4539817394c28e3dd99925a06bf57adeeb12abd9e4c",
+      "part": "Part V: Sense organs",
+      "locatorBasis": "1-based PDF page + TA2 term row + language column"
+    }
+  },
+  {
+    "id": "source.localization.german_mesh.2025_v30",
+    "sourceType": "terminology",
+    "title": "German MeSH 2025 — German translation columns",
+    "provider": "ZB MED — Information Centre for Life Sciences",
+    "url": "https://doi.org/10.4126/FRL01-006526467",
+    "version": "30.0 (December 2025)",
+    "rightsPolicy": "terminology_only",
+    "rightsScope": "Only PreferredLabelDE and SynonymsDE are authorized by this source entry under CC BY 4.0. English columns remain subject to the NLM terms and are outside this entry's supported use.",
+    "license": {
+      "id": "CC-BY-4.0-GERMAN-TRANSLATION",
+      "url": "https://www.zbmed.de/en/open-science/terminologies/german-mesh",
+      "attributionPath": "docs/content-phase-b-review-plan.md"
+    },
+    "supports": [
+      "localization"
+    ],
+    "snapshot": {
+      "sha256": "90e2dba833aeae49a05508e24dad974c7c8264c9179427d8a7650beae6028f04",
+      "capturedAt": "2026-07-15",
+      "locatorBasis": "CSV row by DescriptorUI; PreferredLabelDE and SynonymsDE columns only"
+    }
+  }
+]

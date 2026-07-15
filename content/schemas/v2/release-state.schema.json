@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatomyquest.app/schemas/v2/release-state.schema.json",
+  "title": "AnatomyQuest v2 curated anatomical release state",
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["sourceId", "locator"],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source\\.[a-z0-9._-]+$"
+        },
+        "locator": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "termId", "column"],
+              "properties": {
+                "kind": { "const": "pdf_term_row" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "termId": { "type": "integer", "minimum": 1 },
+                "column": { "enum": ["latin", "english_uk"] }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "descriptorUi"],
+              "properties": {
+                "kind": { "const": "mesh_descriptor" },
+                "descriptorUi": {
+                  "type": "string",
+                  "pattern": "^D[0-9]{6}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "sourceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sourceRef" }
+    },
+    "review": {
+      "type": "object",
+      "required": [
+        "reviewId",
+        "status",
+        "targetHash",
+        "authorId",
+        "reviewerId",
+        "reviewerRole"
+      ],
+      "properties": {
+        "reviewId": {
+          "type": "string",
+          "pattern": "^review\\.[a-z0-9._-]+$"
+        },
+        "status": { "const": "accepted" },
+        "targetHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "authorId": { "type": "string", "minLength": 1 },
+        "reviewerId": { "type": "string", "minLength": 1 },
+        "reviewerRole": {
+          "enum": ["medical_domain_expert", "anatomy_asset_expert"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["conceptId", "classification", "regions", "instances", "reviews"],
+  "properties": {
+    "conceptId": {
+      "type": "string",
+      "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "classification": {
+      "type": "object",
+      "required": ["status", "anatomicalTypeId", "sourceRefs"],
+      "properties": {
+        "status": { "const": "resolved" },
+        "anatomicalTypeId": {
+          "type": "string",
+          "pattern": "^type\\.[a-z0-9_]+$"
+        },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      },
+      "additionalProperties": false
+    },
+    "regions": {
+      "type": "object",
+      "required": ["status", "regionIds", "sourceRefs"],
+      "properties": {
+        "status": { "const": "resolved" },
+        "regionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^region\\.[a-z0-9_]+$"
+          }
+        },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      },
+      "additionalProperties": false
+    },
+    "instances": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "instanceId",
+          "laterality",
+          "lateralitySourceRefs",
+          "meshMapping"
+        ],
+        "properties": {
+          "instanceId": { "type": "string", "minLength": 1 },
+          "laterality": { "enum": ["left", "right", "midline"] },
+          "lateralitySourceRefs": { "$ref": "#/$defs/sourceRefs" },
+          "meshMapping": {
+            "type": "object",
+            "required": ["status", "sourceRefs"],
+            "properties": {
+              "status": { "const": "human_verified" },
+              "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "reviews": {
+      "type": "object",
+      "required": ["classification", "regions", "laterality", "meshMapping"],
+      "properties": {
+        "classification": { "$ref": "#/$defs/review" },
+        "regions": { "$ref": "#/$defs/review" },
+        "laterality": { "$ref": "#/$defs/review" },
+        "meshMapping": { "$ref": "#/$defs/review" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

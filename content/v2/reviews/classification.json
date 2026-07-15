@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "reviewArea": "classification",
+  "status": "in_progress",
+  "records": [
+    {
+      "id": "review.classification.phase_b_independent_check",
+      "targetType": "catalog",
+      "targetId": "anatomyquest.content.v2",
+      "status": "needs_review",
+      "notes": "Anatomical types are machine-inferred only from deterministic legacy asset-label taxonomy; TA2 does not substantiate these type assignments and expert anatomical review remains pending."
+    }
+  ]
+}

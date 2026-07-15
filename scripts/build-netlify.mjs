@@ -39,9 +39,11 @@ for (const relativePath of rootFiles) {
 
 await copyTree("src", ({ name }) => name.endsWith(".js"));
 await copyTree("content", ({ name }) => name === "structures.json");
+await copyFile("content/v2/runtime-index.json");
 await copyTree("assets/icons", ({ name }) => !name.startsWith("."));
 await copyTree("assets/draco", ({ name }) => !name.startsWith("."));
 await copyFile("assets/ATTRIBUTION.md");
+await copyFile("assets/source-manifest.json");
 await copyFile("assets/derived/skeleton.mobile-lod1.v2.glb");
 await copyFile("assets/derived/muscles.mobile-lod1.v2.glb");
 await copyTree("assets", ({ name, entry, relativePath }) => {
