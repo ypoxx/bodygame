@@ -1,5 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
+import {
+  classifySoftTissue,
+  TISSUE_LABELS_DE,
+} from "../src/anatomy/softTissueTaxonomy.js";
 
 const root = process.cwd();
 const assetsDir = path.join(root, "assets");
@@ -8,21 +12,6 @@ const contentDir = path.join(root, "content");
 const SOURCES = [
   { file: "skeleton.glb", source: "skeleton_model", forcedLayer: "bones" },
   { file: "muscles.glb", source: "muscles_model", forcedLayer: null },
-];
-
-const FASCIA_TOKENS = [
-  "fascia",
-  "fascial",
-  "aponeurosis",
-  "retinaculum",
-  "septum",
-  "sheath",
-  "capsule",
-  "tendon",
-  "ligament",
-  "bursa",
-  "thoracolumbar",
-  "linea alba",
 ];
 
 const HELPER_TOKENS = [
@@ -140,13 +129,6 @@ function withoutSideSuffix(rawName) {
   return rawName.replace(/\.[lr]$/i, "");
 }
 
-function classifySoftTissue(rawName) {
-  const lower = withoutSideSuffix(rawName)
-    .toLowerCase()
-    .replace(/[_.-]+/g, " ");
-  return FASCIA_TOKENS.some((token) => lower.includes(token)) ? "fasciae" : "muscles";
-}
-
 function toLatinDisplay(rawName) {
   const side = extractSide(rawName);
   const base = withoutSideSuffix(rawName)
@@ -190,14 +172,12 @@ function regionTagsFromName(rawName) {
   return tags;
 }
 
-function layerFunFact(layer, latinDisplay) {
+function layerFunFact(layer, tissueType, latinDisplay) {
   if (layer === "bones") {
     return `${latinDisplay} ist als eigene Knochenstruktur im 3D-Modell selektierbar.`;
   }
-  if (layer === "fasciae") {
-    return `${latinDisplay} gehoert zu den faszialen bzw. bindegewebigen Strukturen und verbindet benachbarte Gewebe.`;
-  }
-  return `${latinDisplay} ist als Muskelstruktur im Bewegungsapparat-Layer enthalten.`;
+  const tissueLabel = TISSUE_LABELS_DE[tissueType] || TISSUE_LABELS_DE.unclassified_soft_tissue;
+  return `${latinDisplay} ist im 3D-Modell als Struktur des Typs „${tissueLabel}“ separat auswählbar.`;
 }
 
 function collectModelEntries({ file, source, forcedLayer }) {
@@ -218,11 +198,21 @@ function collectModelEntries({ file, source, forcedLayer }) {
   );
 
   return uniqueNames.map((rawName) => {
-    const layer = forcedLayer || classifySoftTissue(rawName);
+    const taxonomy = forcedLayer
+      ? {
+          displayGroup: forcedLayer,
+          tissueType: "bone",
+          quizEligible: true,
+          reviewStatus: "auto_classified",
+          ta2Id: null,
+          source,
+        }
+      : classifySoftTissue(rawName);
+    const layer = taxonomy.displayGroup;
     const latin = toLatinDisplay(rawName);
     const german = toGermanDisplay(latin);
     const side = extractSide(rawName);
-    const tags = [layer, ...regionTagsFromName(rawName), source];
+    const tags = [layer, taxonomy.tissueType, ...regionTagsFromName(rawName), source];
     if (side === "L") {
       tags.push("left");
     } else if (side === "R") {
@@ -230,15 +220,26 @@ function collectModelEntries({ file, source, forcedLayer }) {
     } else {
       tags.push("midline");
     }
-    tags.push("auto-generated", "quiz");
+    tags.push("auto-generated");
+    if (taxonomy.quizEligible) {
+      tags.push("quiz");
+    } else {
+      tags.push("review-required");
+    }
 
     return {
       rawName,
       id: toStableId(rawName),
       nameDe: german,
       nameLatin: latin,
-      funFact: layerFunFact(layer, latin),
+      funFact: layerFunFact(layer, taxonomy.tissueType, latin),
       layer,
+      displayGroup: taxonomy.displayGroup,
+      tissueType: taxonomy.tissueType,
+      quizEligible: taxonomy.quizEligible,
+      reviewStatus: taxonomy.reviewStatus,
+      ta2Id: taxonomy.ta2Id,
+      source: taxonomy.source,
       tags: Array.from(new Set(tags)),
     };
   });
@@ -274,22 +275,40 @@ function main() {
 
   ensureUniqueIds(entries);
 
-  const structures = entries.map(({ id, nameDe, nameLatin, funFact, layer, tags }) => ({
-    id,
-    nameDe,
-    nameLatin,
-    funFact,
-    layer,
-    tags,
-  }));
+  const structures = entries.map(
+    ({ rawName, id, nameDe, nameLatin, funFact, layer, displayGroup, tissueType, quizEligible, reviewStatus, ta2Id, source, tags }) => ({
+      id,
+      meshName: rawName,
+      nameDe,
+      nameLatin,
+      funFact,
+      layer,
+      displayGroup,
+      tissueType,
+      quizEligible,
+      reviewStatus,
+      ...(ta2Id === null ? {} : { ta2Id }),
+      source,
+      tags,
+    }),
+  );
 
-  const quizData = structures.map(({ id, nameDe, nameLatin, funFact, layer }) => ({
-    id,
-    nameDe,
-    nameLatin,
-    funFact,
-    layer,
-  }));
+  const quizData = structures.map(
+    ({ id, meshName, nameDe, nameLatin, funFact, layer, displayGroup, tissueType, quizEligible, reviewStatus, ta2Id, source }) => ({
+      id,
+      meshName,
+      nameDe,
+      nameLatin,
+      funFact,
+      layer,
+      displayGroup,
+      tissueType,
+      quizEligible,
+      reviewStatus,
+      ...(ta2Id === undefined ? {} : { ta2Id }),
+      source,
+    }),
+  );
 
   fs.writeFileSync(path.join(contentDir, "structures.json"), `${JSON.stringify(structures, null, 2)}\n`);
   fs.writeFileSync(path.join(root, "quizdata.json"), `${JSON.stringify(quizData, null, 2)}\n`);

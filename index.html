@@ -12,7 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="./assets/icons/icon-192.svg" />
     <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
     <link rel="manifest" href="./manifest.json" />
-    <link rel="stylesheet" href="./styles.css?v=20260714-3" />
+    <link rel="stylesheet" href="./styles.css?v=20260715-4" />
     <title>AnatomyQuest</title>
     <script type="importmap">
       {
@@ -189,12 +189,18 @@
                     </svg>
                     <span>Muskeln</span>
                   </button>
-                  <button id="layerFasciaeBtn" class="layer-btn" type="button">
+                  <button
+                    id="layerFasciaeBtn"
+                    class="layer-btn"
+                    type="button"
+                    aria-label="Faszien und weitere Bindegewebsstrukturen"
+                    title="Faszien, Sehnen, Bänder, Schleimbeutel und Sehnenscheiden"
+                  >
                     <svg viewBox="0 0 28 28" aria-hidden="true">
                       <path d="M5 5h18v18H5Z" />
                       <path d="m5 11 18-6M5 17l18-6M5 23l18-6M11 5 5 18M18 5l5 18" />
                     </svg>
-                    <span>Faszien</span>
+                    <span>Bindegewebe</span>
                   </button>
                 </div>
               </div>
@@ -352,6 +358,6 @@
 
     <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-    <script type="module" src="./app.js?v=20260714-3"></script>
+    <script type="module" src="./app.js?v=20260715-4"></script>
   </body>
 </html>

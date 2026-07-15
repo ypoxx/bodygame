@@ -5,9 +5,10 @@ Run with Blender, not the system Python:
 
     blender -b --factory-startup --python scripts/blender_asset_pipeline.py -- \
       --input assets/muscles.glb \
-      --output assets/derived/muscles.mobile-lod1.glb \
-      --report assets/derived/reports/muscles.mobile-lod1.json \
-      --repair-triangle-soup --lod-ratio 0.38 --min-triangles 300
+      --output assets/derived/muscles.mobile-lod1.v2.glb \
+      --report assets/derived/reports/muscles.mobile-lod1.v2.json \
+      --repair-triangle-soup --lod-ratio 0.38 --min-triangles 300 \
+      --collapse-material-slots
 
 The input file is never overwritten. Triangle-soup repair is accepted only when
 the complete triangle/corner signature (positions, normals, UVs and materials)
@@ -31,7 +32,7 @@ import bpy
 from mathutils import Vector
 
 
-PIPELINE_VERSION = "1.0.0"
+PIPELINE_VERSION = "1.1.0"
 TRIANGLE_SOUP_TARGETS = (
     "External abdominal oblique muscle",
     "Multifidus thoracis muscle",
@@ -47,6 +48,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--preview-before", type=Path)
     parser.add_argument("--preview-after", type=Path)
     parser.add_argument("--repair-triangle-soup", action="store_true")
+    parser.add_argument(
+        "--collapse-material-slots",
+        action="store_true",
+        help=(
+            "Assign every polygon in each anatomical mesh to material slot 0 and "
+            "remove the remaining slots. Objects are never joined."
+        ),
+    )
     parser.add_argument(
         "--lod-weld-triangle-soup",
         action="store_true",
@@ -66,7 +75,11 @@ def parse_args() -> argparse.Namespace:
         parser.error("--lod-ratio must be between 0.05 and 1.0")
     if args.output and args.output.resolve() == args.input.resolve():
         parser.error("Refusing to overwrite the input asset")
-    if (args.repair_triangle_soup or args.lod_ratio < 1.0) and not args.output:
+    if (
+        args.repair_triangle_soup
+        or args.collapse_material_slots
+        or args.lod_ratio < 1.0
+    ) and not args.output:
         parser.error("An --output path is required when modifying geometry")
     return args
 
@@ -280,6 +293,132 @@ def scene_stats() -> dict:
         "object_names": sorted(obj.name for obj in objects),
         "triangle_soup_targets": offender_stats,
         "meshes": mesh_stats,
+    }
+
+
+def geometry_snapshot() -> dict[str, dict]:
+    """Capture exact edit-scene geometry without including material indices."""
+    snapshot = {}
+    for mesh in sorted(unique_meshes(), key=lambda item: item.name.casefold()):
+        digest = hashlib.sha256()
+        digest.update(f"vertices:{len(mesh.vertices)}\n".encode())
+        for vertex in mesh.vertices:
+            digest.update(
+                ("%.9g,%.9g,%.9g;" % tuple(float(value) for value in vertex.co)).encode()
+            )
+        digest.update(f"\npolygons:{len(mesh.polygons)}\n".encode())
+        for polygon in mesh.polygons:
+            # Material assignment is deliberately omitted: it is the only data
+            # this optimization is allowed to change.
+            digest.update(
+                (",".join(str(index) for index in polygon.vertices) + ";").encode()
+            )
+        snapshot[mesh.name] = {
+            "vertices": len(mesh.vertices),
+            "polygons": len(mesh.polygons),
+            "triangles": mesh_triangle_count(mesh),
+            "sha256": digest.hexdigest(),
+        }
+    return snapshot
+
+
+def object_mesh_assignments() -> dict[str, str]:
+    return {obj.name: obj.data.name for obj in mesh_objects()}
+
+
+def collapse_material_slots() -> dict:
+    """Collapse material primitives without changing anatomical object boundaries."""
+    before = scene_stats()
+    geometry_before = geometry_snapshot()
+    assignments_before = object_mesh_assignments()
+    operations = []
+
+    for mesh in sorted(unique_meshes(), key=lambda item: item.name.casefold()):
+        users = sorted(obj.name for obj in mesh_objects() if obj.data == mesh)
+        materials_before = [
+            material.name if material is not None else None for material in mesh.materials
+        ]
+        polygon_assignments_changed = sum(
+            1 for polygon in mesh.polygons if polygon.material_index != 0
+        )
+
+        for polygon in mesh.polygons:
+            polygon.material_index = 0
+        while len(mesh.materials) > 1:
+            mesh.materials.pop(index=len(mesh.materials) - 1)
+        mesh.update()
+
+        operations.append(
+            {
+                "mesh": mesh.name,
+                "users": users,
+                "materials_before": materials_before,
+                "material_slots_before": len(materials_before),
+                "material_slots_after": len(mesh.materials),
+                "material_slots_removed": max(0, len(materials_before) - len(mesh.materials)),
+                "polygon_assignments_changed": polygon_assignments_changed,
+                "polygons": len(mesh.polygons),
+            }
+        )
+
+    after = scene_stats()
+    geometry_after = geometry_snapshot()
+    assignments_after = object_mesh_assignments()
+    validation = {
+        "mesh_object_count_unchanged": before["mesh_objects"] == after["mesh_objects"],
+        "unique_mesh_count_unchanged": before["unique_meshes"] == after["unique_meshes"],
+        "object_names_unchanged": before["object_names"] == after["object_names"],
+        "object_mesh_assignments_unchanged": assignments_before == assignments_after,
+        "geometry_signatures_unchanged": geometry_before == geometry_after,
+        "instantiated_vertices_unchanged": (
+            before["instantiated_vertices"] == after["instantiated_vertices"]
+        ),
+        "instantiated_triangles_unchanged": (
+            before["instantiated_triangles"] == after["instantiated_triangles"]
+        ),
+        "bounds_unchanged": (
+            before["bounds_min"] == after["bounds_min"]
+            and before["bounds_max"] == after["bounds_max"]
+        ),
+        "all_polygons_use_material_slot_zero": all(
+            polygon.material_index == 0
+            for mesh in unique_meshes()
+            for polygon in mesh.polygons
+        ),
+        "at_most_one_material_slot_per_mesh": all(
+            len(mesh.materials) <= 1 for mesh in unique_meshes()
+        ),
+        "estimated_draw_calls_equal_mesh_objects": (
+            after["estimated_draw_calls"] == after["mesh_objects"]
+        ),
+    }
+    failed = [name for name, passed in validation.items() if not passed]
+    if failed:
+        raise RuntimeError(
+            "Material-slot collapse violated invariants: " + ", ".join(failed)
+        )
+
+    return {
+        "before": {
+            "mesh_objects": before["mesh_objects"],
+            "unique_meshes": before["unique_meshes"],
+            "instantiated_vertices": before["instantiated_vertices"],
+            "instantiated_triangles": before["instantiated_triangles"],
+            "estimated_draw_calls": before["estimated_draw_calls"],
+            "bounds_min": before["bounds_min"],
+            "bounds_max": before["bounds_max"],
+        },
+        "after": {
+            "mesh_objects": after["mesh_objects"],
+            "unique_meshes": after["unique_meshes"],
+            "instantiated_vertices": after["instantiated_vertices"],
+            "instantiated_triangles": after["instantiated_triangles"],
+            "estimated_draw_calls": after["estimated_draw_calls"],
+            "bounds_min": after["bounds_min"],
+            "bounds_max": after["bounds_max"],
+        },
+        "operations": operations,
+        "validation": validation,
     }
 
 
@@ -539,6 +678,9 @@ def main() -> None:
     if args.lod_weld_triangle_soup:
         repair_results.extend(safely_weld_triangle_soup(allow_normal_rebuild=True))
     lod_results = decimate_unique_meshes(args.lod_ratio, args.min_triangles)
+    material_slot_collapse = (
+        collapse_material_slots() if args.collapse_material_slots else None
+    )
 
     output_meta = None
     after_processing = scene_stats()
@@ -571,6 +713,7 @@ def main() -> None:
         "settings": {
             "repair_triangle_soup": args.repair_triangle_soup,
             "lod_weld_triangle_soup": args.lod_weld_triangle_soup,
+            "collapse_material_slots": args.collapse_material_slots,
             "lod_ratio": args.lod_ratio,
             "min_triangles": args.min_triangles,
             "draco_level": args.draco_level,
@@ -583,9 +726,28 @@ def main() -> None:
         "after_reimport": reimported,
         "triangle_soup_repairs": repair_results,
         "lod_operations": lod_results,
+        "material_slot_collapse": material_slot_collapse,
         "validation": {
             "mesh_object_names_preserved": before["object_names"]
             == reimported["object_names"],
+            "mesh_object_count_preserved": before["mesh_objects"]
+            == reimported["mesh_objects"],
+            "unique_mesh_count_preserved": before["unique_meshes"]
+            == reimported["unique_meshes"],
+            "reimported_triangle_delta_from_processing": (
+                reimported["instantiated_triangles"]
+                - after_processing["instantiated_triangles"]
+            ),
+            "reimported_draw_calls_equal_mesh_objects": (
+                reimported["estimated_draw_calls"] == reimported["mesh_objects"]
+                if args.collapse_material_slots
+                else None
+            ),
+            "reimported_at_most_one_material_slot_per_mesh": (
+                all(item["materials"] <= 1 for item in reimported["meshes"])
+                if args.collapse_material_slots
+                else None
+            ),
             "bounds_size_delta": [
                 round(reimported["bounds_size"][index] - before["bounds_size"][index], 6)
                 for index in range(3)
@@ -598,6 +760,20 @@ def main() -> None:
     }
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    if args.collapse_material_slots:
+        required_checks = (
+            "mesh_object_names_preserved",
+            "mesh_object_count_preserved",
+            "unique_mesh_count_preserved",
+            "reimported_draw_calls_equal_mesh_objects",
+            "reimported_at_most_one_material_slot_per_mesh",
+        )
+        failed = [name for name in required_checks if not report["validation"][name]]
+        if failed:
+            raise RuntimeError(
+                "Reimport validation failed after material-slot collapse: "
+                + ", ".join(failed)
+            )
     print("AQ_PIPELINE_REPORT", args.report.resolve())
     print("AQ_PIPELINE_SUMMARY", json.dumps(report["validation"], ensure_ascii=False))
 

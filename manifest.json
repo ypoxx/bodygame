@@ -1,7 +1,7 @@
 {
   "name": "AnatomyQuest – Anatomie in 3D",
   "short_name": "AnatomyQuest",
-  "description": "Mobile 3D-Lernapp für Knochen, Muskeln, Faszien und spielerische Anatomie-Runden.",
+  "description": "Mobile 3D-Lernapp für Knochen, Muskeln, Faszien und weitere Bindegewebsstrukturen.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
