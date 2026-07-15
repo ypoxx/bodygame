@@ -15,8 +15,8 @@ export function createOnboarding(options = {}) {
       body: "Wähle Modus und Ebene. In der Runde bleibt nur das kompakte Aktionsdock sichtbar.",
     },
     {
-      title: "Knochen, Muskeln, Faszien",
-      body: "Wechsle zwischen den anatomischen Ebenen und tippe eine Struktur für Details an.",
+      title: "Knochen, Muskeln, Bindegewebe",
+      body: "Wechsle zwischen den Ebenen. Die Bindegewebe-Ansicht kennzeichnet Faszien, Sehnen, Bänder, Schleimbeutel und Sehnenscheiden getrennt.",
     },
   ];
 

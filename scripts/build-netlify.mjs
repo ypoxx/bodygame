@@ -42,8 +42,8 @@ await copyTree("content", ({ name }) => name === "structures.json");
 await copyTree("assets/icons", ({ name }) => !name.startsWith("."));
 await copyTree("assets/draco", ({ name }) => !name.startsWith("."));
 await copyFile("assets/ATTRIBUTION.md");
-await copyFile("assets/derived/skeleton.mobile-lod1.v1.glb");
-await copyFile("assets/derived/muscles.mobile-lod1.v1.glb");
+await copyFile("assets/derived/skeleton.mobile-lod1.v2.glb");
+await copyFile("assets/derived/muscles.mobile-lod1.v2.glb");
 await copyTree("assets", ({ name, entry, relativePath }) => {
   if (entry.isDirectory()) {
     return false;

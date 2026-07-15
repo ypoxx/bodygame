@@ -4,13 +4,57 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["id", "nameDe", "nameLatin", "funFact", "layer", "tags"],
+    "required": [
+      "id",
+      "meshName",
+      "nameDe",
+      "nameLatin",
+      "funFact",
+      "layer",
+      "displayGroup",
+      "tissueType",
+      "quizEligible",
+      "reviewStatus",
+      "source",
+      "tags"
+    ],
     "properties": {
       "id": { "type": "string", "minLength": 1 },
+      "meshName": { "type": "string", "minLength": 1 },
       "nameDe": { "type": "string", "minLength": 1 },
       "nameLatin": { "type": "string", "minLength": 1 },
       "funFact": { "type": "string", "minLength": 1 },
       "layer": { "type": "string", "enum": ["bones", "muscles", "fasciae"] },
+      "displayGroup": { "type": "string", "enum": ["bones", "muscles", "fasciae"] },
+      "tissueType": {
+        "type": "string",
+        "enum": [
+          "bone",
+          "muscle",
+          "fascia",
+          "fascial_tract",
+          "fascial_arch",
+          "fascial_septum",
+          "synovial_bursa",
+          "tendon_sheath",
+          "tendon",
+          "ligament",
+          "retinaculum",
+          "aponeurosis",
+          "capsule",
+          "tendinous_structure",
+          "muscle_trochlea",
+          "eyelid_tarsus",
+          "unclassified_soft_tissue"
+        ]
+      },
+      "quizEligible": { "type": "boolean" },
+      "reviewStatus": {
+        "type": "string",
+        "enum": ["verified", "auto_classified", "review_required"]
+      },
+      "ta2Id": { "type": "integer", "minimum": 1 },
+      "source": { "type": "string", "minLength": 1 },
       "tags": {
         "type": "array",
         "items": { "type": "string" },

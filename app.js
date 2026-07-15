@@ -13,13 +13,14 @@ import { computeAnswerScore, computeAccuracy, computeRank } from "./src/game/sco
 import { createRendererEngine } from "./src/engine/renderer.js?v=20260714-1";
 import { createCameraController } from "./src/engine/cameraController.js?v=20260714-3";
 import { createAudioEngine } from "./src/audio/audioEngine.js";
-import { createOnboarding } from "./src/ui/onboarding.js?v=20260714-1";
+import { createOnboarding } from "./src/ui/onboarding.js?v=20260715-4";
 import { createProgressionEngine } from "./src/progression/progression.js";
 import { createAdaptiveSelector } from "./src/learning/adaptiveSelector.js";
 import { createChallengeEngine } from "./src/challenges/challengeEngine.js";
 import { createGhostReplay } from "./src/competition/ghostReplay.js";
 import { createLeaderboardAdapter } from "./src/competition/leaderboardAdapter.js";
 import { createTelemetry } from "./src/telemetry/events.js";
+import { classifySoftTissue, TISSUE_LABELS_DE } from "./src/anatomy/softTissueTaxonomy.js?v=20260715-1";
 
 const STORAGE_KEYS = {
   highScoreLegacy: "aq3d.highScore",
@@ -40,15 +41,15 @@ const DEFAULT_SELECTION = {
 };
 
 const LAYER_CYCLE = ["bones", "muscles", "fasciae"];
-const BUILD_ID = "2026-07-14.mobile-atlas.3";
+const BUILD_ID = "2026-07-15.mobile-atlas.4";
 const USE_MOBILE_LOD = shouldUseMobileLod();
 const MODEL_ASSETS = {
   skeleton: USE_MOBILE_LOD
-    ? ["./assets/derived/skeleton.mobile-lod1.v1.glb", "./assets/skeleton.glb"]
-    : ["./assets/skeleton.glb", "./assets/derived/skeleton.mobile-lod1.v1.glb"],
+    ? ["./assets/derived/skeleton.mobile-lod1.v2.glb", "./assets/skeleton.glb"]
+    : ["./assets/skeleton.glb", "./assets/derived/skeleton.mobile-lod1.v2.glb"],
   muscles: USE_MOBILE_LOD
-    ? ["./assets/derived/muscles.mobile-lod1.v1.glb", "./assets/muscles.glb"]
-    : ["./assets/muscles.glb", "./assets/derived/muscles.mobile-lod1.v1.glb"],
+    ? ["./assets/derived/muscles.mobile-lod1.v2.glb", "./assets/muscles.glb"]
+    : ["./assets/muscles.glb", "./assets/derived/muscles.mobile-lod1.v2.glb"],
 };
 const PROFILE_PRESETS = {
   male: {
@@ -166,6 +167,7 @@ const state = {
   weeklyChallenge: null,
   quizData: [],
   quizById: new Map(),
+  contentById: new Map(),
   tokenToId: new Map(),
   patternTokens: [],
   score: 0,
@@ -902,7 +904,12 @@ function updateLayerLockHint() {
   ui.layerLockHint.classList.toggle("hidden", !shouldShow);
   if (shouldShow) {
     const onlyLayer = state.round.allowedLayers[0] || "bones";
-    const label = onlyLayer === "muscles" ? "Muskel-Layer" : onlyLayer === "fasciae" ? "Faszien-Layer" : "Knochen-Layer";
+    const label =
+      onlyLayer === "muscles"
+        ? "Muskel-Layer"
+        : onlyLayer === "fasciae"
+          ? "Bindegewebe-Layer"
+          : "Knochen-Layer";
     ui.layerLockHint.textContent = `In dieser Runde ist nur der ${label} aktiv.`;
   }
 }
@@ -1025,8 +1032,13 @@ function startRound() {
     new Set(state.quizData.map((item) => item.layer || "bones").filter((layer) => loadedLayers.has(layer))),
   );
   if (!allowedLayers.includes(state.activeLayer)) {
+    const previousLayer = state.activeLayer;
     setLayer(allowedLayers[0] || "bones");
-    showToast(`Quiz-Layer gewechselt auf ${allowedLayers[0] || "bones"}.`);
+    showToast(
+      previousLayer === "fasciae"
+        ? "Bindegewebe ist bis zur fachlichen Freigabe nur im Erkundungsmodus verfügbar. Quiz startet mit geprüften Strukturen."
+        : `Quiz-Layer gewechselt auf ${allowedLayers[0] || "bones"}.`,
+    );
   }
 
   state.flags.comboScale = 1;
@@ -1205,7 +1217,9 @@ function nextQuestion() {
   }
 
   const prefix = bossState.active ? "BONUSRUNDE · " : "";
-  const layerLabel = candidateLayer === "muscles" ? "Muskel" : candidateLayer === "fasciae" ? "Faszie" : "Knochen";
+  const layerLabel =
+    TISSUE_LABELS_DE[candidate.tissueType] ||
+    (candidateLayer === "muscles" ? "Muskel" : candidateLayer === "fasciae" ? "Bindegewebe" : "Knochen");
   setQuestion(`${prefix}Finde ${candidate.nameLatin} (${candidate.nameDe}) [${layerLabel}].`);
   setTargetPrompt(
     `${prefix}Finde: ${candidate.nameLatin}`,
@@ -1667,7 +1681,11 @@ function updateControls() {
   for (const { button, key } of layerButtons) {
     const notAllowedByRound = inActiveRound && !allowedLayers.includes(key);
     button.disabled = state.isLoadingProfile || inCountdown || notAllowedByRound;
-    button.title = notAllowedByRound ? "In dieser Runde ist dieser Layer nicht Bestandteil der Fragen." : "";
+    button.title = notAllowedByRound
+      ? "In dieser Runde ist dieser Layer nicht Bestandteil der geprüften Fragen."
+      : key === "fasciae"
+        ? "Faszien, Sehnen, Bänder, Schleimbeutel und Sehnenscheiden erkunden"
+        : "";
   }
 
   ui.profileMaleBtn.disabled = uiLocked;
@@ -1694,7 +1712,7 @@ function updateControls() {
 }
 
 async function loadQuizData() {
-  let data = [];
+  let allContent = [];
 
   try {
     const response = await fetch("./content/structures.json");
@@ -1702,31 +1720,44 @@ async function loadQuizData() {
       throw new Error(`content/structures.json konnte nicht geladen werden (${response.status})`);
     }
     const structures = await response.json();
-    data = structures.map((item) => ({
+    allContent = structures.map((item) => ({
       id: item.id,
+      meshName: item.meshName || item.nameLatin,
       nameDe: item.nameDe,
       nameLatin: item.nameLatin,
       funFact: item.funFact,
       layer: item.layer || "bones",
+      displayGroup: item.displayGroup || item.layer || "bones",
+      tissueType: item.tissueType || (item.layer === "bones" ? "bone" : "unclassified_soft_tissue"),
+      quizEligible: item.quizEligible !== false,
+      reviewStatus: item.reviewStatus || "legacy",
+      ta2Id: item.ta2Id ?? null,
+      source: item.source || "legacy_content",
     }));
   } catch (contentError) {
     const fallbackResponse = await fetch("./quizdata.json");
     if (!fallbackResponse.ok) {
       throw contentError;
     }
-    data = await fallbackResponse.json();
+    allContent = await fallbackResponse.json();
     showToast("Quiz aus quizdata.json geladen (Fallback).");
   }
 
-  data = data.map((item) => ({
+  allContent = allContent.map((item) => ({
     ...item,
     layer: item.layer || "bones",
+    displayGroup: item.displayGroup || item.layer || "bones",
+    tissueType: item.tissueType || (item.layer === "bones" ? "bone" : "unclassified_soft_tissue"),
+    quizEligible: item.quizEligible !== false,
+    reviewStatus: item.reviewStatus || "legacy",
   }));
 
-  state.quizData = data;
-  state.quizById = new Map(data.map((item) => [item.id, item]));
-  adaptiveSelector.setItems(data);
-  buildTokenIndex(data);
+  const quizData = allContent.filter((item) => item.quizEligible);
+  state.quizData = quizData;
+  state.quizById = new Map(quizData.map((item) => [item.id, item]));
+  state.contentById = new Map(allContent.map((item) => [item.id, item]));
+  adaptiveSelector.setItems(quizData);
+  buildTokenIndex(allContent);
 }
 
 function buildTokenIndex(data) {
@@ -1734,7 +1765,7 @@ function buildTokenIndex(data) {
   const availableIds = new Set(data.map((entry) => entry.id));
 
   for (const entry of data) {
-    const tokens = [entry.id, entry.nameDe, entry.nameLatin];
+    const tokens = [entry.id, entry.meshName, entry.nameDe, entry.nameLatin];
     for (const token of tokens) {
       const normalized = normalizeToken(token);
       if (normalized) {
@@ -1939,14 +1970,14 @@ async function loadMuscleLayer(preset, silent, generation = state.assetGeneratio
 
     state.roots.muscle = model;
     const softMeshes = prepareMeshes(model, "muscle");
-    state.selectables.muscles = softMeshes.filter((mesh) => mesh.userData.structureType === "muscle");
-    state.selectables.fasciae = softMeshes.filter((mesh) => mesh.userData.structureType === "fascia");
+    state.selectables.muscles = softMeshes.filter((mesh) => mesh.userData.displayGroup === "muscles");
+    state.selectables.fasciae = softMeshes.filter((mesh) => mesh.userData.displayGroup === "fasciae");
 
     if (!silent) {
       const fallbackHint = loaded.index > 0 ? " (Fallback-Modell)" : "";
       const visibleSoftMeshes = state.selectables.muscles.length + state.selectables.fasciae.length;
       showToast(
-        `Weichteillayer geladen (${state.selectables.muscles.length} Muskeln, ${state.selectables.fasciae.length} Faszien, gesamt ${visibleSoftMeshes})${fallbackHint}.`,
+        `Weichteillayer geladen (${state.selectables.muscles.length} Muskeln, ${state.selectables.fasciae.length} Bindegewebsstrukturen, gesamt ${visibleSoftMeshes})${fallbackHint}.`,
       );
     }
     return model;
@@ -1956,7 +1987,7 @@ async function loadMuscleLayer(preset, silent, generation = state.assetGeneratio
       state.selectables.muscles = [];
       state.selectables.fasciae = [];
       if (!silent) {
-        showToast("Kein Muskel-/Faszienmodell gefunden.");
+        showToast("Kein Muskel-/Bindegewebsmodell gefunden.");
       }
     }
     return null;
@@ -2030,7 +2061,19 @@ function prepareMeshes(root, layerName) {
     }
 
     node.userData.layer = layerName;
-    node.userData.structureType = layerName === "muscle" ? classifySoftTissue(node.name) : "bone";
+    const taxonomy =
+      layerName === "muscle"
+        ? classifySoftTissue(node.name)
+        : {
+            displayGroup: "bones",
+            tissueType: "bone",
+            quizEligible: true,
+            reviewStatus: "asset",
+          };
+    node.userData.displayGroup = taxonomy.displayGroup;
+    node.userData.structureType = taxonomy.tissueType;
+    node.userData.quizEligible = taxonomy.quizEligible;
+    node.userData.reviewStatus = taxonomy.reviewStatus;
     node.userData.boneId = node.userData.boneId || inferBoneId(node.name) || null;
     node.castShadow = false;
     node.receiveShadow = false;
@@ -2109,32 +2152,6 @@ function shouldIgnoreMesh(node) {
   return false;
 }
 
-function classifySoftTissue(name) {
-  const value = String(name || "")
-    .toLowerCase()
-    .replace(/[_.-]+/g, " ");
-
-  const fasciaTokens = [
-    "fascia",
-    "fascial",
-    "aponeurosis",
-    "retinaculum",
-    "septum",
-    "sheath",
-    "capsule",
-    "tendon",
-    "ligament",
-    "bursa",
-    "thoracolumbar",
-  ];
-
-  if (fasciaTokens.some((token) => value.includes(token))) {
-    return "fascia";
-  }
-
-  return "muscle";
-}
-
 function tuneMeshMaterial(mesh, layerName) {
   const preset = getTissuePreset(mesh, layerName);
   const sourceMaterials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
@@ -2170,7 +2187,7 @@ function getTissuePreset(mesh, layerName) {
       return { color: 0xb9878d, roughness: 0.76, envMapIntensity: 0.4, doubleSided: true };
     }
     if (
-      mesh.userData.structureType === "fascia" ||
+      mesh.userData.displayGroup === "fasciae" ||
       ["tendon", "ligament", "aponeuros", "retinac", "sheath"].some((token) => name.includes(token))
     ) {
       return { color: 0xb9a494, roughness: 0.72, envMapIntensity: 0.44, doubleSided: true };
@@ -2344,16 +2361,11 @@ function pickMeshFromPointer(event) {
   if (entry) {
     setSelection(entry);
   } else {
-    const structureType =
-      mesh.userData.structureType === "fascia"
-        ? "Faszie"
-        : mesh.userData.structureType === "muscle"
-          ? "Muskel"
-          : "Struktur";
+    const structureType = TISSUE_LABELS_DE[mesh.userData.structureType] || "Struktur";
     setSelection({
       nameDe: formatStructureName(mesh.name),
       nameLatin: "-",
-      funFact: `${structureType} (noch nicht im Quizdatensatz hinterlegt).`,
+      funFact: `${structureType} · fachliche Benennung noch nicht für das Quiz freigegeben.`,
     });
   }
 
@@ -2417,7 +2429,7 @@ function getEntryForMesh(mesh) {
   if (!boneId) {
     return null;
   }
-  return state.quizById.get(boneId) || null;
+  return state.contentById.get(boneId) || null;
 }
 
 function formatStructureName(name) {
@@ -2631,7 +2643,11 @@ function updateScoreboard() {
   ui.streakValue.textContent = String(state.streak);
   ui.correctValue.textContent = String(state.correct);
   ui.wrongValue.textContent = String(state.wrong);
-  ui.unlockedCountValue.textContent = `${state.unlocked.size} / ${state.quizData.length}`;
+  const eligibleUnlocked = state.quizData.reduce(
+    (count, item) => count + (state.unlocked.has(item.id) ? 1 : 0),
+    0,
+  );
+  ui.unlockedCountValue.textContent = `${eligibleUnlocked} / ${state.quizData.length}`;
   store.setState({ score: state.score }, "scoreboard");
 }
 
@@ -2716,6 +2732,14 @@ function spawnHitMarker(clientX, clientY, text, kind) {
 }
 
 function setSelection(entry) {
+  if (entry.reviewStatus === "review_required") {
+    const tissueLabel = TISSUE_LABELS_DE[entry.tissueType] || "Bindegewebsstruktur";
+    ui.nameDeValue.textContent = tissueLabel;
+    ui.nameLatinValue.textContent = formatStructureName(entry.meshName || entry.nameLatin);
+    ui.factValue.textContent =
+      "Originalbezeichnung aus dem 3D-Modell. Die fachliche Benennung wird geprüft; diese Struktur ist deshalb noch nicht als Quizfrage freigegeben.";
+    return;
+  }
   ui.nameDeValue.textContent = entry.nameDe || "-";
   ui.nameLatinValue.textContent = entry.nameLatin || "-";
   ui.factValue.textContent = entry.funFact || "-";

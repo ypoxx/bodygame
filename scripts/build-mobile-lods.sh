@@ -25,10 +25,11 @@ verify_sha assets/muscles.glb "$EXPECTED_MUSCLES_SHA"
 
 blender -b --factory-startup --python scripts/blender_asset_pipeline.py -- \
   --input assets/skeleton.glb \
-  --output assets/derived/skeleton.mobile-lod1.v1.glb \
-  --report assets/derived/reports/skeleton.mobile-lod1.v1.json \
+  --output assets/derived/skeleton.mobile-lod1.v2.glb \
+  --report assets/derived/reports/skeleton.mobile-lod1.v2.json \
   --preview-before assets/derived/previews/skeleton.production.front.png \
-  --preview-after assets/derived/previews/skeleton.mobile-lod1.v1.front.png \
+  --preview-after assets/derived/previews/skeleton.mobile-lod1.v2.front.png \
+  --collapse-material-slots \
   --lod-ratio 0.58 \
   --min-triangles 100 \
   --position-bits 14 \
@@ -38,14 +39,15 @@ blender -b --factory-startup --python scripts/blender_asset_pipeline.py -- \
 
 blender -b --factory-startup --python scripts/blender_asset_pipeline.py -- \
   --input assets/muscles.glb \
-  --output assets/derived/muscles.mobile-lod1.v1.glb \
-  --report assets/derived/reports/muscles.mobile-lod1.v1.json \
+  --output assets/derived/muscles.mobile-lod1.v2.glb \
+  --report assets/derived/reports/muscles.mobile-lod1.v2.json \
   --preview-before assets/derived/previews/muscles.production.front.png \
-  --preview-after assets/derived/previews/muscles.mobile-lod1.v1.front.png \
+  --preview-after assets/derived/previews/muscles.mobile-lod1.v2.front.png \
   --repair-triangle-soup \
   --lod-weld-triangle-soup \
+  --collapse-material-slots \
   --lod-ratio 0.35 \
-  --min-triangles 300 \
+  --min-triangles 400 \
   --position-bits 14 \
   --normal-bits 10 \
   --texcoord-bits 12 \
@@ -53,12 +55,12 @@ blender -b --factory-startup --python scripts/blender_asset_pipeline.py -- \
 
 python3 scripts/compare_asset_previews.py \
   assets/derived/previews/skeleton.production.front.png \
-  assets/derived/previews/skeleton.mobile-lod1.v1.front.png \
-  --report assets/derived/reports/skeleton.mobile-lod1.v1.visual.json
+  assets/derived/previews/skeleton.mobile-lod1.v2.front.png \
+  --report assets/derived/reports/skeleton.mobile-lod1.v2.visual.json
 
 python3 scripts/compare_asset_previews.py \
   assets/derived/previews/muscles.production.front.png \
-  assets/derived/previews/muscles.mobile-lod1.v1.front.png \
-  --report assets/derived/reports/muscles.mobile-lod1.v1.visual.json
+  assets/derived/previews/muscles.mobile-lod1.v2.front.png \
+  --report assets/derived/reports/muscles.mobile-lod1.v2.visual.json
 
 echo "Mobile LOD assets and validation reports are ready in assets/derived/."
