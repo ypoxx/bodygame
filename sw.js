@@ -1,4 +1,4 @@
-const CACHE_NAME = "anatomyquest3d-mobile-v12";
+const CACHE_NAME = "anatomyquest3d-mobile-v13";
 const APP_SHELL_FILES = [
   "./",
   "./index.html",
@@ -6,7 +6,7 @@ const APP_SHELL_FILES = [
   "./styles.css",
   "./styles.css?v=20260715-4",
   "./app.js",
-  "./app.js?v=20260715-4",
+  "./app.js?v=20260715-5",
   "./quizdata.json",
   "./content/structures.json",
   "./manifest.json",
@@ -30,7 +30,7 @@ const APP_SHELL_FILES = [
   "./src/ui/onboarding.js",
   "./src/ui/onboarding.js?v=20260715-4",
   "./src/anatomy/softTissueTaxonomy.js",
-  "./src/anatomy/softTissueTaxonomy.js?v=20260715-1",
+  "./src/anatomy/softTissueTaxonomy.js?v=20260715-2",
   "./src/progression/progression.js",
   "./src/learning/adaptiveSelector.js",
   "./src/challenges/challengeEngine.js",

@@ -180,6 +180,22 @@ export function normalizeSoftTissueMeshName(meshName) {
 }
 
 /**
+ * Resolve the anatomical source name from a Three.js object. GLTFLoader
+ * sanitizes Object3D.name for animation bindings (for example `.l` becomes
+ * `l`), but preserves the original glTF node name in userData.name.
+ */
+export function getSoftTissueNodeName(node) {
+  return String(node?.userData?.name || node?.name || "");
+}
+
+/**
+ * Classify a loaded Three.js node without losing anatomical side suffixes.
+ */
+export function classifySoftTissueNode(node) {
+  return classifySoftTissue(getSoftTissueNodeName(node));
+}
+
+/**
  * Classify one mesh-node name into its display group and anatomical tissue
  * type. Unknown names are deliberately quarantined in the broad connective
  * display group and excluded from quizzes until reviewed.

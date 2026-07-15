@@ -20,7 +20,11 @@ import { createChallengeEngine } from "./src/challenges/challengeEngine.js";
 import { createGhostReplay } from "./src/competition/ghostReplay.js";
 import { createLeaderboardAdapter } from "./src/competition/leaderboardAdapter.js";
 import { createTelemetry } from "./src/telemetry/events.js";
-import { classifySoftTissue, TISSUE_LABELS_DE } from "./src/anatomy/softTissueTaxonomy.js?v=20260715-1";
+import {
+  classifySoftTissueNode,
+  getSoftTissueNodeName,
+  TISSUE_LABELS_DE,
+} from "./src/anatomy/softTissueTaxonomy.js?v=20260715-2";
 
 const STORAGE_KEYS = {
   highScoreLegacy: "aq3d.highScore",
@@ -41,7 +45,7 @@ const DEFAULT_SELECTION = {
 };
 
 const LAYER_CYCLE = ["bones", "muscles", "fasciae"];
-const BUILD_ID = "2026-07-15.mobile-atlas.4";
+const BUILD_ID = "2026-07-15.mobile-atlas.5";
 const USE_MOBILE_LOD = shouldUseMobileLod();
 const MODEL_ASSETS = {
   skeleton: USE_MOBILE_LOD
@@ -2055,7 +2059,10 @@ function prepareMeshes(root, layerName) {
       return;
     }
 
-    if (shouldIgnoreMesh(node)) {
+    const anatomyName = getSoftTissueNodeName(node);
+    node.userData.anatomyName = anatomyName;
+
+    if (shouldIgnoreMesh(node, anatomyName)) {
       node.visible = false;
       return;
     }
@@ -2063,7 +2070,7 @@ function prepareMeshes(root, layerName) {
     node.userData.layer = layerName;
     const taxonomy =
       layerName === "muscle"
-        ? classifySoftTissue(node.name)
+        ? classifySoftTissueNode(node)
         : {
             displayGroup: "bones",
             tissueType: "bone",
@@ -2074,21 +2081,21 @@ function prepareMeshes(root, layerName) {
     node.userData.structureType = taxonomy.tissueType;
     node.userData.quizEligible = taxonomy.quizEligible;
     node.userData.reviewStatus = taxonomy.reviewStatus;
-    node.userData.boneId = node.userData.boneId || inferBoneId(node.name) || null;
+    node.userData.boneId = node.userData.boneId || inferBoneId(anatomyName) || null;
     node.castShadow = false;
     node.receiveShadow = false;
     if (node.geometry && !node.geometry.boundingSphere) {
       node.geometry.computeBoundingSphere();
     }
-    tuneMeshMaterial(node, layerName);
+    tuneMeshMaterial(node, layerName, anatomyName);
     meshes.push(node);
   });
 
   return meshes;
 }
 
-function shouldIgnoreMesh(node) {
-  const name = String(node.name || "").trim();
+function shouldIgnoreMesh(node, anatomyName = getSoftTissueNodeName(node)) {
+  const name = String(anatomyName || "").trim();
   if (!name) {
     return false;
   }
@@ -2152,8 +2159,8 @@ function shouldIgnoreMesh(node) {
   return false;
 }
 
-function tuneMeshMaterial(mesh, layerName) {
-  const preset = getTissuePreset(mesh, layerName);
+function tuneMeshMaterial(mesh, layerName, anatomyName = getSoftTissueNodeName(mesh)) {
+  const preset = getTissuePreset(mesh, layerName, anatomyName);
   const sourceMaterials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
   const tunedMaterials = sourceMaterials.map((source) => {
     const material = new THREE.MeshStandardMaterial({
@@ -2180,8 +2187,8 @@ function tuneMeshMaterial(mesh, layerName) {
   mesh.material = Array.isArray(mesh.material) ? tunedMaterials : tunedMaterials[0];
 }
 
-function getTissuePreset(mesh, layerName) {
-  const name = String(mesh.name || "").toLowerCase();
+function getTissuePreset(mesh, layerName, anatomyName = getSoftTissueNodeName(mesh)) {
+  const name = String(anatomyName || "").toLowerCase();
   if (layerName === "muscle") {
     if (name.includes("bursa")) {
       return { color: 0xb9878d, roughness: 0.76, envMapIntensity: 0.4, doubleSided: true };
@@ -2363,7 +2370,7 @@ function pickMeshFromPointer(event) {
   } else {
     const structureType = TISSUE_LABELS_DE[mesh.userData.structureType] || "Struktur";
     setSelection({
-      nameDe: formatStructureName(mesh.name),
+      nameDe: formatStructureName(getSoftTissueNodeName(mesh)),
       nameLatin: "-",
       funFact: `${structureType} · fachliche Benennung noch nicht für das Quiz freigegeben.`,
     });
@@ -2425,7 +2432,7 @@ function getEntryForMesh(mesh) {
   if (!mesh) {
     return null;
   }
-  const boneId = mesh.userData.boneId || inferBoneId(mesh.name);
+  const boneId = mesh.userData.boneId || inferBoneId(getSoftTissueNodeName(mesh));
   if (!boneId) {
     return null;
   }

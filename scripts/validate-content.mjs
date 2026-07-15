@@ -1,6 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import { classifySoftTissue } from "../src/anatomy/softTissueTaxonomy.js";
+import { PropertyBinding } from "three";
+import {
+  classifySoftTissue,
+  classifySoftTissueNode,
+} from "../src/anatomy/softTissueTaxonomy.js";
 
 const root = process.cwd();
 const schemaPath = path.join(root, "content", "schema.structures.json");
@@ -254,6 +258,17 @@ const taxonomyFields = ["displayGroup", "tissueType", "quizEligible", "reviewSta
 for (const meshName of softTissueNames) {
   const entry = dataByMeshName.get(meshName);
   const expected = classifySoftTissue(meshName);
+  const runtimeNode = {
+    name: PropertyBinding.sanitizeNodeName(meshName),
+    userData: { name: meshName },
+  };
+  const runtimeClassification = classifySoftTissueNode(runtimeNode);
+  if (
+    runtimeClassification.displayGroup !== expected.displayGroup ||
+    runtimeClassification.tissueType !== expected.tissueType
+  ) {
+    fail(`Three.js runtime taxonomy mismatch for '${meshName}'`);
+  }
   for (const key of taxonomyFields) {
     if (entry[key] !== expected[key]) {
       fail(`Shared taxonomy mismatch for '${meshName}' at '${key}': expected '${expected[key]}', got '${entry[key]}'`);

@@ -127,7 +127,8 @@ const mobileInteractionChecks = [
   [app.includes("skeleton.mobile-lod1.v2.glb"), "Runtime must use the draw-call optimized skeleton asset."],
   [app.includes("muscles.mobile-lod1.v2.glb"), "Runtime must use the draw-call optimized soft-tissue asset."],
   [app.includes("allContent.filter((item) => item.quizEligible)"), "Runtime must exclude unreviewed connective content from quizzes."],
-  [app.includes("classifySoftTissue(node.name)"), "Runtime must use the shared soft-tissue taxonomy for model meshes."],
+  [app.includes("classifySoftTissueNode(node)"), "Runtime must classify model meshes from their preserved glTF source names."],
+  [app.includes("getSoftTissueNodeName(node)"), "Runtime must not classify Three.js-sanitized node names."],
 ];
 
 for (const [passed, message] of mobileInteractionChecks) {
