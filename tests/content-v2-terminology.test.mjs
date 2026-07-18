@@ -194,7 +194,7 @@ test("publish gate requires sourced content and a current claim-bound medical ex
   ]);
   assert.throws(
     () => assertPublishedClaimGates({ concepts: published, sourceById, acceptedAnatomyByClaim: new Map() }),
-    /lacks a current, claim-bound expert review/,
+    /lacks a current, claim-bound review/,
   );
   const review = {
     targetType: "claim",

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>AnatomyQuest – Inhaltsquellen und fachliche Grenzen</title>
+    <style>
+      :root {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #f2eee8;
+        background: #090d13;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(202, 99, 86, 0.17), transparent 31rem),
+          #090d13;
+      }
+      main {
+        width: min(100% - 2rem, 52rem);
+        margin: 0 auto;
+        padding: 2rem 0 4rem;
+      }
+      a { color: #f0bd72; }
+      .back { display: inline-block; margin-bottom: 2rem; }
+      h1, h2 { font-family: Georgia, "Times New Roman", serif; }
+      h1 { max-width: 18ch; margin: 0 0 1rem; font-size: clamp(2rem, 7vw, 3.7rem); line-height: 0.98; }
+      h2 { margin: 0 0 0.45rem; font-size: 1.35rem; }
+      p, li { color: rgba(242, 238, 232, 0.78); line-height: 1.6; }
+      .notice, article {
+        border: 1px solid rgba(240, 189, 114, 0.2);
+        border-radius: 1rem;
+        background: rgba(22, 28, 37, 0.88);
+      }
+      .notice { margin: 1.5rem 0 2rem; padding: 1rem 1.1rem; }
+      .notice strong { display: block; margin-bottom: 0.25rem; color: #f4c67f; }
+      .sources { display: grid; gap: 0.85rem; }
+      article { padding: 1rem 1.1rem; }
+      code { color: #cbd7df; overflow-wrap: anywhere; }
+      footer { margin-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="./">← Zurück zu AnatomyQuest</a>
+      <h1>Inhaltsquellen &amp; fachliche Grenzen</h1>
+      <p>Stand: 15. Juli 2026. Das Register dokumentiert die derzeit gepinnten Phase‑B‑Quellen, ihre erlaubten Rollen und ihre Grenzen.</p>
+
+      <aside class="notice" aria-label="Nicht-medizinischer Nutzungshinweis">
+        <strong>Nicht für medizinische Nutzung</strong>
+        Quellengeprüfte MVP-Inhalte sind nicht humanmedizinisch fachgeprüft. Eine registrierte Quelle oder ein erfolgreicher Hashabgleich veröffentlicht noch keinen anatomischen Claim.
+      </aside>
+
+      <section class="sources" aria-label="Registrierte Inhaltsquellen">
+        <article>
+          <h2>FIPAT Terminologia Anatomica 2.07</h2>
+          <p>Normative lateinische und englische Primärbegriffe mit feldgenauen PDF‑Locators. Nicht als Quelle für Lage, Funktion oder andere anatomische Lernclaims registriert.</p>
+          <p><a href="https://libraries.dal.ca/Fipat/ta2.html" rel="noopener">FIPAT TA2</a></p>
+        </article>
+
+        <article>
+          <h2>German MeSH 30.0</h2>
+          <p>ZB MED, deutsche Übersetzungsspalten unter CC BY 4.0. Erlaubt sind nur <code>PreferredLabelDE</code> und <code>SynonymsDE</code> mit exaktem <code>DescriptorUI</code>-Locator.</p>
+          <p><a href="https://doi.org/10.4126/FRL01-006526467" rel="noopener">German-MeSH-Datensatz</a></p>
+        </article>
+
+        <article>
+          <h2>Faszien-Nomenklaturkonsens 2019</h2>
+          <p>Schleip, Hedley und Yucesoy, CC BY 4.0. Nur die beiden Definitionstabellen im Results‑Abschnitt sind für allgemeine Klassifikation registriert. Keine individuelle Kontinuität, Anheftung, Funktion oder Kraftübertragung darf daraus abgeleitet werden.</p>
+          <p><a href="https://doi.org/10.1002/ca.23423" rel="noopener">Originalartikel</a></p>
+        </article>
+
+        <article>
+          <h2>Applied Human Anatomy</h2>
+          <p>Nolan und McNamara, Virginia Tech Publishing, 2022, eigener Buchtext unter CC BY 4.0. Nur exakt lokalisierter, selbst verfasster Text ist für paraphrasierte anatomische Claims registriert; separat lizenziertes Drittmaterial ist ausgeschlossen. Die Quelle darf nicht alleinige Vollständigkeitsgrundlage sein.</p>
+          <p><a href="https://doi.org/10.21061/applied-human-anatomy" rel="noopener">Offizielle Buchausgabe</a></p>
+        </article>
+
+        <article>
+          <h2>BodyParts3D 4.0</h2>
+          <p>Database Center for Life Science, CC BY 4.0. Die gepinnte IS‑A‑Liste dient nur als Kandidatenquelle für FMA-/BodyParts3D‑Klassifikations-Crosswalks, nicht für Lernclaims oder die Korrektheit der AnatomyQuest‑Meshes.</p>
+          <p><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html" rel="noopener">Lizenz und Attribution</a></p>
+        </article>
+      </section>
+
+      <footer>
+        <p>Technische Source‑IDs, Snapshot‑Hashes, Rechteabgrenzungen und Attributionen stehen im versionierten Register <code>docs/content-source-attribution.md</code>. Die 496 Konzepte bilden den Assetumfang ab, nicht die vollständige menschliche Anatomie.</p>
+      </footer>
+    </main>
+  </body>
+</html>

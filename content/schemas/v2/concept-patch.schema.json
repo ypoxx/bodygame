@@ -36,6 +36,38 @@
                 }
               },
               "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "sectionId", "elementId"],
+              "properties": {
+                "kind": { "const": "jats_element" },
+                "sectionId": { "type": "string", "minLength": 1 },
+                "elementId": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "section", "item", "itemKind"],
+              "properties": {
+                "kind": { "const": "pdf_page" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "section": { "type": "string", "minLength": 1 },
+                "item": { "type": "string", "minLength": 1 },
+                "itemKind": { "const": "authored_text" }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "rowKey", "representationId"],
+              "properties": {
+                "kind": { "const": "tsv_row" },
+                "rowKey": { "type": "string", "pattern": "^FMA[0-9]+$" },
+                "representationId": { "type": "string", "pattern": "^BP[0-9]+$" }
+              },
+              "additionalProperties": false
             }
           ]
         }
@@ -185,7 +217,7 @@
       }
     },
     "editorialStatus": {
-      "enum": ["draft", "agent_reviewed", "expert_reviewed", "published"]
+      "enum": ["draft", "agent_reviewed", "source_verified_mvp", "expert_reviewed", "published"]
     },
     "evidenceStatus": {
       "enum": ["needs_source", "partial", "sourced", "not_applicable"]
@@ -195,7 +227,11 @@
     {
       "if": {
         "required": ["editorialStatus"],
-        "properties": { "editorialStatus": { "const": "published" } }
+        "properties": {
+          "editorialStatus": {
+            "enum": ["source_verified_mvp", "published"]
+          }
+        }
       },
       "then": {
         "required": ["names", "summary", "details", "evidenceStatus"],

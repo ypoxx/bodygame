@@ -113,5 +113,75 @@
       "capturedAt": "2026-07-15",
       "locatorBasis": "CSV row by DescriptorUI; PreferredLabelDE and SynonymsDE columns only"
     }
+  },
+  {
+    "id": "source.reference.fascia_nomenclature_consensus.2019",
+    "sourceType": "institutional_reference",
+    "title": "Fascial nomenclature: Update on related consensus process",
+    "provider": "Fascia Nomenclature Committee / American Association of Clinical Anatomists",
+    "url": "https://doi.org/10.1002/ca.23423",
+    "version": "Clinical Anatomy 32 (2019), 929–933; PMC6852276 JATS XML snapshot",
+    "rightsPolicy": "paraphrase_allowed",
+    "rightsScope": "Only the two consensus definitions and the explicit distinctions in the Results section and Tables 1–2 support runtime paraphrases. This source does not support concept-specific continuity, attachment, content, or force-transmission claims.",
+    "license": {
+      "id": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attributionPath": "docs/content-source-attribution.md"
+    },
+    "supports": [
+      "classification"
+    ],
+    "snapshot": {
+      "sha256": "96549999aa132f850aaf89fac4f7b2927537698b0ee3490c70df8de29e98cab3",
+      "capturedAt": "2026-07-15",
+      "locatorBasis": "JATS Results section id + exact Table 1 or Table 2 element id"
+    }
+  },
+  {
+    "id": "source.textbook.virginia_tech.applied_human_anatomy.2022",
+    "sourceType": "textbook",
+    "title": "Applied Human Anatomy",
+    "provider": "Virginia Tech Carilion School of Medicine / Virginia Tech Publishing",
+    "url": "https://doi.org/10.21061/applied-human-anatomy",
+    "version": "First edition 2022; PDF ISBN 978-1-957213-41-5",
+    "rightsPolicy": "paraphrase_allowed",
+    "rightsScope": "Textual anatomy content may be paraphrased with a precise PDF locator. Photographs, illustrations, quotations, and other third-party components are excluded unless their separate license is verified.",
+    "license": {
+      "id": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attributionPath": "docs/content-source-attribution.md"
+    },
+    "supports": [
+      "classification",
+      "anatomical_claims"
+    ],
+    "snapshot": {
+      "sha256": "1a4e1695b6857d3c82d06d783eca6c467c35ec186d2257fe49747f7696bd46fd",
+      "capturedAt": "2026-07-15",
+      "locatorBasis": "1-based PDF page + section + exact authored-text item; third-party media excluded"
+    }
+  },
+  {
+    "id": "source.reference.bodyparts3d.v4_0.isa_tree",
+    "sourceType": "institutional_reference",
+    "title": "BodyParts3D 4.0 — table of organ model IDs and organ names (IS-A tree)",
+    "provider": "Database Center for Life Science / Life Science Database Archive",
+    "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_parts_list_e.txt",
+    "version": "BodyParts3D 4.0; IS-A parts-list snapshot",
+    "rightsPolicy": "citation_only",
+    "rightsScope": "Only FMA-to-BodyParts3D identifiers, English labels, and IS-A crosswalk candidates may be used. This source is not registered as evidence for anatomical learning claims or model correctness.",
+    "license": {
+      "id": "CC-BY-4.0",
+      "url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+      "attributionPath": "docs/content-source-attribution.md"
+    },
+    "supports": [
+      "classification"
+    ],
+    "snapshot": {
+      "sha256": "ab7796deedd49205e77f3609a1cb8c53e2bbee14ecb5c9a6ca05227469780513",
+      "capturedAt": "2026-07-15",
+      "locatorBasis": "Exact tab-separated row by FMA concept id and BodyParts3D representation id"
+    }
   }
 ]

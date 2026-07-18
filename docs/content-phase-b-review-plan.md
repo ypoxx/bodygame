@@ -26,6 +26,45 @@ Agenten und Automatisierung dürfen recherchieren, extrahieren, Entwürfe
 erstellen und Konsistenz prüfen. Sie ersetzen keine medizinische oder
 lokalisierende Publikationsfreigabe.
 
+### 1.1 Additive MVP-Auslieferungsstufe
+
+Für den nichtmedizinischen MVP ist zusätzlich der getrennte Runtime-Status
+`source_verified_mvp` zulässig. Er ist weder ein Synonym für `published` noch
+eine medizinische, diagnostische oder therapeutische Freigabe. Die oben
+definierte Bedeutung von `published` und ihre Human-Review-Pflichten bleiben
+unverändert.
+
+Ein Konzept darf als `source_verified_mvp` ausgeliefert werden, wenn:
+
+1. jede verwendete Quelle als unveränderlicher Snapshot mit Version,
+   Abrufdatum, Wiederverwendungsrecht und SHA-256 registriert ist;
+2. der deutsche und lateinische Namensblock sowie jeder atomare Claim eine
+   exakte, maschinenprüfbare Fundstelle innerhalb der erlaubten
+   Quellenfähigkeit besitzen;
+3. der Inhalt das vollständige, strukturtypabhängige Mindestprofil erfüllt;
+   fehlende Pflichtfelder dürfen nicht durch generische oder von Eltern,
+   Nachbarn oder Assetlabels geerbte Aussagen ersetzt werden;
+4. Autor- und Reviewer-Agent getrennte IDs und getrennte Rollen besitzen und
+   ihre akzeptierten Reviews an die aktuellen Inhalts- und Release-State-
+   Hashes gebunden sind;
+5. Klassifikation, Region, Seitigkeit und jede einzelne Mesh-Zuordnung im
+   vollständigen Release-State geprüft wurden;
+6. alle Schemata, Quellen-, Rechte-, Hash-, Terminologie-, Abdeckungs-, Build-
+   und UI-Tests fehlerfrei bestehen;
+7. die Runtime den Status und den Hinweis „nicht humanmedizinisch geprüft und
+   nicht für medizinische Nutzung“ sichtbar und technisch wahrheitsgemäß
+   ausgibt.
+
+Reviews der MVP-Stufe dürfen spätere Human-Reviews nicht überschreiben. Ein
+Wechsel zu `published` benötigt neue, stufengerechte Human-Reviews für
+denselben aktuellen Hash. Ein Agent darf niemals eine Human-Rolle oder einen
+Human-Review-Status beanspruchen.
+
+Die vier Stop-the-line-Konzepte in Abschnitt 3 bleiben auch für
+`source_verified_mvp` fail-closed. Eine Produktentscheidung, den MVP ohne
+Human-Review auszuliefern, löst weder diese Sperren noch Quellen-,
+Vollständigkeits- oder Testanforderungen auf.
+
 ## 2. Ausgangsbestand
 
 | Bereich | Konzepte | Instanzen |
@@ -75,21 +114,28 @@ Vor einer Null-Fehler-Aussage zusätzlich manuell zu prüfen:
 
 ## 4. Registrierte und geplante Quellenrollen
 
-Aktuell sind fünf Quellen registriert: zwei Assetquellen, zwei FIPAT-Teile und
-German MeSH. Keine davon unterstützt `anatomical_claims`; medizinische Claims
-können deshalb gegenwärtig nicht publiziert werden. BodyParts3D, Oregon State,
-Virginia Tech und der Faszienkonsens sind geprüfte Kandidaten, müssen aber vor
-Verwendung jeweils als exakter Snapshot mit Rechten und Prüfsumme registriert
-werden.
+Der Foundation-Bestand registriert zwei Assetquellen und zwei FIPAT-Teile. Das
+kuratierte Quellenregister ergänzt German MeSH sowie exakt gepinnte Snapshots
+von BodyParts3D, Virginia Tech *Applied Human Anatomy* und dem
+Faszien-Nomenklaturkonsens. Der Generator führt diese eindeutigen Source-IDs im
+maschinenlesbaren Register zusammen. Oregon State bleibt ein Kandidat und ist
+noch nicht registriert.
+
+Nur der Virginia-Tech-Snapshot unterstützt im registrierten Rechte- und
+Inhaltsumfang `anatomical_claims`. Das ist keine pauschale fachliche
+Vollständigkeitsbestätigung: jeder Claim braucht weiterhin eine exakte
+Fundstelle, das passende Pflichtfeld und einen stufengerechten Review. Der
+Faszienkonsens und BodyParts3D sind bewusst auf `classification` begrenzt und
+können keine individuellen anatomischen Lernclaims freischalten.
 
 | Quelle | Rolle | Nicht zulässig |
 | --- | --- | --- |
 | FIPAT TA2 2.07 | normative lateinische/englische Terminologie, TA2-ID | Funktions- oder Lageclaims daraus ableiten |
 | Deutscher MeSH, versionierter Snapshot | exakte deutsche Deskriptoren und Synonyme | fehlende TA2-Feingranularität algorithmisch ergänzen |
-| BodyParts3D, exakt gepinnter aktueller Archivstand | Kandidaten für FMA-/Regions-Crosswalk und Geometrieprovenienz | alleinige medizinische Lehrevidenz |
+| BodyParts3D 4.0, gepinnte IS-A-Liste | Kandidaten für FMA-/Regions-Crosswalk | anatomische Lernclaims oder Nachweis der Meshkorrektheit |
 | Oregon State A&P, exakt lokalisierte offene Tabellen | quellengenau paraphrasierte Muskelclaims | pauschale Vererbung auf Muskelteile oder Serienvarianten |
-| Virginia Tech *Applied Human Anatomy* | unabhängige Sekundärkontrolle ausgewählter Aussagen | alleinige Vollständigkeitsquelle |
-| Faszien-Nomenklaturkonsens 2019 | allgemeine Typdefinition für Faszie/fasziales System | individuelle Kontinuitäten oder Kraftübertragung ableiten |
+| Virginia Tech *Applied Human Anatomy*, gepinnte Erstausgabe | quellengenau paraphrasierte Aussagen aus eigenem Buchtext | Drittmaterial oder alleinige Vollständigkeitsquelle |
+| Faszien-Nomenklaturkonsens 2019, gepinntes JATS XML | allgemeine Klassifikation von Faszie/faszialem System | individuelle Kontinuitäten, Ansätze, Inhalte oder Kraftübertragung ableiten |
 
 OpenStax A&P 2e, StatPearls/UAMS und Quellen mit Non-Commercial-, No-AI-,
 No-Derivatives- oder ungeklärten Wiederverwendungsbedingungen werden nicht in
@@ -188,9 +234,13 @@ dürfen niemals als Beleg für Ansatz, Inhalt, Kontinuität oder Funktion dienen
     Vorder-/Rückseite, Lernkarte und Screenreader-Bezeichnungen.
 
 Autoren- und Reviewer-IDs müssen verschieden sein. Ein `agent_reviewed`-Status
-ist nachvollziehbare Vorprüfung, aber keine Publikationsfreigabe.
+ist nachvollziehbare Vorprüfung, aber weder eine `source_verified_mvp`- noch
+eine `published`-Freigabe.
 
 ## 7. Abschlusskriterien
+
+Die folgenden Kriterien beschreiben den human-geprüften Abschluss mit Status
+`published` und bleiben das Ziel einer medizinisch verantworteten Freigabe.
 
 Ein Paket ist erst abgeschlossen, wenn:
 
@@ -210,3 +260,19 @@ Ein Paket ist erst abgeschlossen, wenn:
 Für die Gesamtproduktion gelten zusätzlich null offene Stop-the-line-Fälle und
 ein bewusstes Produktvotum, ob nicht im Asset vorhandene anatomische
 Strukturen ergänzt oder als dokumentierte Scope-Grenze ausgewiesen werden.
+
+### 7.1 MVP-Paketabschluss ohne Human-Review
+
+Ein Phase-B-Paket darf für den ausdrücklich nichtmedizinischen MVP auch dann
+technisch abgeschlossen werden, wenn jedes enthaltene Konzept entweder
+`source_verified_mvp` erreicht oder mit einem expliziten, maschinengeprüften
+Blockgrund dokumentiert ist. Dafür gelten dieselben 496/946-Abdeckungs-,
+Quellen-, Rechte-, Locator-, Hash-, Vollständigkeits-, Release-State-, Build-
+und Mobile-QA-Anforderungen. Human-Review-Hashes werden dabei nicht behauptet;
+an ihre Stelle treten ausschließlich als agentisch gekennzeichnete,
+stufengerechte Reviews.
+
+Ein Paket mit einem offenen Stop-the-line-Fall darf nicht als vollständig
+ausgeliefert gelten. Nicht im Asset vorhandene Anatomie muss weiterhin als
+dokumentierte Scope-Grenze sichtbar bleiben; Meshvollständigkeit ist keine
+medizinische Vollständigkeit.

@@ -34,6 +34,8 @@ import {
   collectHumanReviewGates,
   collectClaims,
   contentHash,
+  HARD_PUBLICATION_BLOCKS,
+  isRuntimeLearningStatus,
 } from "./lib/content-v2-publish-gate.mjs";
 
 const SCHEMA_PATHS = Object.freeze([
@@ -46,6 +48,7 @@ const SCHEMA_PATHS = Object.freeze([
   "content/schemas/v2/release-state.schema.json",
   "content/schemas/v2/ta2-term.schema.json",
   "content/schemas/v2/runtime-index-entry.schema.json",
+  "content/schemas/v2/phase-b-package-manifest.schema.json",
 ]);
 
 const EXPECTED_INSTANCE_TYPE_COUNTS = Object.freeze({
@@ -311,6 +314,7 @@ function validateSourceRefs(values, sourceById, termById) {
       }
       const locator = sourceRef.locator;
       if (locator.kind === "mesh_descriptor") return;
+      if (["jats_element", "pdf_page", "tsv_row"].includes(locator.kind)) return;
       requireCondition(source.sourceType === "terminology", `${label}:${refPath} uses a PDF locator on a non-terminology source`);
       requireCondition(locator.kind === "pdf_term_row", `${label}:${refPath} has an unsupported locator kind`);
       const term = termById.get(locator.termId);
@@ -469,8 +473,14 @@ function validateTerminology(
     requireCondition(instance?.meshName === entry.meshName && instance.conceptId === entry.conceptId, `${entry.id} runtime mapping is stale`);
     const concept = conceptById.get(entry.conceptId);
     if (entry.learning) {
-      requireCondition(concept.editorialStatus === "published", `${entry.id} projects unpublished learning`);
-      requireCondition(entry.learning.status === "published", `${entry.id} has a non-published learning payload`);
+      requireCondition(
+        isRuntimeLearningStatus(concept.editorialStatus),
+        `${entry.id} projects learning from a non-runtime editorial status`,
+      );
+      requireCondition(
+        entry.learning.status === concept.editorialStatus,
+        `${entry.id} learning status differs from its curated concept status`,
+      );
       requireCondition(
         concept.terminology.status === "official_base" &&
           concept.terminology.match.status !== "expert_review_required",
@@ -536,6 +546,87 @@ function validateReleaseStates(
   requireUnique(releaseReviewIds, "curated release review ids");
   validateSourceRefs([[TERMINOLOGY_PATHS.releaseStates, releaseStates]], sourceById, termById);
   return { releaseStateByConcept, instanceById, releaseReviewIds };
+}
+
+function validatePhaseBPackageManifests(concepts, instances) {
+  const directory = path.join(ROOT, "content/v2/packages/phase-b/v1");
+  const schema = readJson("content/schemas/v2/phase-b-package-manifest.schema.json");
+  const files = fs.readdirSync(directory)
+    .filter((fileName) => fileName.endsWith(".json"))
+    .sort((a, b) => a.localeCompare(b, "en"));
+  requireCondition(files.length === 17, "Phase B must contain exactly 17 versioned package manifests");
+
+  const conceptById = new Map(concepts.map((concept) => [concept.id, concept]));
+  const instanceIds = new Set(instances.map((instance) => instance.id));
+  const assignedConceptIds = [];
+  const assignedInstanceIds = [];
+  const declaredStops = new Set();
+  const packageCounts = {};
+
+  for (const fileName of files) {
+    const manifest = readJson(`content/v2/packages/phase-b/v1/${fileName}`);
+    assertValidJsonSchema(schema, manifest, `Phase B package ${fileName}`);
+    requireCondition(
+      manifest.conceptIds.length === manifest.expectedConceptCount,
+      `${fileName} concept count differs from its frozen manifest count`,
+    );
+    const resolvedInstances = manifest.conceptIds.flatMap((conceptId) => {
+      const concept = conceptById.get(conceptId);
+      requireCondition(Boolean(concept), `${fileName} references unknown concept '${conceptId}'`);
+      const expectedDomain = concept.assetGroup === "skeleton"
+        ? "skeleton"
+        : concept.renderGroupHints?.[0] === "muscles"
+          ? "muscles"
+          : "connective_tissue";
+      requireCondition(
+        manifest.assetDomain === expectedDomain,
+        `${fileName} assigns ${conceptId} to the wrong asset domain`,
+      );
+      return concept.instanceIds;
+    });
+    requireCondition(
+      resolvedInstances.length === manifest.expectedInstanceCount,
+      `${fileName} instance count differs from its frozen manifest count`,
+    );
+    requireCondition(
+      manifest.reviewPriority === (manifest.stopTheLineConceptIds.length ? "stop_the_line_first" : "standard"),
+      `${fileName} does not prioritize its stop-the-line concepts`,
+    );
+    for (const conceptId of manifest.stopTheLineConceptIds) {
+      requireCondition(
+        manifest.conceptIds.includes(conceptId),
+        `${fileName} declares stop case '${conceptId}' outside its package`,
+      );
+      declaredStops.add(conceptId);
+    }
+    assignedConceptIds.push(...manifest.conceptIds);
+    assignedInstanceIds.push(...resolvedInstances);
+    packageCounts[manifest.assetDomain] = (packageCounts[manifest.assetDomain] || 0) + 1;
+  }
+
+  requireUnique(assignedConceptIds, "Phase B package concept ids");
+  requireUnique(assignedInstanceIds, "Phase B package instance ids");
+  requireCondition(
+    assignedConceptIds.length === concepts.length &&
+      assignedConceptIds.every((conceptId) => conceptById.has(conceptId)),
+    "Phase B packages must cover exactly all 496 concepts",
+  );
+  requireCondition(
+    assignedInstanceIds.length === instances.length &&
+      assignedInstanceIds.every((instanceId) => instanceIds.has(instanceId)),
+    "Phase B packages must resolve exactly all 946 instances",
+  );
+  requireCondition(
+    isDeepStrictEqual(
+      [...declaredStops].sort(),
+      [...HARD_PUBLICATION_BLOCKS.keys()].sort(),
+    ),
+    "Phase B packages must declare exactly the central hard publication blocks",
+  );
+  requireCondition(
+    isDeepStrictEqual(packageCounts, { skeleton: 5, muscles: 8, connective_tissue: 4 }),
+    "Phase B package domain counts changed",
+  );
 }
 
 function validateReviewsAndPublishGate(
@@ -661,6 +752,7 @@ function main() {
     typeIds,
     regionIds,
   );
+  validatePhaseBPackageManifests(concepts, instances);
   const reviewGates = validateReviewsAndPublishGate(
     catalog,
     concepts,
@@ -688,8 +780,14 @@ function main() {
   console.log(
     "Classification gate passed: 210 bone, 31 cartilage, 28 tooth, 8 cavity, and 669 typed soft-tissue instances; all remain partial/machine-inferred from legacy asset labels only.",
   );
+  const humanReviewedPayloads = runtimeIndex.filter(
+    (entry) => entry.learning?.status === "published",
+  ).length;
+  const sourceVerifiedMvpPayloads = runtimeIndex.filter(
+    (entry) => entry.learning?.status === "source_verified_mvp",
+  ).length;
   console.log(
-    `Publish gate passed: ${runtimeIndex.filter((entry) => entry.learning).length} instance learning payload(s); names, claims, classification, regions, laterality, and mesh mapping are source-, hash-, and human-review-bound.`,
+    `Publish gate passed: ${humanReviewedPayloads} human-reviewed and ${sourceVerifiedMvpPayloads} source-verified MVP instance learning payload(s); all visible content is source-, hash-, tier-, locator-, release-state-, and completeness-bound.`,
   );
 }
 

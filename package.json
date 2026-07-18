@@ -9,8 +9,10 @@
     "validate:v2": "node scripts/validate-content-v2.mjs",
     "content:v2:build": "node scripts/build-content-v2-foundation.mjs && node scripts/build-content-v2-terminology.mjs",
     "content:v2:check": "node scripts/build-content-v2-foundation.mjs --check && node scripts/build-content-v2-terminology.mjs --check && node scripts/validate-content-v2.mjs",
-    "test:v2": "node --test tests/content-v2-foundation.test.mjs tests/content-v2-terminology.test.mjs tests/content-v2-pipeline.test.mjs",
-    "test:ui": "node --test tests/explore-mode.test.mjs",
+    "content:sources:list": "node scripts/verify-content-source-snapshots.mjs --list",
+    "content:sources:verify": "node scripts/verify-content-source-snapshots.mjs",
+    "test:v2": "node --test tests/content-v2-foundation.test.mjs tests/content-v2-terminology.test.mjs tests/content-v2-pipeline.test.mjs tests/content-phase-b-package-manifests.test.mjs tests/content-source-snapshots.test.mjs",
+    "test:ui": "node --test tests/explore-mode.test.mjs tests/mesh-picking.test.mjs tests/touch-camera.test.mjs",
     "test": "npm run test:v2 && npm run test:ui",
     "perf:smoke": "node scripts/perf-smoke.mjs"
   },

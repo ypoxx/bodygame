@@ -1,11 +1,12 @@
+import { isRenderableLearning } from "../anatomy/learningStatus.js?v=20260715-1";
+import { publicationBlockForConcept } from "../anatomy/publicationBlocks.js?v=20260715-1";
+
 const SIDE_LABELS_DE = Object.freeze({
   left: "links",
   right: "rechts",
   midline: "mittig",
   unresolved: "Seite ungeklärt",
 });
-
-const GEOMETRY_RELEASE_BLOCKS = new Set(["concept.soft_tissue.iliopsoas_fascia"]);
 
 // Navigation aliases help non-specialists find a structure. They are never
 // rendered as anatomical names or treated as medical content.
@@ -69,12 +70,17 @@ function navigationAliases(referenceText, renderGroup) {
   return aliases;
 }
 
-function terminologyNotice(runtimeEntry, qualifierText, geometryBlocked) {
+function terminologyNotice(runtimeEntry, qualifierText, publicationBlock, side) {
   const terminology = runtimeEntry?.terminology;
+  const visibleLearning = isRenderableLearning(runtimeEntry?.learning)
+    ? runtimeEntry.learning
+    : null;
   let notice = "Arbeitsbezeichnung aus dem 3D-Asset; Terminologie und Strukturtyp sind noch nicht fachlich freigegeben.";
 
-  if (runtimeEntry?.learning?.status === "published") {
+  if (visibleLearning?.status === "published") {
     notice = "Deutscher Fachname und Lerninhalte sind quellengebunden sowie unabhängig fachlich geprüft.";
+  } else if (visibleLearning?.status === "source_verified_mvp") {
+    notice = "Quellengebundener MVP-Inhalt: durch einen vom Autor getrennten Agenten gegengeprüft, aber nicht humanmedizinisch fachgeprüft und nicht für medizinische Nutzung bestimmt.";
   } else if (terminology?.status === "derived_structure") {
     notice = `Diese separat modellierte Struktur besitzt in TA2 2.07 keinen eigenen Eintrag. Sie ist nur als abgeleitete Modellstruktur mit Term ${terminology.relatedTermId} verknüpft und bleibt bis zur Fachprüfung gesperrt.`;
   } else if (terminology?.matchStatus === "expert_review_required") {
@@ -86,8 +92,18 @@ function terminologyNotice(runtimeEntry, qualifierText, geometryBlocked) {
       : `Normbegriff nach FIPAT TA2 2.07, Term ${termId}. Mesh-Zuordnung und Strukturtyp wurden maschinell abgeglichen; die anatomische Fachfreigabe steht aus.`;
   }
 
-  if (geometryBlocked) {
+  if (publicationBlock === "iliopsoas_fascia_geometry_pair_anomaly") {
     notice += " Zusätzlich ist die Links-/Rechts-Geometrie auffällig; diese Struktur bleibt bis zur Assetprüfung gesperrt.";
+  } else if (publicationBlock === "iliocostalis_colli_unresolved_laterality") {
+    notice += " Die Seitigkeit der beiden Modellinstanzen ist ungeklärt; diese Struktur bleibt bis zur Geometrieprüfung gesperrt.";
+  } else if (
+    publicationBlock &&
+    terminology?.status !== "derived_structure" &&
+    terminology?.matchStatus !== "expert_review_required"
+  ) {
+    notice += " Für diese Struktur ist ein dokumentierter Stopfall offen; Lerninhalte bleiben bis zur Auflösung gesperrt.";
+  } else if (side === "unresolved" && !publicationBlock) {
+    notice += " Die Seitigkeit ist ungeklärt; Lerninhalte bleiben bis zur Auflösung gesperrt.";
   }
   return notice;
 }
@@ -97,7 +113,7 @@ export function decorateExploreEntry(entry, runtimeEntry = null) {
     runtimeEntry && runtimeEntry.id === entry?.id && runtimeEntry.meshName === entry?.meshName;
   const runtime = runtimeMatches ? runtimeEntry : null;
   const terminology = runtime?.terminology;
-  const learning = runtime?.learning?.status === "published" ? runtime.learning : null;
+  const learning = isRenderableLearning(runtime?.learning) ? runtime.learning : null;
   const reviewedNames = learning?.names && typeof learning.names === "object" ? learning.names : null;
   const official =
     terminology?.status === "official_base" && terminology?.matchStatus !== "expert_review_required"
@@ -116,7 +132,7 @@ export function decorateExploreEntry(entry, runtimeEntry = null) {
   const sideLabel = SIDE_LABELS_DE[side] || SIDE_LABELS_DE.unresolved;
   const qualifiers = Array.isArray(terminology?.qualifiers) ? terminology.qualifiers : [];
   const qualifierText = qualifiers.map((qualifier) => qualifier?.value).filter(Boolean).join(", ");
-  const geometryBlocked = GEOMETRY_RELEASE_BLOCKS.has(runtime?.conceptId);
+  const publicationBlock = publicationBlockForConcept(runtime?.conceptId);
   const referenceText = [title, latin, assetTitle].filter(Boolean).join(" ");
   const exploreAliases = navigationAliases(referenceText, runtime?.renderGroup || entry?.displayGroup || entry?.layer || "bones");
   const aliases = [
@@ -137,15 +153,18 @@ export function decorateExploreEntry(entry, runtimeEntry = null) {
       side,
       sideLabel,
       status: terminology?.status || "asset_label_unverified",
+      learningStatus: learning?.status || null,
       matchMethod,
       typeId: runtime?.classification?.typeId || null,
       typeReviewStatus: runtime?.classification?.reviewStatus || "unreviewed",
       qualifierText,
-      terminologyNotice: terminologyNotice(runtime, qualifierText, geometryBlocked),
+      terminologyNotice: terminologyNotice(runtime, qualifierText, publicationBlock, side),
       releaseBlocked:
-        geometryBlocked || terminology?.status === "derived_structure" || terminology?.matchStatus === "expert_review_required",
-      releaseBlockReason: geometryBlocked
-        ? "geometry_pair_mismatch"
+        Boolean(publicationBlock) || side === "unresolved" || terminology?.status === "derived_structure" || terminology?.matchStatus === "expert_review_required",
+      releaseBlockReason: publicationBlock
+        ? publicationBlock
+        : side === "unresolved"
+          ? "unresolved_laterality"
         : terminology?.status === "derived_structure"
           ? "derived_term_requires_expert_review"
           : terminology?.matchStatus === "expert_review_required"

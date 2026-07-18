@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../../schemas/v2/phase-b-package-manifest.schema.json",
+  "schemaVersion": 1,
+  "manifestVersion": "1.0.0",
+  "packageId": "phase_b.muscles.shoulder_upper_arm",
+  "phase": "phase_b",
+  "assetDomain": "muscles",
+  "packageSequence": 5,
+  "titleDe": "Muskeln – Schulter/Oberarm",
+  "assignmentBasis": "working_asset_label",
+  "assignmentStatus": "working_assignment_not_medically_verified",
+  "reviewPriority": "standard",
+  "expectedConceptCount": 15,
+  "expectedInstanceCount": 30,
+  "conceptIds": [
+    "concept.soft_tissue.acromial_part_of_deltoid_muscle",
+    "concept.soft_tissue.brachialis_muscle",
+    "concept.soft_tissue.clavicular_part_of_deltoid_muscle",
+    "concept.soft_tissue.coracobrachialis_muscle",
+    "concept.soft_tissue.infraspinatus_muscle",
+    "concept.soft_tissue.lateral_head_of_triceps_brachii",
+    "concept.soft_tissue.long_head_of_biceps_brachii",
+    "concept.soft_tissue.long_head_of_triceps_brachii",
+    "concept.soft_tissue.medial_head_of_triceps_brachii",
+    "concept.soft_tissue.scapular_spinal_part_of_deltoid_muscle",
+    "concept.soft_tissue.short_head_of_biceps_brachii",
+    "concept.soft_tissue.subscapularis_muscle",
+    "concept.soft_tissue.supraspinatus_muscle",
+    "concept.soft_tissue.teres_major_muscle",
+    "concept.soft_tissue.teres_minor_muscle"
+  ],
+  "stopTheLineConceptIds": []
+}

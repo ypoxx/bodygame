@@ -36,6 +36,38 @@
                 }
               },
               "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "sectionId", "elementId"],
+              "properties": {
+                "kind": { "const": "jats_element" },
+                "sectionId": { "type": "string", "minLength": 1 },
+                "elementId": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "section", "item", "itemKind"],
+              "properties": {
+                "kind": { "const": "pdf_page" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "section": { "type": "string", "minLength": 1 },
+                "item": { "type": "string", "minLength": 1 },
+                "itemKind": { "const": "authored_text" }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "rowKey", "representationId"],
+              "properties": {
+                "kind": { "const": "tsv_row" },
+                "rowKey": { "type": "string", "pattern": "^FMA[0-9]+$" },
+                "representationId": { "type": "string", "pattern": "^BP[0-9]+$" }
+              },
+              "additionalProperties": false
             }
           ]
         }
@@ -71,18 +103,33 @@
         "authorId": { "type": "string", "minLength": 1 },
         "reviewerId": { "type": "string", "minLength": 1 },
         "reviewerRole": {
-          "enum": ["medical_domain_expert", "anatomy_asset_expert"]
+          "enum": [
+            "medical_domain_expert",
+            "anatomy_asset_expert",
+            "source_research_reviewer",
+            "geometry_research_reviewer"
+          ]
         }
       },
       "additionalProperties": false
     }
   },
   "type": "object",
-  "required": ["conceptId", "classification", "regions", "instances", "reviews"],
+  "required": [
+    "conceptId",
+    "verificationTier",
+    "classification",
+    "regions",
+    "instances",
+    "reviews"
+  ],
   "properties": {
     "conceptId": {
       "type": "string",
       "pattern": "^concept\\.(skeleton|soft_tissue)\\.[a-z0-9]+(?:_[a-z0-9]+)*$"
+    },
+    "verificationTier": {
+      "enum": ["source_verified_mvp", "human_reviewed"]
     },
     "classification": {
       "type": "object",
@@ -135,7 +182,7 @@
             "type": "object",
             "required": ["status", "sourceRefs"],
             "properties": {
-              "status": { "const": "human_verified" },
+              "status": { "enum": ["source_verified", "human_verified"] },
               "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
             },
             "additionalProperties": false

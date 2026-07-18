@@ -8,7 +8,7 @@ export function createOnboarding(options = {}) {
   const steps = [
     {
       title: "Willkommen bei AnatomyQuest",
-      body: "Drehe den Körper mit einem Finger und zoome mit zwei Fingern an kleine Strukturen heran.",
+      body: "Ziehe mit einem Finger seitlich zum Drehen oder vertikal zum Verschieben. Mit zwei Fingern zoomst du an kleine Strukturen heran.",
     },
     {
       title: "Deine Lernrunde",

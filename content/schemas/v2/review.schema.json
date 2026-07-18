@@ -30,7 +30,18 @@
           "authorId": { "type": "string", "minLength": 1 },
           "reviewerId": { "type": "string", "minLength": 1 },
           "reviewerRole": {
-            "enum": ["automation", "editorial", "medical_domain_expert", "localization_expert"]
+            "enum": [
+              "automation",
+              "editorial",
+              "medical_domain_expert",
+              "localization_expert",
+              "source_research_reviewer",
+              "source_localization_reviewer",
+              "geometry_research_reviewer"
+            ]
+          },
+          "verificationTier": {
+            "enum": ["source_verified_mvp", "human_reviewed"]
           },
           "sourceRefs": {
             "type": "array",
@@ -57,6 +68,16 @@
               }
             },
             "then": { "required": ["targetHash", "authorId", "reviewerId", "reviewerRole"] }
+          },
+          {
+            "if": {
+              "required": ["status", "targetType"],
+              "properties": {
+                "status": { "const": "accepted" },
+                "targetType": { "enum": ["names", "claim"] }
+              }
+            },
+            "then": { "required": ["verificationTier"] }
           }
         ],
         "additionalProperties": false

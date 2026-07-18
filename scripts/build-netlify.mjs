@@ -8,6 +8,7 @@ const outputRoot = path.join(projectRoot, "dist");
 
 const rootFiles = [
   "app.js",
+  "content-sources.html",
   "favicon.ico",
   "index.html",
   "manifest.json",
@@ -40,6 +41,8 @@ for (const relativePath of rootFiles) {
 await copyTree("src", ({ name }) => name.endsWith(".js"));
 await copyTree("content", ({ name }) => name === "structures.json");
 await copyFile("content/v2/runtime-index.json");
+await copyFile("content/v2/sources.json");
+await copyFile("docs/content-source-attribution.md");
 await copyTree("assets/icons", ({ name }) => !name.startsWith("."));
 await copyTree("assets/draco", ({ name }) => !name.startsWith("."));
 await copyFile("assets/ATTRIBUTION.md");

@@ -1,0 +1,42 @@
+{
+  "$schema": "../../../../schemas/v2/phase-b-package-manifest.schema.json",
+  "schemaVersion": 1,
+  "manifestVersion": "1.0.0",
+  "packageId": "phase_b.connective_tissue.retinacula_tendons_ligaments_special",
+  "phase": "phase_b",
+  "assetDomain": "connective_tissue",
+  "packageSequence": 4,
+  "titleDe": "Bindegewebe – Retinacula, Sehnen, Bänder, Aponeurosen und Sondertypen",
+  "assignmentBasis": "working_asset_label",
+  "assignmentStatus": "working_assignment_not_medically_verified",
+  "reviewPriority": "stop_the_line_first",
+  "expectedConceptCount": 22,
+  "expectedInstanceCount": 44,
+  "conceptIds": [
+    "concept.soft_tissue.calcaneal_tendon",
+    "concept.soft_tissue.common_tendinous_ring",
+    "concept.soft_tissue.epicranial_aponeurosis",
+    "concept.soft_tissue.extensor_retinaculum_of_wrist",
+    "concept.soft_tissue.flexor_retinaculum_of_ankle",
+    "concept.soft_tissue.flexor_retinaculum_of_wrist",
+    "concept.soft_tissue.inferior_extensor_retinaculum_of_ankle",
+    "concept.soft_tissue.inferior_fibular_retinaculum",
+    "concept.soft_tissue.inferior_tarsus",
+    "concept.soft_tissue.inguinal_ligament",
+    "concept.soft_tissue.intermediate_tendon_of_digastric_muscle",
+    "concept.soft_tissue.lateral_patellar_retinaculum",
+    "concept.soft_tissue.medial_patellar_retinaculum",
+    "concept.soft_tissue.palmar_aponeurosis",
+    "concept.soft_tissue.plantar_aponeurosis",
+    "concept.soft_tissue.superficial_transverse_metacarpal_ligament",
+    "concept.soft_tissue.superficial_transverse_metatarsal_ligament",
+    "concept.soft_tissue.superior_extensor_retinaculum_of_ankle",
+    "concept.soft_tissue.superior_fibular_retinaculum",
+    "concept.soft_tissue.superior_tarsus",
+    "concept.soft_tissue.tendon_of_extensor_digitorum_longus",
+    "concept.soft_tissue.trochlea_of_superior_oblique_muscle"
+  ],
+  "stopTheLineConceptIds": [
+    "concept.soft_tissue.tendon_of_extensor_digitorum_longus"
+  ]
+}

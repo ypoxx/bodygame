@@ -1,3 +1,5 @@
+import { isRenderableLearning } from "../anatomy/learningStatus.js?v=20260715-1";
+
 const PLACEHOLDER_PATTERNS = [
   /im 3d[- ]modell (?:direkt )?selektierbar/i,
   /im 3d[- ]modell auswählbar/i,
@@ -59,7 +61,7 @@ function extractSourcedClaimText(value) {
 
 function getPublishedLearning(entry) {
   const learning = entry?.v2?.learning;
-  return learning && typeof learning === "object" && learning.status === "published"
+  return isRenderableLearning(learning)
     ? learning
     : null;
 }

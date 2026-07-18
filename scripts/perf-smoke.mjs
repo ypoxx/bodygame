@@ -12,6 +12,7 @@ const requiredFiles = [
   "assets/draco/draco_decoder.js",
   "assets/draco/draco_wasm_wrapper.js",
   "src/anatomy/softTissueTaxonomy.js",
+  "src/engine/meshPicking.js",
   "assets/derived/skeleton.mobile-lod1.v2.glb",
   "assets/derived/muscles.mobile-lod1.v2.glb",
 ];
@@ -112,6 +113,7 @@ if (!html.includes("type=\"importmap\"")) {
 }
 
 const cameraController = fs.readFileSync(path.join(root, "src/engine/cameraController.js"), "utf8");
+const meshPicking = fs.readFileSync(path.join(root, "src/engine/meshPicking.js"), "utf8");
 const mutators = fs.readFileSync(path.join(root, "src/game/mutators.js"), "utf8");
 const styles = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
@@ -120,10 +122,13 @@ const mobileInteractionChecks = [
   [cameraController.includes("controls.enableZoom = true"), "Camera zoom must stay enabled."],
   [cameraController.includes("controls.zoomToCursor = true"), "Pinch zoom must follow the gesture midpoint."],
   [cameraController.includes("controls.touches.TWO = THREE.TOUCH.DOLLY_PAN"), "Two-finger zoom is not configured."],
+  [cameraController.includes("controls.touches.ONE = null"), "One-finger Anatomy Track is not configured."],
+  [cameraController.includes("TOUCH_DRAG_THRESHOLD_PX = 12"), "Touch drag/tap slop must stay synchronized."],
   [!mutators.includes("no_zoom"), "A game mutator must not disable mobile zoom."],
   [styles.includes("touch-action: none"), "Canvas must own touch gestures."],
-  [html.includes("2 Finger zoomen"), "Mobile zoom guidance is missing."],
-  [app.includes("findNearestMeshByScreenDistance(meshes, pointer, 22)"), "Mobile tap fallback must keep a 22 px radius."],
+  [html.includes("vertikal bewegen") && html.includes("2 Finger zoomen"), "Mobile Anatomy Track guidance is missing."],
+  [meshPicking.includes("TOUCH_PICK_RADIUS_PX = 30"), "Touch picking halo must keep its tested radius."],
+  [app.includes("collectMagneticPickCandidates({"), "Magnetic mesh picking is not connected."],
   [app.includes("skeleton.mobile-lod1.v2.glb"), "Runtime must use the draw-call optimized skeleton asset."],
   [app.includes("muscles.mobile-lod1.v2.glb"), "Runtime must use the draw-call optimized soft-tissue asset."],
   [app.includes("allContent.filter((item) => item.quizEligible)"), "Runtime must exclude unreviewed connective content from quizzes."],

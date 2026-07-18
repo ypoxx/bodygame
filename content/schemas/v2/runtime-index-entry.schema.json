@@ -33,6 +33,38 @@
                 }
               },
               "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "sectionId", "elementId"],
+              "properties": {
+                "kind": { "const": "jats_element" },
+                "sectionId": { "type": "string", "minLength": 1 },
+                "elementId": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "pdfPage", "section", "item", "itemKind"],
+              "properties": {
+                "kind": { "const": "pdf_page" },
+                "pdfPage": { "type": "integer", "minimum": 1 },
+                "section": { "type": "string", "minLength": 1 },
+                "item": { "type": "string", "minLength": 1 },
+                "itemKind": { "const": "authored_text" }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": ["kind", "rowKey", "representationId"],
+              "properties": {
+                "kind": { "const": "tsv_row" },
+                "rowKey": { "type": "string", "pattern": "^FMA[0-9]+$" },
+                "representationId": { "type": "string", "pattern": "^BP[0-9]+$" }
+              },
+              "additionalProperties": false
             }
           ]
         }
@@ -125,8 +157,17 @@
     },
     "reviewedState": {
       "type": "object",
-      "required": ["anatomicalTypeId", "regionIds", "side", "meshMappingStatus"],
+      "required": [
+        "verificationTier",
+        "anatomicalTypeId",
+        "regionIds",
+        "side",
+        "meshMappingStatus"
+      ],
       "properties": {
+        "verificationTier": {
+          "enum": ["source_verified_mvp", "human_reviewed"]
+        },
         "anatomicalTypeId": {
           "type": "string",
           "pattern": "^type\\.[a-z0-9_]+$"
@@ -141,15 +182,34 @@
           }
         },
         "side": { "enum": ["left", "right", "midline"] },
-        "meshMappingStatus": { "const": "human_verified" }
+        "meshMappingStatus": { "enum": ["source_verified", "human_verified"] }
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verificationTier": { "const": "human_reviewed" }
+            }
+          },
+          "then": {
+            "properties": {
+              "meshMappingStatus": { "const": "human_verified" }
+            }
+          },
+          "else": {
+            "properties": {
+              "meshMappingStatus": { "const": "source_verified" }
+            }
+          }
+        }
+      ],
       "additionalProperties": false
     },
     "learning": {
       "type": "object",
       "required": ["status", "names", "summary", "details", "reviewedState"],
       "properties": {
-        "status": { "const": "published" },
+        "status": { "enum": ["source_verified_mvp", "published"] },
         "names": { "$ref": "#/$defs/learningNames" },
         "summary": { "$ref": "#/$defs/claim" },
         "reviewedState": { "$ref": "#/$defs/reviewedState" },
@@ -183,6 +243,33 @@
           }
         }
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": { "const": "published" }
+            }
+          },
+          "then": {
+            "properties": {
+              "reviewedState": {
+                "properties": {
+                  "verificationTier": { "const": "human_reviewed" }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reviewedState": {
+                "properties": {
+                  "verificationTier": { "const": "source_verified_mvp" }
+                }
+              }
+            }
+          }
+        }
+      ],
       "additionalProperties": false
     }
   },

@@ -1,0 +1,33 @@
+{
+  "$schema": "../../../../schemas/v2/phase-b-package-manifest.schema.json",
+  "schemaVersion": 1,
+  "manifestVersion": "1.0.0",
+  "packageId": "phase_b.connective_tissue.upper_extremity_bursae_sheaths",
+  "phase": "phase_b",
+  "assetDomain": "connective_tissue",
+  "packageSequence": 2,
+  "titleDe": "Bindegewebe – obere Extremität: Bursen und Sehnenscheiden",
+  "assignmentBasis": "working_asset_label",
+  "assignmentStatus": "working_assignment_not_medically_verified",
+  "reviewPriority": "standard",
+  "expectedConceptCount": 15,
+  "expectedInstanceCount": 30,
+  "conceptIds": [
+    "concept.soft_tissue.bicipitoradial_bursa",
+    "concept.soft_tissue.common_flexor_tendon_sheath",
+    "concept.soft_tissue.coracobrachial_bursa",
+    "concept.soft_tissue.cruciform_part_of_fibrous_sheath_of_digit_of_hand",
+    "concept.soft_tissue.subacromial_bursa",
+    "concept.soft_tissue.subcutaneous_acromial_bursa",
+    "concept.soft_tissue.subdeltoid_bursa",
+    "concept.soft_tissue.subtendinous_bursa_of_infraspinatus_muscle",
+    "concept.soft_tissue.subtendinous_bursa_of_teres_major_muscle",
+    "concept.soft_tissue.subtendinous_bursa_of_trapezius_muscle",
+    "concept.soft_tissue.subtendinous_bursa_of_triceps_brachii_muscle",
+    "concept.soft_tissue.synovial_sheaths_of_digits_of_hand",
+    "concept.soft_tissue.tendon_sheath_abd_pollicis_longus_ext_pollicis_brevis",
+    "concept.soft_tissue.tendon_sheath_of_extensor_digitorum_and_extensor_indicis",
+    "concept.soft_tissue.tendon_sheath_of_extensors_carpi_radialis"
+  ],
+  "stopTheLineConceptIds": []
+}

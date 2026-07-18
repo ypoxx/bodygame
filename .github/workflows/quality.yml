@@ -34,8 +34,14 @@ jobs:
       - name: Validate anatomy content
         run: npm run validate
 
+      - name: Run unit and content-pipeline tests
+        run: npm test
+
       - name: Run performance smoke test
         run: npm run perf:smoke
 
       - name: Build Netlify bundle
         run: npm run build
+
+      - name: Reject generated or formatting drift
+        run: git diff --check

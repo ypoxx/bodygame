@@ -11,12 +11,21 @@ import { createMutatorEngine } from "./src/game/mutators.js?v=20260714-3";
 import { createBossRoundManager } from "./src/game/bossRounds.js";
 import { computeAnswerScore, computeAccuracy, computeRank } from "./src/game/scoring.js";
 import { createRendererEngine } from "./src/engine/renderer.js?v=20260715-2";
-import { createCameraController } from "./src/engine/cameraController.js?v=20260714-3";
+import {
+  createCameraController,
+  TOUCH_DRAG_THRESHOLD_PX,
+} from "./src/engine/cameraController.js?v=20260718-1";
+import {
+  areMagneticCandidatesAmbiguous,
+  collectMagneticPickCandidates,
+  FINE_PICK_RADIUS_PX,
+  TOUCH_PICK_RADIUS_PX,
+} from "./src/engine/meshPicking.js?v=20260718-1";
 import { createAudioEngine } from "./src/audio/audioEngine.js";
-import { createOnboarding } from "./src/ui/onboarding.js?v=20260715-4";
+import { createOnboarding } from "./src/ui/onboarding.js?v=20260718-1";
 import { createExploreSearchIndex, resolveExploreLayer } from "./src/ui/exploreSearch.js?v=20260715-1";
-import { getExplorePresentation } from "./src/ui/exploreContent.js?v=20260715-2";
-import { decorateExploreEntry, getExploreDisplay } from "./src/ui/exploreTerminology.js?v=20260715-2";
+import { getExplorePresentation } from "./src/ui/exploreContent.js?v=20260715-3";
+import { decorateExploreEntry, getExploreDisplay } from "./src/ui/exploreTerminology.js?v=20260715-3";
 import { createProgressionEngine } from "./src/progression/progression.js";
 import { createAdaptiveSelector } from "./src/learning/adaptiveSelector.js";
 import { createChallengeEngine } from "./src/challenges/challengeEngine.js";
@@ -48,7 +57,7 @@ const DEFAULT_SELECTION = {
 };
 
 const LAYER_CYCLE = ["bones", "muscles", "fasciae"];
-const BUILD_ID = "2026-07-15.mobile-atlas.6";
+const BUILD_ID = "2026-07-18.touch-atlas.1";
 const USE_MOBILE_LOD = shouldUseMobileLod();
 const MODEL_ASSETS = {
   skeleton: USE_MOBILE_LOD
@@ -163,13 +172,20 @@ const ui = {
   exploreSearchEmpty: document.getElementById("exploreSearchEmpty"),
   exploreLayerButtons: Array.from(document.querySelectorAll("[data-explore-layer]")),
   exploreFilterButtons: Array.from(document.querySelectorAll("[data-explore-filter]")),
+  exploreSelectedSearchBtn: document.getElementById("exploreSelectedSearchBtn"),
+  exploreSelectedLayerBtn: document.getElementById("exploreSelectedLayerBtn"),
+  exploreSelectedLayerValue: document.getElementById("exploreSelectedLayerValue"),
   exploreFocusBtn: document.getElementById("exploreFocusBtn"),
   exploreIsolateBtn: document.getElementById("exploreIsolateBtn"),
+  exploreMoreBtn: document.getElementById("exploreMoreBtn"),
+  exploreMorePanel: document.getElementById("exploreMorePanel"),
   exploreFrontBtn: document.getElementById("exploreFrontBtn"),
   exploreBackBtn: document.getElementById("exploreBackBtn"),
   exploreResetBtn: document.getElementById("exploreResetBtn"),
   exploreCloseDetailBtn: document.getElementById("exploreCloseDetailBtn"),
   exploreDetailPane: document.querySelector(".explore-detail-pane"),
+  exploreDetailsBtn: document.getElementById("exploreDetailsBtn"),
+  exploreDetailBody: document.getElementById("exploreDetailBody"),
   explorePracticeBtn: document.getElementById("explorePracticeBtn"),
   exploreTypeValue: document.getElementById("exploreTypeValue"),
   exploreNameDeValue: document.getElementById("exploreNameDeValue"),
@@ -289,6 +305,7 @@ environment.dispose?.();
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+let activePickCandidateMenu = null;
 const gltfLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("./assets/draco/");
@@ -635,12 +652,39 @@ function bindUiEvents() {
     }
   });
 
+  ui.exploreSelectedSearchBtn?.addEventListener("click", () => {
+    setExploreMoreOpen(false);
+    setExploreSearchOpen(true);
+    window.requestAnimationFrame(() => ui.exploreSearchInput?.focus({ preventScroll: true }));
+  });
+  ui.exploreSelectedLayerBtn?.addEventListener("click", () => {
+    clearExploreSelection();
+    window.requestAnimationFrame(() => {
+      const activeLayerButton = ui.exploreLayerButtons.find((button) => button.classList.contains("active"));
+      activeLayerButton?.focus({ preventScroll: true });
+    });
+  });
   ui.exploreFocusBtn?.addEventListener("click", focusExploreSelection);
   ui.exploreIsolateBtn?.addEventListener("click", toggleExploreIsolation);
-  ui.exploreFrontBtn?.addEventListener("click", () => setExploreView("front"));
-  ui.exploreBackBtn?.addEventListener("click", () => setExploreView("back"));
-  ui.exploreResetBtn?.addEventListener("click", resetExploreView);
+  ui.exploreMoreBtn?.addEventListener("click", () => {
+    setExploreMoreOpen(ui.exploreMoreBtn?.getAttribute("aria-expanded") !== "true");
+  });
+  ui.exploreFrontBtn?.addEventListener("click", () => {
+    setExploreMoreOpen(false);
+    setExploreView("front");
+  });
+  ui.exploreBackBtn?.addEventListener("click", () => {
+    setExploreMoreOpen(false);
+    setExploreView("back");
+  });
+  ui.exploreResetBtn?.addEventListener("click", () => {
+    setExploreMoreOpen(false);
+    resetExploreView();
+  });
   ui.exploreCloseDetailBtn?.addEventListener("click", () => clearExploreSelection({ returnFocus: true }));
+  ui.exploreDetailsBtn?.addEventListener("click", () => {
+    setSheetState(state.sheetState === "peek" ? "expanded" : "peek");
+  });
   ui.explorePracticeBtn?.addEventListener("click", practiceExploreSelection);
 
   for (const tabButton of ui.panelTabButtons) {
@@ -650,9 +694,43 @@ function bindUiEvents() {
     });
   }
 
+  let suppressNextSheetHandleClick = false;
+  let sheetHandleDrag = null;
+
+  ui.sheetHandleBtn?.addEventListener("pointerdown", (event) => {
+    if (state.experienceMode !== "explore" || !state.exploreSelectedEntry) {
+      return;
+    }
+    sheetHandleDrag = { pointerId: event.pointerId, startY: event.clientY };
+    ui.sheetHandleBtn.setPointerCapture?.(event.pointerId);
+  });
+
+  ui.sheetHandleBtn?.addEventListener("pointerup", (event) => {
+    if (!sheetHandleDrag || sheetHandleDrag.pointerId !== event.pointerId) {
+      return;
+    }
+    const deltaY = event.clientY - sheetHandleDrag.startY;
+    sheetHandleDrag = null;
+    if (Math.abs(deltaY) >= 30) {
+      suppressNextSheetHandleClick = true;
+      stepExploreSheetState(deltaY < 0 ? 1 : -1);
+      window.setTimeout(() => {
+        suppressNextSheetHandleClick = false;
+      }, 400);
+    }
+  });
+
+  ui.sheetHandleBtn?.addEventListener("pointercancel", () => {
+    sheetHandleDrag = null;
+  });
+
   ui.sheetHandleBtn?.addEventListener("click", () => {
+    if (suppressNextSheetHandleClick) {
+      suppressNextSheetHandleClick = false;
+      return;
+    }
     if (state.experienceMode === "explore") {
-      clearExploreSelection({ returnFocus: true });
+      setSheetState(state.sheetState === "peek" ? "expanded" : "peek");
       return;
     }
     if (state.activePanelTab !== "play") {
@@ -665,16 +743,36 @@ function bindUiEvents() {
   let pointerDown = null;
   const activePointers = new Set();
 
+  function getTapSlop(pointerType) {
+    return pointerType === "touch" ? TOUCH_DRAG_THRESHOLD_PX : 8;
+  }
+
   ui.canvas.addEventListener("pointerdown", (event) => {
     sound.unlock();
+    dismissPickCandidateMenu();
     activePointers.add(event.pointerId);
     ui.gestureHint?.classList.add("dismissed");
-    pointerDown = activePointers.size === 1 ? { id: event.pointerId, x: event.clientX, y: event.clientY } : null;
+    pointerDown = activePointers.size === 1
+      ? {
+          id: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          maxDistance: 0,
+          tapSlop: getTapSlop(event.pointerType),
+        }
+      : null;
   });
 
-  ui.canvas.addEventListener("pointermove", () => {
+  ui.canvas.addEventListener("pointermove", (event) => {
     if (activePointers.size > 1) {
       pointerDown = null;
+      return;
+    }
+    if (pointerDown?.id === event.pointerId) {
+      pointerDown.maxDistance = Math.max(
+        pointerDown.maxDistance,
+        Math.hypot(event.clientX - pointerDown.x, event.clientY - pointerDown.y),
+      );
     }
   });
 
@@ -684,9 +782,13 @@ function bindUiEvents() {
       return;
     }
 
-    const dragDistance = Math.hypot(event.clientX - pointerDown.x, event.clientY - pointerDown.y);
+    const dragDistance = Math.max(
+      pointerDown.maxDistance,
+      Math.hypot(event.clientX - pointerDown.x, event.clientY - pointerDown.y),
+    );
+    const tapSlop = pointerDown.tapSlop;
     pointerDown = null;
-    if (dragDistance > 8) {
+    if (dragDistance > tapSlop) {
       return;
     }
     pickMeshFromPointer(event);
@@ -922,6 +1024,10 @@ function setExperienceMode(mode, options = {}) {
 
 function setExploreSearchOpen(open, options = {}) {
   const next = Boolean(open) && state.experienceMode === "explore";
+  if (next) {
+    dismissPickCandidateMenu();
+    setExploreMoreOpen(false);
+  }
   state.exploreSearchOpen = next;
   ui.appShell.dataset.searchState = next ? "open" : "closed";
   ui.exploreSearchInput?.setAttribute("aria-expanded", String(next));
@@ -990,6 +1096,20 @@ function updateExploreSearchResults() {
     const type = document.createElement("span");
     type.className = "explore-result-type";
     type.textContent = getExploreTypeLabel(entry);
+    if (display.learningStatus) {
+      const learningBadge = document.createElement("span");
+      learningBadge.className = `explore-learning-badge learning-${display.learningStatus}`;
+      learningBadge.textContent = display.learningStatus === "published"
+        ? "Human-fachgeprüft"
+        : "MVP · nicht human geprüft";
+      learningBadge.setAttribute(
+        "aria-label",
+        display.learningStatus === "published"
+          ? "Humanmedizinisch fachgeprüfter Lerninhalt"
+          : "Quellengebundener MVP-Inhalt, nicht humanmedizinisch fachgeprüft",
+      );
+      type.append(learningBadge);
+    }
 
     const name = document.createElement("strong");
     name.textContent = display.title || formatStructureName(entry.meshName) || "Unbenannte Struktur";
@@ -1056,6 +1176,7 @@ async function selectExploreEntry(entry, options = {}) {
 
   state.exploreSelectedEntry = entry;
   ui.appShell.dataset.exploreSelection = "selected";
+  setSheetState("peek");
   setSelection(entry);
   updateExploreDetail(entry);
   updateExploreActions();
@@ -1101,6 +1222,7 @@ function updateExploreDetail(entry) {
   ui.exploreSourceNotice.textContent = display.terminologyNotice;
   ui.exploreSourceNotice.classList.toggle("hidden", !display.terminologyNotice && presentation.hasSourcedContent);
   ui.explorePracticeBtn.classList.toggle("hidden", entry?.quizEligible !== true || !entry?.id);
+  syncExploreSheetUi();
 }
 
 function setExploreDetailVisibility(visible) {
@@ -1119,8 +1241,49 @@ function setExploreDetailVisibility(visible) {
     ui.sheetHandleBtn.setAttribute("aria-hidden", String(!handleInteractive));
     ui.sheetHandleBtn.setAttribute(
       "aria-label",
-      state.experienceMode === "explore" ? "Lernkarte schließen" : "Spielsteuerung ein- oder ausklappen",
+      state.experienceMode === "explore" ? "Lernkarte ein- oder ausklappen" : "Spielsteuerung ein- oder ausklappen",
     );
+  }
+  syncExploreSheetUi();
+}
+
+function syncExploreSheetUi() {
+  const hasExploreDetail = state.experienceMode === "explore" && Boolean(state.exploreSelectedEntry);
+  const detailExpanded = hasExploreDetail && state.sheetState !== "peek";
+
+  if (ui.exploreDetailsBtn) {
+    ui.exploreDetailsBtn.setAttribute("aria-expanded", String(detailExpanded));
+    const label = ui.exploreDetailsBtn.querySelector("span");
+    if (label) {
+      label.textContent = detailExpanded ? "Weniger" : "Details";
+    }
+  }
+  if (ui.exploreDetailBody) {
+    ui.exploreDetailBody.setAttribute("aria-hidden", String(!detailExpanded));
+    if (detailExpanded) {
+      ui.exploreDetailBody.removeAttribute("inert");
+    } else {
+      ui.exploreDetailBody.setAttribute("inert", "");
+    }
+  }
+  if (ui.sheetHandleBtn && hasExploreDetail) {
+    const action = state.sheetState === "peek" ? "ausklappen" : "einklappen";
+    ui.sheetHandleBtn.setAttribute("aria-label", `Lernkarte ${action}`);
+    ui.sheetHandleBtn.setAttribute("aria-expanded", String(state.sheetState !== "peek"));
+  }
+}
+
+function setExploreMoreOpen(open) {
+  const next = Boolean(open) && state.experienceMode === "explore";
+  ui.exploreMoreBtn?.setAttribute("aria-expanded", String(next));
+  ui.exploreMoreBtn?.classList.toggle("active", next);
+  if (ui.exploreMorePanel) {
+    ui.exploreMorePanel.setAttribute("aria-hidden", String(!next));
+    if (next) {
+      ui.exploreMorePanel.removeAttribute("inert");
+    } else {
+      ui.exploreMorePanel.setAttribute("inert", "");
+    }
   }
 }
 
@@ -1169,13 +1332,16 @@ function toggleExploreIsolation() {
 
 function focusExploreSelection() {
   if (state.experienceMode === "explore" && state.selectedMesh) {
+    const framing = {
+      peek: { targetHeightRatio: 0.62, targetWidthRatio: 0.7, yOffsetRatio: -0.12 },
+      expanded: { targetHeightRatio: 0.5, targetWidthRatio: 0.64, yOffsetRatio: -0.3 },
+      full: { targetHeightRatio: 0.4, targetWidthRatio: 0.6, yOffsetRatio: -0.46 },
+    }[state.sheetState] || { targetHeightRatio: 0.5, targetWidthRatio: 0.64, yOffsetRatio: -0.3 };
     cameraController.fitToObject(
       state.selectedFocusObject || state.selectedMesh,
       {
         margin: 0.92,
-        targetHeightRatio: 0.48,
-        targetWidthRatio: 0.62,
-        yOffsetRatio: -0.38,
+        ...framing,
         constrainZoom: true,
         direction: [0, 0.04, 1],
         durationMs: 380,
@@ -1195,13 +1361,18 @@ function setExploreView(view) {
     return;
   }
   const selected = Boolean(state.selectedMesh);
+  const selectedFraming = {
+    peek: { targetHeightRatio: 0.62, targetWidthRatio: 0.7, yOffsetRatio: -0.12 },
+    expanded: { targetHeightRatio: 0.5, targetWidthRatio: 0.64, yOffsetRatio: -0.3 },
+    full: { targetHeightRatio: 0.4, targetWidthRatio: 0.6, yOffsetRatio: -0.46 },
+  }[state.sheetState] || { targetHeightRatio: 0.5, targetWidthRatio: 0.64, yOffsetRatio: -0.3 };
   cameraController.fitToObject(
     target,
     {
       margin: selected ? 0.92 : 1,
-      targetHeightRatio: selected ? 0.48 : 0.76,
-      targetWidthRatio: selected ? 0.62 : 0.84,
-      yOffsetRatio: selected ? -0.38 : 0,
+      targetHeightRatio: selected ? selectedFraming.targetHeightRatio : 0.76,
+      targetWidthRatio: selected ? selectedFraming.targetWidthRatio : 0.84,
+      yOffsetRatio: selected ? selectedFraming.yOffsetRatio : 0,
       constrainZoom: true,
       direction: view === "back" ? [0, 0.04, -1] : [0, 0.04, 1],
       durationMs: 420,
@@ -1219,6 +1390,8 @@ function getActiveModelRoot() {
 
 function clearExploreSelection(options = {}) {
   state.exploreSelectionRequestId += 1;
+  dismissPickCandidateMenu();
+  setExploreMoreOpen(false);
   resetExploreIsolation();
   clearSelectedStructure();
   state.exploreSelectedEntry = null;
@@ -1370,7 +1543,20 @@ function setSheetState(sheetState) {
   state.sheetState = next;
   ui.appShell.dataset.sheetState = next;
   ui.sheetHandleBtn?.setAttribute("aria-expanded", String(next !== "peek"));
-  window.requestAnimationFrame(resizeRenderer);
+  syncExploreSheetUi();
+  window.requestAnimationFrame(() => {
+    resizeRenderer();
+    if (state.experienceMode === "explore" && state.exploreSelectedEntry) {
+      focusExploreSelection();
+    }
+  });
+}
+
+function stepExploreSheetState(direction) {
+  const detents = ["peek", "expanded", "full"];
+  const currentIndex = Math.max(0, detents.indexOf(state.sheetState));
+  const nextIndex = THREE.MathUtils.clamp(currentIndex + Math.sign(direction), 0, detents.length - 1);
+  setSheetState(detents[nextIndex]);
 }
 
 function syncUiState() {
@@ -2931,23 +3117,16 @@ function updateLayerButtons() {
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
   }
+  if (ui.exploreSelectedLayerValue) {
+    ui.exploreSelectedLayerValue.textContent = {
+      bones: "Knochen",
+      muscles: "Muskeln",
+      fasciae: "Bindegewebe",
+    }[state.activeLayer] || "Ebene";
+  }
 }
 
 function applyEnvironmentLook() {
-  if (state.experienceMode === "explore") {
-    scene.background.set(0x0c1420);
-    scene.fog.color.set(0x0c1420);
-    keyLight.color.set(0xffeee2);
-    keyLight.intensity = 1.78;
-    fillLight.color.set(0xc99a91);
-    fillLight.intensity = 0.68;
-    hemiLight.color.set(0xffe9dd);
-    hemiLight.intensity = 0.72;
-    rimLight.color.set(0xdf8b7d);
-    rimLight.intensity = 0.62;
-    floorMaterial.color.set(0x14202e);
-    return;
-  }
   if (state.simulatedMuscleLook) {
     scene.background.set(0x1c1116);
     scene.fog.color.set(0x1c1116);
@@ -3001,10 +3180,44 @@ function pickMeshFromPointer(event) {
 
   raycaster.setFromCamera(pointer, camera);
   const hits = raycaster.intersectObjects(meshes, false);
-  const mesh = hits[0]?.object || findNearestMeshByScreenDistance(meshes, pointer, 22);
+  const exactMesh = hits[0]?.object || null;
+  if (exactMesh) {
+    commitPickedMesh(exactMesh, event);
+    return;
+  }
+
+  const coarsePointer = event.pointerType === "touch" || window.matchMedia("(pointer: coarse)").matches;
+  const candidates = collectMagneticPickCandidates({
+    meshes,
+    camera,
+    raycaster,
+    pointerNdc: pointer,
+    viewportWidth: rect.width,
+    viewportHeight: rect.height,
+    radiusPx: coarsePointer ? TOUCH_PICK_RADIUS_PX : FINE_PICK_RADIUS_PX,
+    identityForMesh: getStructureIdentity,
+  });
+  if (!candidates.length) {
+    return;
+  }
+
+  if (areMagneticCandidatesAmbiguous(candidates)) {
+    if (state.experienceMode === "explore") {
+      showPickCandidateMenu(candidates.slice(0, 4), event);
+    } else {
+      showToast("Mehrere Strukturen liegen hier eng zusammen. Bitte etwas genauer tippen oder zoomen.");
+    }
+    return;
+  }
+
+  commitPickedMesh(candidates[0].mesh, event);
+}
+
+function commitPickedMesh(mesh, point = {}) {
   if (!mesh) {
     return;
   }
+  dismissPickCandidateMenu({ returnFocus: true });
   const entry = getEntryForMesh(mesh);
   if (state.experienceMode === "explore") {
     state.exploreSelectionRequestId += 1;
@@ -3037,6 +3250,7 @@ function pickMeshFromPointer(event) {
     if (state.experienceMode === "explore") {
       state.exploreSelectedEntry = fallbackEntry;
       ui.appShell.dataset.exploreSelection = "selected";
+      setSheetState("peek");
       updateExploreDetail(fallbackEntry);
       updateExploreActions();
       setExploreSearchOpen(false);
@@ -3047,6 +3261,7 @@ function pickMeshFromPointer(event) {
   if (entry && state.experienceMode === "explore") {
     state.exploreSelectedEntry = entry;
     ui.appShell.dataset.exploreSelection = "selected";
+    setSheetState("peek");
     updateExploreDetail(entry);
     updateExploreActions();
     setExploreSearchOpen(false);
@@ -3054,89 +3269,106 @@ function pickMeshFromPointer(event) {
   }
 
   if (state.round.status === "active") {
-    handleRoundAnswer(mesh, entry, { x: event.clientX, y: event.clientY });
+    handleRoundAnswer(mesh, entry, { x: point.clientX, y: point.clientY });
   }
 }
 
-function findNearestMeshByScreenDistance(meshes, pointerNdc, maxDistancePx = 22) {
-  const centerWorld = new THREE.Vector3();
-  const centerNdc = new THREE.Vector3();
-  const halfWidth = Math.max(1, ui.canvas.clientWidth / 2);
-  const halfHeight = Math.max(1, ui.canvas.clientHeight / 2);
-  const candidates = [];
-
-  for (const mesh of meshes) {
-    if (!mesh.visible) {
-      continue;
-    }
-    if (!mesh.geometry) {
-      continue;
-    }
-
-    mesh.geometry.computeBoundingSphere();
-    const sphere = mesh.geometry.boundingSphere;
-    if (!sphere) {
-      continue;
-    }
-
-    centerWorld.copy(sphere.center).applyMatrix4(mesh.matrixWorld);
-    centerNdc.copy(centerWorld).project(camera);
-
-    if (
-      !Number.isFinite(centerNdc.x) ||
-      !Number.isFinite(centerNdc.y) ||
-      !Number.isFinite(centerNdc.z) ||
-      centerNdc.z < -1 ||
-      centerNdc.z > 1
-    ) {
-      continue;
-    }
-
-    const dxPx = (centerNdc.x - pointerNdc.x) * halfWidth;
-    const dyPx = (centerNdc.y - pointerNdc.y) * halfHeight;
-    const distance = Math.hypot(dxPx, dyPx);
-    if (distance <= maxDistancePx) {
-      candidates.push({ mesh, distance, centerX: centerNdc.x, centerY: centerNdc.y });
-    }
+function showPickCandidateMenu(candidates, point) {
+  dismissPickCandidateMenu();
+  if (!candidates.length || !ui.scenePanel) {
+    return;
   }
 
-  candidates.sort((left, right) => left.distance - right.distance);
-  const best = candidates[0];
-  if (!best) {
-    return null;
-  }
+  const menu = document.createElement("section");
+  menu.className = "mesh-pick-menu";
+  menu.setAttribute("role", "dialog");
+  menu.setAttribute("aria-label", "Struktur auswählen");
+  menu.setAttribute("aria-modal", "false");
 
-  const runnerUp = candidates.find((candidate) => !sameStructureIdentity(candidate.mesh, best.mesh));
-  const ambiguityGap = Math.max(6, best.distance * 0.55);
-  if (runnerUp && runnerUp.distance - best.distance < ambiguityGap) {
-    showToast("Mehrere kleine Strukturen liegen hier eng zusammen. Bitte zoomen oder die Suche nutzen.");
-    return null;
-  }
+  const heading = document.createElement("p");
+  heading.className = "mesh-pick-menu-title";
+  heading.textContent = "Welche Struktur meinst du?";
+  menu.append(heading);
 
-  const centerPointer = new THREE.Vector2(best.centerX, best.centerY);
-  raycaster.setFromCamera(centerPointer, camera);
-  const centerHits = raycaster.intersectObjects(meshes, false);
-  const visibleMesh = centerHits[0]?.object || null;
-  if (visibleMesh && !sameStructureIdentity(visibleMesh, best.mesh)) {
-    showToast("Die Struktur liegt hinter einer anderen Ebene. Bitte drehen, zoomen oder die Suche nutzen.");
-    return null;
-  }
+  const list = document.createElement("div");
+  list.className = "mesh-pick-menu-list";
+  for (const candidate of candidates) {
+    const entry = getEntryForMesh(candidate.mesh);
+    const display = entry ? getExploreDisplay(entry) : null;
+    const button = document.createElement("button");
+    button.className = "mesh-pick-option";
+    button.type = "button";
 
-  return best.mesh;
+    const name = document.createElement("strong");
+    name.textContent =
+      display?.title ||
+      formatStructureName(getSoftTissueNodeName(candidate.mesh)) ||
+      "Unbenannte Struktur";
+    const type = document.createElement("span");
+    type.textContent = entry
+      ? getExploreTypeLabel(entry)
+      : TISSUE_LABELS_DE[candidate.mesh.userData?.structureType] || "Struktur";
+    button.append(name, type);
+    button.addEventListener("click", () => commitPickedMesh(candidate.mesh, point));
+    list.append(button);
+  }
+  menu.append(list);
+
+  ui.scenePanel.append(menu);
+  activePickCandidateMenu = menu;
+
+  const panelRect = ui.scenePanel.getBoundingClientRect();
+  const menuWidth = Math.min(17.5 * 16, Math.max(12 * 16, panelRect.width - 24));
+  const relativeX = Number(point.clientX || panelRect.left + panelRect.width / 2) - panelRect.left;
+  const relativeY = Number(point.clientY || panelRect.top + panelRect.height / 2) - panelRect.top;
+  const left = THREE.MathUtils.clamp(relativeX - menuWidth / 2, 12, panelRect.width - menuWidth - 12);
+  const preferredTop = relativeY + 14;
+  const top = preferredTop + menu.offsetHeight <= panelRect.height - 12
+    ? preferredTop
+    : Math.max(12, relativeY - menu.offsetHeight - 14);
+  menu.style.width = `${menuWidth}px`;
+  menu.style.left = `${left}px`;
+  menu.style.top = `${top}px`;
+
+  document.addEventListener("pointerdown", handlePickMenuOutsidePointerDown, true);
+  document.addEventListener("keydown", handlePickMenuKeydown, true);
+  list.querySelector("button")?.focus({ preventScroll: true });
 }
 
-function sameStructureIdentity(left, right) {
-  if (!left || !right) {
-    return false;
+function handlePickMenuOutsidePointerDown(event) {
+  if (activePickCandidateMenu && !activePickCandidateMenu.contains(event.target)) {
+    dismissPickCandidateMenu();
   }
-  const leftId = left.userData?.boneId || null;
-  const rightId = right.userData?.boneId || null;
-  if (leftId && rightId) {
-    return leftId === rightId;
+}
+
+function handlePickMenuKeydown(event) {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    dismissPickCandidateMenu({ returnFocus: true });
   }
-  const leftName = normalizeToken(left.userData?.anatomyName || getSoftTissueNodeName(left));
-  const rightName = normalizeToken(right.userData?.anatomyName || getSoftTissueNodeName(right));
-  return Boolean(leftName) && leftName === rightName;
+}
+
+function dismissPickCandidateMenu(options = {}) {
+  const hadMenu = Boolean(activePickCandidateMenu);
+  activePickCandidateMenu?.remove();
+  activePickCandidateMenu = null;
+  document.removeEventListener("pointerdown", handlePickMenuOutsidePointerDown, true);
+  document.removeEventListener("keydown", handlePickMenuKeydown, true);
+  if (hadMenu && options.returnFocus) {
+    ui.canvas?.focus({ preventScroll: true });
+  }
+}
+
+function getStructureIdentity(mesh) {
+  if (!mesh) {
+    return "";
+  }
+  const id = mesh.userData?.boneId || null;
+  if (id) {
+    return `id:${id}`;
+  }
+  const name = normalizeToken(mesh.userData?.anatomyName || getSoftTissueNodeName(mesh));
+  return name ? `name:${name}` : `mesh:${mesh.uuid || mesh.id}`;
 }
 
 function getEntryForMesh(mesh) {
